@@ -1,0 +1,6 @@
+D:\Darkbox Projects\TiledMax\bin\Debug\TiledMax.dll
+D:\Darkbox Projects\TiledMax\bin\Debug\TiledMax.pdb
+D:\Darkbox Projects\TiledMax\obj\Debug\ResolveAssemblyReference.cache
+D:\Darkbox Projects\TiledMax\obj\Debug\TiledMax.dll
+D:\Darkbox Projects\TiledMax\obj\Debug\TiledMax.pdb
+D:\Darkbox Projects\TiledMax\bin\Debug\zlib.net.dll

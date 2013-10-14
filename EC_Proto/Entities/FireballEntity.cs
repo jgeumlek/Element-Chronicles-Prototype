@@ -41,7 +41,7 @@ namespace EC_Proto
 
 
 			if (lifespan < 0) {
-				alive = false; //Time to die.
+				alive = false;
 			}
 
 		}

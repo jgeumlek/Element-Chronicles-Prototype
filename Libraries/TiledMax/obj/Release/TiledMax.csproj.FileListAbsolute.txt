@@ -1,0 +1,11 @@
+C:\Documents and Settings\Aimee\Local Settings\Application Data\Temporary Projects\TiledMax\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\Aimee\Local Settings\Application Data\Temporary Projects\TiledMax\bin\Release\TiledMax.dll
+C:\Documents and Settings\Aimee\Local Settings\Application Data\Temporary Projects\TiledMax\bin\Release\TiledMax.pdb
+C:\Documents and Settings\Aimee\Local Settings\Application Data\Temporary Projects\TiledMax\obj\Release\TiledMax.dll
+C:\Documents and Settings\Aimee\Local Settings\Application Data\Temporary Projects\TiledMax\obj\Release\TiledMax.pdb
+D:\Darkbox Projects\TiledMax\obj\Release\ResolveAssemblyReference.cache
+D:\Darkbox Projects\TiledMax\obj\Release\TiledMax.dll
+D:\Darkbox Projects\TiledMax\obj\Release\TiledMax.pdb
+D:\Darkbox Projects\TiledMax\bin\Release\TiledMax.dll
+D:\Darkbox Projects\TiledMax\bin\Release\TiledMax.pdb
+D:\Darkbox Projects\TiledMax\bin\Release\zlib.net.dll
