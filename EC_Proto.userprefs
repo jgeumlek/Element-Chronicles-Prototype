@@ -1,0 +1,24 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="EC_Proto/Updatable.cs">
+    <Files>
+      <File FileName="EC_Proto/Game1.cs" Line="35" Column="15" />
+      <File FileName="EC_Proto/Direction.cs" Line="1" Column="1" />
+      <File FileName="EC_Proto/Updatable.cs" Line="1" Column="14" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="EC_Proto" expanded="True">
+            <Node name="References" expanded="True" />
+            <Node name="Updatable.cs" selected="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
