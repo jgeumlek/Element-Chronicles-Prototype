@@ -14,9 +14,12 @@ namespace EC_Proto
 
 		public PlayerEntity ()
 		{
+			hitbox = new Rectangle (0, 16, 32, 16);
+			hurtbox = new Rectangle (0, 0, 32, 32);
+
 		}
 		//Need to clean up constructors, and use base class better
-		public PlayerEntity(Vector2 position, Texture2D texture) 
+		public PlayerEntity(Vector2 position, Texture2D texture) : this()
 		{
 			this.position = position;
 			this.texture = texture;

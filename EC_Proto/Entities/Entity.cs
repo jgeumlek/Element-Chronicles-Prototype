@@ -16,6 +16,9 @@ namespace EC_Proto
 		public bool Visible { get; set; }
 		public bool Active { get; set; } //Should we bother updating?
 		public bool Collidable { get; set; } //Should we bother checking collisions?
+		public Rectangle hitbox { get; set;}//Collision detection.
+		public Rectangle hurtbox { get; set; }
+
 		public Entity ()
 		{
 			Visible = true;
@@ -73,6 +76,17 @@ namespace EC_Proto
 
 		public bool Alive() {
 			return alive;
+		}
+
+
+
+		public Rectangle getHitBox() {
+			//This could probably be optimized.
+			return new Rectangle(hitbox.X + (int)position.X, hitbox.Y + (int)position.Y, hitbox.Width, hitbox.Height);
+		}
+
+
+		virtual public void CollidedWith(Entity e) {
 		}
 
 		abstract public void update (KeyboardState state, GameTime gametime);

@@ -1,6 +1,6 @@
 #region Using Statements
 using System;
-
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Storage;
@@ -21,10 +21,14 @@ namespace EC_Proto
         SpriteBatch spriteBatch;		
 		Texture2D playertex;
 		Texture2D firetex;
+		Texture2D blankTex; //For drawing rectangles!
 		private PlayerEntity player;
 		private KeyboardState prevState;
 
 		System.Collections.ArrayList entities = new System.Collections.ArrayList();
+		System.Collections.ArrayList TerrainEntities = new System.Collections.ArrayList();
+		System.Collections.ArrayList ProjectileEntities = new System.Collections.ArrayList();
+
 
         public Game1()
         {
@@ -60,9 +64,16 @@ namespace EC_Proto
 			playertex = Content.Load<Texture2D>("blob");
 			firetex = Content.Load<Texture2D> ("fire");
 			//TODO: This probably isn't the cleanest spot for initializing the player
-			player = new PlayerEntity (new Vector2 (300, 300), playertex);
+			player = new PlayerEntity (new Vector2 (5, 0), playertex);
+
+			//Testing block for Debug Purposes.
+			TerrainEntity block = new TerrainEntity ();
+			block.setPostion (new Vector2 (100, 0));
+			TerrainEntities.Add (block);
 			entities.Add (player);
 
+			blankTex = new Texture2D(GraphicsDevice, 1, 1);
+			blankTex.SetData(new Color[] { Color.White });
 
             //TODO: use this.Content to load your game content here 
         }
@@ -95,13 +106,23 @@ namespace EC_Proto
 				}
 
 			}
+			for (int i = 0; i < ProjectileEntities.Count; i++) {
+				Entity e = (Entity)ProjectileEntities [i];
+				if (e.Active) e.update (state, gameTime); 
+				if (!e.Alive ()) {
+					ProjectileEntities.RemoveAt (i);
+					i--; //One less element in the list
+				}
 
+			}
+
+			DetectCollisions ();
 
 
 			//Fire spawning. Should later be handled my some spell managing class.
 			if (state.IsKeyDown (Keys.A) && prevState.IsKeyUp(Keys.A)) { //Use prev state to simulate onKeyDown
 				FireballEntity fireball = new FireballEntity (player.getPosition(), firetex, player.getDirection(), player.getCurrentSpeed());
-				entities.Add (fireball);
+				ProjectileEntities.Add (fireball);
 			}
 
 			//Toggle Fullscreen with a common shortcut. Still needs work so it doesn't toggle constantly if buttons are held.
@@ -114,6 +135,28 @@ namespace EC_Proto
 			prevState = state;
         }
 
+		private void DetectCollisions() {
+			for (int i = 0; i < ProjectileEntities.Count; i++) {
+				Entity e = (Entity)ProjectileEntities [i];
+
+			Rectangle proj_rect = e.getHitBox ();
+
+				foreach (TerrainEntity terrain in TerrainEntities) {
+
+					if (proj_rect.Intersects (terrain.getHitBox())) {
+						e.CollidedWith (terrain);
+					}
+				}
+
+				if (!e.Alive ()) {
+					ProjectileEntities.RemoveAt (i);
+					i--; //One less element in the list
+				}
+
+			}
+		}
+
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -124,7 +167,10 @@ namespace EC_Proto
 		
             //TODO: Screen transformations, like camera translation.
 			spriteBatch.Begin();
-			foreach (Entity e in entities) {
+			foreach (Entity e in entities) { //Currently just the player.
+				if (e.Visible) spriteBatch.Draw (e.getTexture (), e.getPosition (), Color.White);
+			}
+			foreach (Entity e in ProjectileEntities) { //Currently just the fireballs.
 				if (e.Visible) spriteBatch.Draw (e.getTexture (), e.getPosition (), Color.White);
 			}
 
