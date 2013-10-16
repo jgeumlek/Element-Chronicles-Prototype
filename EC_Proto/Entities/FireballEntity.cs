@@ -20,7 +20,7 @@ namespace EC_Proto
 		public FireballEntity(Vector2 position, Texture2D texture, Direction direction) 
 		{
 			this.position = position;
-			this.texture = texture;
+			spriteChoice.texture = texture;
 			this.direction = direction;
 			movement = speed * Entity.dirVector (direction);
 		}
@@ -28,22 +28,18 @@ namespace EC_Proto
 		public FireballEntity(Vector2 position, Texture2D texture, Direction direction, Vector2 momentum) 
 		{
 			this.position = position;
-			this.texture = texture;
+			spriteChoice.texture = texture;
 			this.direction = direction;
 			movement = momentum + speed * Entity.dirVector (direction);
 		}
 
-		override public void update(KeyboardState state, GameTime gametime) {
+		public override void Update (KeyboardState keyboard, GameTime gameTime) {
 			if (lifespan > 10) moveOffset( movement); //Stop moving at the end so it doesn't seem like the fireballs are just vanishing.
 			lifespan--;
-
-
-
 
 			if (lifespan < 0) {
 				alive = false;
 			}
-
 		}
 
 		override public void CollidedWith(Entity e) {

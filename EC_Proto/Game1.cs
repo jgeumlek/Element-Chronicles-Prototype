@@ -23,18 +23,15 @@ namespace EC_Proto
 		private PlayerEntity player;
 		private KeyboardState prevState;
 
-		System.Collections.ArrayList entities = new System.Collections.ArrayList();
-		System.Collections.ArrayList TerrainEntities = new System.Collections.ArrayList();
-		System.Collections.ArrayList ProjectileEntities = new System.Collections.ArrayList();
-
+		public List<FireballEntity> projectileEntities = new List<FireballEntity> ();
+		public List<TerrainEntity> terrainEntities = new List<TerrainEntity> ();
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
 			graphics.IsFullScreen = false;
-			graphics.PreferredBackBufferHeight = 720;
-			graphics.PreferredBackBufferWidth = 1280;
-			graphics.ApplyChanges ();
+			//graphics.PreferredBackBufferHeight = 720;
+			//graphics.PreferredBackBufferWidth = 1280;
 
             Content.RootDirectory = "Content";	            
 				
@@ -51,7 +48,6 @@ namespace EC_Proto
             // TODO: Add your initialization logic here
             base.Initialize();
 			prevState = Keyboard.GetState ();
-				
         }
 
         /// <summary>
@@ -70,8 +66,7 @@ namespace EC_Proto
 			//Testing block for Debug Purposes.
 			TerrainEntity block = new TerrainEntity ();
 			block.setPostion (new Vector2 (100, 0));
-			TerrainEntities.Add (block);
-			entities.Add (player);
+			terrainEntities.Add (block);
 
 			blankTex = new Texture2D(GraphicsDevice, 1, 1);
 			blankTex.SetData(new Color[] { Color.White });
@@ -98,23 +93,15 @@ namespace EC_Proto
 
 			//TODO: Better event based system? Let entities register as Keyboard listeners, etc.
 
-			for (int i = 0; i < entities.Count; i++) {
-				Entity e = (Entity)entities [i];
-				if (e.Active) e.update (state, gameTime); 
+			player.Update (state, gameTime);
+
+			for (int i = 0; i < projectileEntities.Count; i++) {
+				FireballEntity e = (FireballEntity)projectileEntities [i];
+				if (e.Active) e.Update (state, gameTime); 
 				if (!e.Alive ()) {
-					entities.RemoveAt (i);
+					projectileEntities.RemoveAt (i);
 					i--; //One less element in the list
 				}
-
-			}
-			for (int i = 0; i < ProjectileEntities.Count; i++) {
-				Entity e = (Entity)ProjectileEntities [i];
-				if (e.Active) e.update (state, gameTime); 
-				if (!e.Alive ()) {
-					ProjectileEntities.RemoveAt (i);
-					i--; //One less element in the list
-				}
-
 			}
 
 			DetectCollisions ();
@@ -123,7 +110,7 @@ namespace EC_Proto
 			//Fire spawning. Should later be handled my some spell managing class.
 			if (state.IsKeyDown (Keys.A) && prevState.IsKeyUp(Keys.A)) { //Use prev state to simulate onKeyDown
 				FireballEntity fireball = new FireballEntity (player.getPosition(), firetex, player.getDirection(), player.getCurrentSpeed());
-				ProjectileEntities.Add (fireball);
+				projectileEntities.Add (fireball);
 			}
 
 			//Toggle Fullscreen with a common shortcut. Still needs work so it doesn't toggle constantly if buttons are held.
@@ -137,12 +124,12 @@ namespace EC_Proto
         }
 
 		private void DetectCollisions() {
-			for (int i = 0; i < ProjectileEntities.Count; i++) {
-				Entity e = (Entity)ProjectileEntities [i];
+			for (int i = 0; i < projectileEntities.Count; i++) {
+				Entity e = (Entity)projectileEntities [i];
 
-			Rectangle proj_rect = e.getHitBox ();
+				Rectangle proj_rect = e.getHitBox ();
 
-				foreach (TerrainEntity terrain in TerrainEntities) {
+				foreach (TerrainEntity terrain in terrainEntities) {
 
 					if (proj_rect.Intersects (terrain.getHitBox())) {
 						e.CollidedWith (terrain);
@@ -150,7 +137,7 @@ namespace EC_Proto
 				}
 
 				if (!e.Alive ()) {
-					ProjectileEntities.RemoveAt (i);
+					projectileEntities.RemoveAt (i);
 					i--; //One less element in the list
 				}
 
@@ -168,10 +155,8 @@ namespace EC_Proto
 		
             //TODO: Screen transformations, like camera translation.
 			spriteBatch.Begin();
-			foreach (Entity e in entities) { //Currently just the player.
-				if (e.Visible) spriteBatch.Draw (e.getTexture (), e.getPosition (), Color.White);
-			}
-			foreach (Entity e in ProjectileEntities) { //Currently just the fireballs.
+			spriteBatch.Draw (player.getTexture (), player.getPosition (), Color.White);
+			foreach (FireballEntity e in projectileEntities) { //Currently just the fireballs.
 				if (e.Visible) spriteBatch.Draw (e.getTexture (), e.getPosition (), Color.White);
 			}
 
@@ -179,10 +164,6 @@ namespace EC_Proto
 
             base.Draw(gameTime);
         }
-
-		void updatePlayer(GameTime gameTime) {
-
-		}
     }
 }
 

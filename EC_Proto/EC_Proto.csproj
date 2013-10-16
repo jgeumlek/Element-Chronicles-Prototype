@@ -49,6 +49,7 @@
     <Compile Include="Entities\FireballEntity.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\TerrainEntity.cs" />
+    <Compile Include="SpriteChoice.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Icon.png" />

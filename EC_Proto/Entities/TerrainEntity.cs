@@ -11,7 +11,7 @@ namespace EC_Proto
 			hitbox = new Rectangle (0, 0, 32, 32);
 		}
 
-		override public void update(KeyboardState state, GameTime time) {
+		override public void Update(KeyboardState state, GameTime time) {
 		}
 	}
 }

@@ -21,16 +21,14 @@ namespace EC_Proto
 		public PlayerEntity(Vector2 position, Texture2D texture) : this()
 		{
 			this.position = position;
-			this.texture = texture;
+			spriteChoice.texture = texture;
 		}
 
 		public Vector2 getCurrentSpeed () {
 			return currentSpeed;
 		}
-
-
-
-		override public void update(KeyboardState keyboard, GameTime gameTime) {
+		
+		public override void Update (KeyboardState keyboard, GameTime gameTime) {
 			bool changedirection = true; //Should we let the player character change directions?
 			Vector2 moveDirection = new Vector2 (0, 0);
 			Direction newDirection = Direction.Undefined;
@@ -75,8 +73,6 @@ namespace EC_Proto
 			currentSpeed = moveDirection * playerspeed;
 			moveOffset (currentSpeed);
 		}
-
-
 	}
 }
 
