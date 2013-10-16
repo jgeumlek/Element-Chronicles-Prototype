@@ -6,8 +6,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Input;
 
-
-
 #endregion
 
 namespace EC_Proto
@@ -33,7 +31,10 @@ namespace EC_Proto
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-			graphics.IsFullScreen = true;	
+			graphics.IsFullScreen = false;
+			graphics.PreferredBackBufferHeight = 720;
+			graphics.PreferredBackBufferWidth = 1280;
+			graphics.ApplyChanges ();
 
             Content.RootDirectory = "Content";	            
 				
