@@ -9,7 +9,7 @@ namespace EC_Proto
 {
 	abstract public class Entity
 	{
-		public Vector2 position { get; set; }
+		public Vector2 position;
 		public Direction direction { get; set; }
 		protected bool alive = true;
 		public bool Visible { get; set; }
@@ -17,19 +17,19 @@ namespace EC_Proto
 		public bool Collidable { get; set; } //Should we bother checking collisions?
 		public Rectangle hitbox { get; set;}//Collision detection.
 		public Rectangle hurtbox { get; set; }
-		public SpriteChoice spriteChoice { get; set; };
+		public SpriteChoice spriteChoice { get; set; }
 
 		public Entity ()
 		{
 			Visible = true;
 			Active = true;
 			Collidable = true;
+			spriteChoice = new SpriteChoice();
 		}
 
 		public Entity(Vector2 position, Texture2D texture) : this()
 		{
 			this.position = position;
-			this.texture = texture;
 
 		}
 

@@ -14,10 +14,10 @@ namespace EC_Proto
 
 		public FireballEntity ()
 		{
-			hitbox = new Rectangle (5, 5, 22, 22);
+			hitbox = new Rectangle (13, 13, 6, 6);
 		}
 
-		public FireballEntity(Vector2 position, Texture2D texture, Direction direction) 
+		public FireballEntity(Vector2 position, Texture2D texture, Direction direction) : this()
 		{
 			this.position = position;
 			spriteChoice.texture = texture;
@@ -25,7 +25,7 @@ namespace EC_Proto
 			movement = speed * Entity.dirVector (direction);
 		}
 
-		public FireballEntity(Vector2 position, Texture2D texture, Direction direction, Vector2 momentum) 
+		public FireballEntity(Vector2 position, Texture2D texture, Direction direction, Vector2 momentum) : this()
 		{
 			this.position = position;
 			spriteChoice.texture = texture;

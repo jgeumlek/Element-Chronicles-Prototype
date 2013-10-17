@@ -20,6 +20,9 @@ namespace EC_Proto
 		Texture2D playertex;
 		Texture2D firetex;
 		Texture2D blankTex; //For drawing rectangles!
+
+		//Should probably make a class to hold the game state.
+		private bool drawHitBoxes = false; //For debugging.
 		private PlayerEntity player;
 		private KeyboardState prevState;
 
@@ -65,7 +68,7 @@ namespace EC_Proto
 
 			//Testing block for Debug Purposes.
 			TerrainEntity block = new TerrainEntity ();
-			block.setPostion (new Vector2 (100, 0));
+			block.position = new Vector2 (100, 0);
 			terrainEntities.Add (block);
 
 			blankTex = new Texture2D(GraphicsDevice, 1, 1);
@@ -109,15 +112,19 @@ namespace EC_Proto
 
 			//Fire spawning. Should later be handled my some spell managing class.
 			if (state.IsKeyDown (Keys.A) && prevState.IsKeyUp(Keys.A)) { //Use prev state to simulate onKeyDown
-				FireballEntity fireball = new FireballEntity (player.getPosition(), firetex, player.getDirection(), player.getCurrentSpeed());
+				FireballEntity fireball = new FireballEntity (player.position, firetex, player.direction, player.getCurrentSpeed());
 				projectileEntities.Add (fireball);
 			}
 
-			//Toggle Fullscreen with a common shortcut. Still needs work so it doesn't toggle constantly if buttons are held.
-			if (state.IsKeyDown(Keys.RightAlt) && state.IsKeyDown(Keys.Enter) )
+			//Toggle Fullscreen with a common shortcut. 
+			if (state.IsKeyDown(Keys.RightAlt) && state.IsKeyDown(Keys.Enter)  && (prevState.IsKeyUp(Keys.Enter) || prevState.IsKeyUp(Keys.RightAlt)))
 			{
 				graphics.ToggleFullScreen ();
 			}
+
+			//Debug code!
+			if (state.IsKeyDown (Keys.F3) && prevState.IsKeyUp(Keys.F3))
+				drawHitBoxes = !drawHitBoxes;
 
             base.Update(gameTime);
 			prevState = state;
@@ -155,9 +162,20 @@ namespace EC_Proto
 		
             //TODO: Screen transformations, like camera translation.
 			spriteBatch.Begin();
-			spriteBatch.Draw (player.getTexture (), player.getPosition (), Color.White);
+			spriteBatch.Draw (player.getTexture (), player.position, Color.White);
+
+			if (drawHitBoxes)
+				spriteBatch.Draw (blankTex, player.getHitBox (), Color.AliceBlue); //Debugging!
+
 			foreach (FireballEntity e in projectileEntities) { //Currently just the fireballs.
-				if (e.Visible) spriteBatch.Draw (e.getTexture (), e.getPosition (), Color.White);
+				if (e.Visible) spriteBatch.Draw (e.getTexture (), e.position, Color.White);
+				if (drawHitBoxes) //Debugging
+					spriteBatch.Draw (blankTex, e.getHitBox (), Color.White);
+			}
+			if (drawHitBoxes) { //Debugging
+				foreach (Entity e in terrainEntities) {
+					spriteBatch.Draw (blankTex, e.getHitBox (), Color.Wheat);
+				}
 			}
 
 			spriteBatch.End();

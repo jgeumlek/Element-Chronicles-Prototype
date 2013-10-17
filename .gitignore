@@ -1,1 +1,10 @@
-bin/*
+#exclude build directory
+*/bin/*
+#User Specific
+*.userprefs
+*.usertasks
+
+#Mono Project Files
+*.pidb
+*.resources
+test-results/

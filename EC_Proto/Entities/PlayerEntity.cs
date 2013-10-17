@@ -14,7 +14,7 @@ namespace EC_Proto
 
 		public PlayerEntity ()
 		{
-			hitbox = new Rectangle (0, 16, 32, 16);
+			hitbox = new Rectangle (4, 16, 24, 16);
 			hurtbox = new Rectangle (0, 0, 32, 32);
 		}
 		//Need to clean up constructors, and use base class better
