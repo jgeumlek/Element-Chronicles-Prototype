@@ -21,6 +21,8 @@ namespace TiledMax
         public Collection<Image> Images { get; set; }
         public Collection<Tile> Tiles { get; set; }
         public Collection<Bitmap> Bitmaps { get; set; }
+
+		//This dictionary is hacked-on addition to TiledMax.
 		public Dictionary<int, Properties> TileProperties = new Dictionary<int, Properties>();
 
         public TileSet()

@@ -25,6 +25,8 @@ namespace EC_Proto
 		private bool drawHitBoxes = false; //For debugging.
 		private PlayerEntity player;
 		private KeyboardState prevState;
+		private Matrix screenMatrix;
+		private GameMap map; //Game state, scene handling, level changes still need work.
 
 		public List<FireballEntity> projectileEntities = new List<FireballEntity> ();
 		public List<TerrainEntity> terrainEntities = new List<TerrainEntity> ();
@@ -35,7 +37,6 @@ namespace EC_Proto
 			graphics.IsFullScreen = false;
 			//graphics.PreferredBackBufferHeight = 720;
 			//graphics.PreferredBackBufferWidth = 1280;
-
             Content.RootDirectory = "Content";	            
 				
         }
@@ -73,6 +74,11 @@ namespace EC_Proto
 
 			blankTex = new Texture2D(GraphicsDevice, 1, 1);
 			blankTex.SetData(new Color[] { Color.White });
+
+			screenMatrix = Matrix.Identity;
+
+			map = new GameMap ("Content/First_level_torch_maze.tmx");
+			map.Load (Content,terrainEntities);
 
             //TODO: use this.Content to load your game content here 
         }
@@ -120,6 +126,7 @@ namespace EC_Proto
 			if (state.IsKeyDown(Keys.RightAlt) && state.IsKeyDown(Keys.Enter)  && (prevState.IsKeyUp(Keys.Enter) || prevState.IsKeyUp(Keys.RightAlt)))
 			{
 				graphics.ToggleFullScreen ();
+				graphics.ApplyChanges ();
 			}
 
 			//Debug code!
@@ -128,6 +135,14 @@ namespace EC_Proto
 
             base.Update(gameTime);
 			prevState = state;
+
+
+			//These calculatins requirement significant refinement! They are pretty naive in several ways.
+			screenMatrix = Matrix.CreateTranslation (-player.position.X, -player.position.Y, 1);
+
+			screenMatrix *= Matrix.CreateScale (1.5f, 1.5f, 1);
+			screenMatrix *= Matrix.CreateTranslation (300,200,0);
+
         }
 
 		private void DetectCollisions() {
@@ -161,7 +176,24 @@ namespace EC_Proto
            	graphics.GraphicsDevice.Clear(Color.Tan);
 		
             //TODO: Screen transformations, like camera translation.
-			spriteBatch.Begin();
+			spriteBatch.Begin(SpriteSortMode.Deferred,null, null, null, null, null,screenMatrix);
+
+			foreach (TiledMax.Layer layer in map.Layers) {
+				int width = layer.Width;
+				int height = layer.Height;
+				for (int y = 0; y < layer.Height; y++) {
+					for (int x = 0; x < layer.Width; x++) {
+						Rectangle destination = new Rectangle (x * map.TileWidth, y * map.TileHeight, map.TileWidth, map.TileHeight);
+						int tileID = layer.Data [x, y] - 1;
+						//tileID = 3;
+						if (tileID > 0) {
+							GameTile tile = map.Tiles [tileID];
+							spriteBatch.Draw (tile.display.texture, destination, tile.display.rect, Color.White);
+						}
+					}
+				}
+			}
+
 			spriteBatch.Draw (player.getTexture (), player.position, Color.White);
 
 			if (drawHitBoxes)

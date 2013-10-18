@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="20" tileheight="20">
+ <tileset firstgid="1" name="grass and bush" tilewidth="20" tileheight="20">
+  <image source="grass and bush.png" trans="ffffff" width="60" height="40"/>
+  <tile id="1">
+   <properties>
+    <property name="solid" value="yes"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="spawn" value="torch"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="spawn" value="flytrap"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 1" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztktEKwCAIRe3/f3qvIWoJW9k6wmHoSrzXmog0gEOQAjPcrMOKm/2opuMv+zhFh9e/D5339eo6ZnSu0DHyL4rs/0zfVb5bc82cW/WOMjpE5dE3egc7dIz2o+9/NWc0z4w/4py36l6s0Jft783l9flah/Yre97Kvf1E9apkfNk951ux23MAAAAAAAAAAAAAgNt4AAANCTQ=
+  </data>
+ </layer>
+ <layer name="Tile Layer 2" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztlMEKAyEMRGVp//+Xe2lBxJiZSfbQZR4soiZZk4mO8SyuP/jQPOYxs4vmqB9i9xr4uVb/ebyCObqOxkH9mDyivDL7aD/TD9W3osdvzHSI7FT7SB8lj8wummf26j6TR7W/q3bZOdA8dnO1f1UdTv2NcMd7xMY96aDqke1X683GUe45Wn+1zmpcJo9Tfsy+et9QHSOU9ynzy0blXjF5nNbZfmbvw2zXkUdW950f2/er/fv77c7dpQcaj9WB1TmD6VfVf11n7kP1vWLprKvqh35dcZj/dNUZjdf9v7t4Uh6VvjPGGGOMMcYYY4wxxhjTwwfOnwNL
+  </data>
+ </layer>
+ <layer name="Tile Layer 3" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt1jEOwCAIAEAS9f9f7tCtcZK01Hi3OGlQIhDB7np1AB9p1QEsGov7TsnrH63mDLj5Q+ygxXy2eLP/7jrLVJjVkf5Ys+dVydzjFN4GAAAAAADIuAAfmABG
+  </data>
+ </layer>
+</map>

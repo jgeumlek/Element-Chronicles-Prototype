@@ -74,11 +74,11 @@ namespace TiledMax
 
                 foreach (XmlNode xNode in xMap.ChildNodes)
                 {
-					Console.Out.WriteLine(xNode.Name);
+
                     switch (xNode.Name)
                     {
                         case "tileset": ReadTileset(xNode, ref result, base_path); break;
-					    case "layer":  Console.Out.WriteLine("Layer?");ReadLayer(xNode, ref result); break;
+					    case "layer": ReadLayer(xNode, ref result); break;
                         case "objectgroup": ReadObjectGroup(xNode, ref result); break;
                     }
                 }
@@ -156,32 +156,24 @@ namespace TiledMax
 
         static void ReadLayer(XmlNode node, ref Map map)
         {
-			Console.Out.WriteLine("Layer1?");
             Layer r = new Layer(node.ReadInt("width"), node.ReadInt("height"));
             r.Name = node.ReadTag("name");
-			Console.Out.WriteLine(r.Name);
             r.X = node.ReadInt("x");
             r.Y = node.ReadInt("y");
             r.Opacity = node.ReadDouble("opacity", 1);
             r.Visible = node.ReadInt("visible") == 1;
-			Console.Out.WriteLine("Layer2?");
             if(node.HasChildNodes)
             {
-				Console.Out.WriteLine("Layer3?");
                 XmlNode data = node.FirstChild;
-				Console.Out.WriteLine(data.InnerXml);
                 string dataVal = data.InnerText.Trim('\n', ' ');
                 string encoding = data.ReadTag("encoding");
                 string compression = data.ReadTag("compression");
 
                 byte[] dataToParse = new byte[0];
                 byte[] dataDecompressed = new byte[0];
-				Console.Out.WriteLine(encoding);
                 if (encoding == "base64")
                 {
-
                     dataToParse = Convert.FromBase64String(dataVal);
-					Console.Out.WriteLine ("Based sixty4!");
                 }
                 else if(encoding == "csv")
                 {
@@ -196,46 +188,21 @@ namespace TiledMax
 					dataDecompressed = dataToParse;
 				}
 
-				/*else { //XML encoded
-					int y = 0;
-					int x = 0;
-					for (int i = 0; i < data.ChildNodes.Count; i++) {
-						XmlNode tile = data.ChildNodes[i];
-						if (tile.Name == "tile") {
-							r.Data[x,y] = tile.ReadInt("gid",0);
-							x++;
-							if (x >= r.Width) {
-								x = 0;
-								y++;
-								if (y >= r.Height) {
-									y = 0; //Probably should break out of loop instead.
-								}
-							}
-						}
-					}
-					Console.Out.WriteLine("Layer5!");
-					map.Layers.Add(r);
-					return;
 
-				}*/
-				Console.Out.WriteLine("Layer4?");
-			BinaryReader br = new BinaryReader (new MemoryStream (dataDecompressed));
-				Console.Out.WriteLine("Layer4.5?");
 
-                /*using (BinaryReader br2 = new BinaryReader(new MemoryStream(dataDecompressed)))
-                {*/
+
+
+                using (BinaryReader br = new BinaryReader(new MemoryStream(dataDecompressed)))
+                {
                     for (int y = 0; y < r.Height; y++)
                     {
                         for (int x = 0; x < r.Width; x++)
                         {
                             int v = br.ReadInt32();
-							Console.Out.Write (v);
-						Console.Out.Write (" ");
-                            r.Data[x,y] = v+1;
+                            r.Data[x,y] = v+1; //Why the +1? Investigate.
                         }
                     }
-                //}
-				Console.Out.WriteLine("Layer5?");
+                }
                 map.Layers.Add(r);
             }
 

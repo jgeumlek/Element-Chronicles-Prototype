@@ -36,8 +36,8 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="MonoGame.Framework, Version=3.0.1.0, Culture=neutral">
-      <Private>False</Private>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\Monogame-SDL\MonoGame.Framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -50,6 +50,8 @@
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\TerrainEntity.cs" />
     <Compile Include="SpriteChoice.cs" />
+    <Compile Include="Map Loading\GameTile.cs" />
+    <Compile Include="Map Loading\GameMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Icon.png" />
@@ -59,10 +61,23 @@
     <None Include="Content\fire.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\First_level_torch_maze.tmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\grass and bush.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\" />
     <Folder Include="Entities\" />
+    <Folder Include="Map Loading\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Libraries\TiledMax\TiledMax.csproj">
+      <Project>{2B1A6CCC-4B80-40E6-B109-9C54A01C1376}</Project>
+      <Name>TiledMax</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

@@ -34,7 +34,7 @@ namespace EC_Proto
 		}
 
 		public override void Update (KeyboardState keyboard, GameTime gameTime) {
-			if (lifespan > 10) moveOffset( movement); //Stop moving at the end so it doesn't seem like the fireballs are just vanishing.
+			moveOffset( movement);
 			lifespan--;
 
 			if (lifespan < 0) {

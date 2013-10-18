@@ -6,18 +6,17 @@ using System.Linq;
 
 namespace TiledMax
 {
-    static class Program
-    {
-        private static Game1 game;
+	static class Program
+	{
 
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            game = new Game1();
-            game.Run();
-        }
-    }
+
+		/// <summary>
+		/// The main entry point for the application.
+		/// </summary>
+		[STAThread]
+		static void Main()
+		{
+
+		}
+	}
 }
