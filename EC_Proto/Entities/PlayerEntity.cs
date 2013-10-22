@@ -11,17 +11,22 @@ namespace EC_Proto
 
 		private float playerspeed = 2;
 		private Vector2 currentSpeed = new Vector2(0,0); //Used for adding momentum to projectiles.
+		private Vector2 resetPosition = new Vector2 (0, 0);
+		bool collidedWithTerrain = false; //For really hack-ish collision resolution! Needs to be reworked.
 
 		public PlayerEntity ()
 		{
-			hitbox = new Rectangle (4, 16, 24, 16);
+			hitbox = new Rectangle (10, 24, 12, 8);
 			hurtbox = new Rectangle (0, 0, 32, 32);
+
 		}
 		//Need to clean up constructors, and use base class better
 		public PlayerEntity(Vector2 position, Texture2D texture) : this()
 		{
 			this.position = position;
 			spriteChoice.texture = texture;
+			resetPosition.X = position.X;
+			resetPosition.Y = position.Y;
 		}
 
 		public Vector2 getCurrentSpeed () {
@@ -29,6 +34,13 @@ namespace EC_Proto
 		}
 		
 		public override void Update (KeyboardState keyboard, GameTime gameTime) {
+
+			if (!collidedWithTerrain) { //Really lazy collsion resolution. Needs work.
+				SetResetPosition (position);
+			} else {
+				collidedWithTerrain = false;
+			}
+
 			bool changedirection = true; //Should we let the player character change directions?
 			Vector2 moveDirection = new Vector2 (0, 0);
 			Direction newDirection = Direction.Undefined;
@@ -72,7 +84,30 @@ namespace EC_Proto
 
 			currentSpeed = moveDirection * playerspeed;
 			moveOffset (currentSpeed);
+
+
 		}
+
+		//Collision rules.
+		override public void CollidedWith(Entity e) {
+			if (e is TerrainEntity) {
+				collidedWithTerrain = true;
+				ResetWarp ();
+			}
+		}
+
+		//Set where player goes when out of bounds/in a pit/drowned/etc.
+		public void SetResetPosition(Vector2 resetPosition) {
+			this.resetPosition.X = resetPosition.X;
+			this.resetPosition.Y = resetPosition.Y;
+		}
+
+		//Warp to the player's reset position.
+		public void ResetWarp() {
+			position.X = resetPosition.X;
+			position.Y = resetPosition.Y;
+		}
+
 	}
 }
 

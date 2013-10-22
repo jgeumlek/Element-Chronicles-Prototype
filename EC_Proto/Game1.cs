@@ -137,7 +137,7 @@ namespace EC_Proto
 			prevState = state;
 
 
-			//These calculatins requirement significant refinement! They are pretty naive in several ways.
+			//These calculations requirement significant refinement! They are pretty naive in several ways.
 			screenMatrix = Matrix.CreateTranslation (-player.position.X, -player.position.Y, 1);
 
 			screenMatrix *= Matrix.CreateScale (1.5f, 1.5f, 1);
@@ -146,6 +146,9 @@ namespace EC_Proto
         }
 
 		private void DetectCollisions() {
+
+			//Care should be taken to not check the same pair of objects twice.
+			//Let's check each projectile with the terrain and the enemies.
 			for (int i = 0; i < projectileEntities.Count; i++) {
 				Entity e = (Entity)projectileEntities [i];
 
@@ -164,6 +167,16 @@ namespace EC_Proto
 				}
 
 			}
+
+			//Now let's check player collisions.
+
+			Rectangle playerbox = player.getHitBox ();
+			foreach (TerrainEntity terrain in terrainEntities) {
+				if (playerbox.Intersects(terrain.getHitBox())) {
+					player.CollidedWith(terrain);
+				}
+			}
+
 		}
 
 
@@ -177,7 +190,7 @@ namespace EC_Proto
 		
             //TODO: Screen transformations, like camera translation.
 			spriteBatch.Begin(SpriteSortMode.Deferred,null, null, null, null, null,screenMatrix);
-
+			//graphics.GraphicsDevice.SamplerStates[0].Filter = TextureFilter.Point; Fixes blurred sprites, but requires Sort mode immediate?
 			foreach (TiledMax.Layer layer in map.Layers) {
 				int width = layer.Width;
 				int height = layer.Height;
@@ -193,11 +206,11 @@ namespace EC_Proto
 					}
 				}
 			}
-
-			spriteBatch.Draw (player.getTexture (), player.position, Color.White);
+		
+			spriteBatch.Draw (player.getTexture (),player.position, new Rectangle(0,0,32,32), Color.White);
 
 			if (drawHitBoxes)
-				spriteBatch.Draw (blankTex, player.getHitBox (), Color.AliceBlue); //Debugging!
+				spriteBatch.Draw (blankTex, player.getHitBox (), Color.Aquamarine); //Debugging!
 
 			foreach (FireballEntity e in projectileEntities) { //Currently just the fireballs.
 				if (e.Visible) spriteBatch.Draw (e.getTexture (), e.position, Color.White);

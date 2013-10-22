@@ -52,6 +52,7 @@
     <Compile Include="SpriteChoice.cs" />
     <Compile Include="Map Loading\GameTile.cs" />
     <Compile Include="Map Loading\GameMap.cs" />
+    <Compile Include="AnimationManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Icon.png" />

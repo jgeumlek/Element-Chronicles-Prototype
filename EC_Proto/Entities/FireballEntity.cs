@@ -44,7 +44,8 @@ namespace EC_Proto
 
 		override public void CollidedWith(Entity e) {
 			if (e is TerrainEntity) {
-				alive = false;
+				//alive = false;
+				movement = new Vector2 (0, 0);
 			}
 		}
 	}
