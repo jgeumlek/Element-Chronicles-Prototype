@@ -30,6 +30,7 @@ namespace EC_Proto
 
 		public List<FireballEntity> projectileEntities = new List<FireballEntity> ();
 		public List<TerrainEntity> terrainEntities = new List<TerrainEntity> ();
+		public List<TorchEntity> torchEntities = new List<TorchEntity> ();
 
         public Game1()
         {
@@ -37,8 +38,7 @@ namespace EC_Proto
 			graphics.IsFullScreen = false;
 			//graphics.PreferredBackBufferHeight = 720;
 			//graphics.PreferredBackBufferWidth = 1280;
-            Content.RootDirectory = "Content";	            
-				
+            Content.RootDirectory = "Content";
         }
 
         /// <summary>
@@ -71,6 +71,9 @@ namespace EC_Proto
 			TerrainEntity block = new TerrainEntity ();
 			block.position = new Vector2 (100, 0);
 			terrainEntities.Add (block);
+
+			TorchEntity.torchUnlit = Content.Load<Texture2D>("torchunlit");
+			TorchEntity.torchLit = Content.Load<Texture2D>("torchlit");
 
 			blankTex = new Texture2D(GraphicsDevice, 1, 1);
 			blankTex.SetData(new Color[] { Color.White });
@@ -150,7 +153,7 @@ namespace EC_Proto
 			//Care should be taken to not check the same pair of objects twice.
 			//Let's check each projectile with the terrain and the enemies.
 			for (int i = 0; i < projectileEntities.Count; i++) {
-				Entity e = (Entity)projectileEntities [i];
+				Entity e = projectileEntities [i];
 
 				Rectangle proj_rect = e.getHitBox ();
 
@@ -158,6 +161,9 @@ namespace EC_Proto
 
 					if (proj_rect.Intersects (terrain.getHitBox())) {
 						e.CollidedWith (terrain);
+						if (e is FireballEntity && terrain is TorchEntity) {
+							terrain.CollidedWith (e);
+						}
 					}
 				}
 
@@ -217,10 +223,11 @@ namespace EC_Proto
 				if (drawHitBoxes) //Debugging
 					spriteBatch.Draw (blankTex, e.getHitBox (), Color.White);
 			}
-			if (drawHitBoxes) { //Debugging
-				foreach (Entity e in terrainEntities) {
-					spriteBatch.Draw (blankTex, e.getHitBox (), Color.Wheat);
-				}
+			foreach (TerrainEntity e in terrainEntities) {
+				if (e.Visible)
+					spriteBatch.Draw (e.getTexture (), e.position, Color.White);
+				if (drawHitBoxes) //Debugging
+					spriteBatch.Draw (blankTex, e.getHitBox (), Color.White);
 			}
 
 			spriteBatch.End();

@@ -9,11 +9,13 @@ namespace EC_Proto
 		public TerrainEntity ()
 		{
 			hitbox = new Rectangle (0, 0, 20, 20);
+			Visible = false;
 		}
 		public TerrainEntity(Rectangle rect) {
 			position.X = rect.X;
 			position.Y = rect.Y;
 			hitbox = new Rectangle (0, 0, rect.Width, rect.Height);
+			Visible = false;
 		}
 
 		override public void Update(KeyboardState state, GameTime time) {

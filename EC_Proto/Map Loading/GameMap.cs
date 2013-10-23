@@ -82,8 +82,11 @@ namespace EC_Proto
 						if (tileID > 0) {
 							GameTile tile = Tiles [tileID];
 							if (tile.solid) {
-								blocks.Add (new TerrainEntity (destination));
+								if (tile.SpawnType == "")
+									blocks.Add (new TerrainEntity (destination));
 							}
+							if (tile.SpawnType == "torch")
+								blocks.Add (new TorchEntity (destination));
 						}
 					}
 				}

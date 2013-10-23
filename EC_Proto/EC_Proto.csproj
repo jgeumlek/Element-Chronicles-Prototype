@@ -36,8 +36,8 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="MonoGame.Framework">
-      <HintPath>..\Monogame-SDL\MonoGame.Framework.dll</HintPath>
+    <Reference Include="MonoGame.Framework, Version=3.0.1.0, Culture=neutral">
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -53,6 +53,7 @@
     <Compile Include="Map Loading\GameTile.cs" />
     <Compile Include="Map Loading\GameMap.cs" />
     <Compile Include="AnimationManager.cs" />
+    <Compile Include="Entities\TorchEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Icon.png" />
@@ -67,6 +68,12 @@
     </None>
     <None Include="Content\grass and bush.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\torchlit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\torchunlit.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

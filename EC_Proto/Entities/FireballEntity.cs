@@ -17,14 +17,6 @@ namespace EC_Proto
 			hitbox = new Rectangle (13, 13, 6, 6);
 		}
 
-		public FireballEntity(Vector2 position, Texture2D texture, Direction direction) : this()
-		{
-			this.position = position;
-			spriteChoice.texture = texture;
-			this.direction = direction;
-			movement = speed * Entity.dirVector (direction);
-		}
-
 		public FireballEntity(Vector2 position, Texture2D texture, Direction direction, Vector2 momentum) : this()
 		{
 			this.position = position;
