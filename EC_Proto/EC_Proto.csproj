@@ -54,6 +54,7 @@
     <Compile Include="Map Loading\GameMap.cs" />
     <Compile Include="AnimationManager.cs" />
     <Compile Include="Entities\TorchEntity.cs" />
+    <Compile Include="AnimationState.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Icon.png" />

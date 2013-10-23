@@ -18,6 +18,7 @@ namespace EC_Proto
 		public Rectangle hitbox { get; set;}//Collision detection.
 		public Rectangle hurtbox { get; set; }
 		public SpriteChoice spriteChoice { get; set; }
+		protected AnimationState animState = new AnimationState();
 
 		public Entity ()
 		{
@@ -60,6 +61,19 @@ namespace EC_Proto
 			}
 		}
 
+		//Convert enum values to names
+		public static String dirName(Direction direction) {
+			if (direction == Direction.North) {
+				return "north";
+			} else if (direction == Direction.East) {
+				return "east";
+			} else if (direction == Direction.South) {
+				return "south";
+			} else { //West
+				return "west";
+			}
+		}
+
 		public bool Alive() {
 			return alive;
 		}
@@ -74,6 +88,7 @@ namespace EC_Proto
 		}
 
 		abstract public void Update (KeyboardState state, GameTime gametime);
+
 	}
 }
 

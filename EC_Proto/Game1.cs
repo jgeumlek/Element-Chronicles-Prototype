@@ -28,6 +28,7 @@ namespace EC_Proto
 		private Matrix screenMatrix;
 		private GameMap map; //Game state, scene handling, level changes still need work.
 
+
 		public List<FireballEntity> projectileEntities = new List<FireballEntity> ();
 		public List<TerrainEntity> terrainEntities = new List<TerrainEntity> ();
 		public List<TorchEntity> torchEntities = new List<TorchEntity> ();
@@ -36,6 +37,7 @@ namespace EC_Proto
         {
             graphics = new GraphicsDeviceManager(this);
 			graphics.IsFullScreen = false;
+			//TargetElapsedTime = TimeSpan.FromMilliseconds(500);
 			//graphics.PreferredBackBufferHeight = 720;
 			//graphics.PreferredBackBufferWidth = 1280;
             Content.RootDirectory = "Content";
@@ -66,11 +68,8 @@ namespace EC_Proto
 			firetex = Content.Load<Texture2D> ("fire");
 			//TODO: This probably isn't the cleanest spot for initializing the player
 			player = new PlayerEntity (new Vector2 (5, 0), playertex);
+			PlayerEntity.InitAnimation ();
 
-			//Testing block for Debug Purposes.
-			TerrainEntity block = new TerrainEntity ();
-			block.position = new Vector2 (100, 0);
-			terrainEntities.Add (block);
 
 			TorchEntity.torchUnlit = Content.Load<Texture2D>("torchunlit");
 			TorchEntity.torchLit = Content.Load<Texture2D>("torchlit");
@@ -93,6 +92,7 @@ namespace EC_Proto
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
 
             // Back or Escape to quit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -213,7 +213,7 @@ namespace EC_Proto
 				}
 			}
 		
-			spriteBatch.Draw (player.getTexture (),player.position, new Rectangle(0,0,32,32), Color.White);
+			spriteBatch.Draw (player.getTexture (),player.position, player.spriteChoice.rect, Color.White);
 
 			if (drawHitBoxes)
 				spriteBatch.Draw (blankTex, player.getHitBox (), Color.Aquamarine); //Debugging!

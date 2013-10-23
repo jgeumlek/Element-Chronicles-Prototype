@@ -13,11 +13,26 @@ namespace EC_Proto
 		private Vector2 currentSpeed = new Vector2(0,0); //Used for adding momentum to projectiles.
 		private Vector2 resetPosition = new Vector2 (0, 0);
 		bool collidedWithTerrain = false; //For really hack-ish collision resolution! Needs to be reworked.
+		static AnimationManager anim = new AnimationManager();
+
+		static public void InitAnimation() {
+			anim.AddAnimation ("south", 0, 0, 32, 32,4);
+			anim.AddAnimation ("west", 0, 32, 32, 32,4);
+			anim.AddAnimation ("east", 0, 64, 32, 32,4);
+			anim.AddAnimation ("north", 0, 96, 32, 32,4);
+
+			anim.AddStateChange ("", "west", "west", false);
+			anim.AddStateChange ("", "south", "south", false);
+			anim.AddStateChange ("", "east", "east", false);
+			anim.AddStateChange ("", "north", "north", false);
+		}
 
 		public PlayerEntity ()
 		{
 			hitbox = new Rectangle (10, 24, 12, 8);
 			hurtbox = new Rectangle (0, 0, 32, 32);
+			direction = Direction.South;
+			animState.AnimationName = "south";
 
 		}
 		//Need to clean up constructors, and use base class better
@@ -34,6 +49,8 @@ namespace EC_Proto
 		}
 		
 		public override void Update (KeyboardState keyboard, GameTime gameTime) {
+
+			animState.CurrentFrame++;
 
 			if (!collidedWithTerrain) { //Really lazy collsion resolution. Needs work.
 				SetResetPosition (position);
@@ -80,10 +97,12 @@ namespace EC_Proto
 
 			if (changedirection && newDirection != Direction.Undefined) {
 				direction = newDirection; //We aren't still heading the same way, and we are moving. We should change direction.
+				animState = anim.Update (animState,Entity.dirName(newDirection));
 			}
 
 			currentSpeed = moveDirection * playerspeed;
 			moveOffset (currentSpeed);
+			spriteChoice.rect = anim.GetRectangle (animState);
 
 
 		}
