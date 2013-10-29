@@ -55,6 +55,7 @@
     <Compile Include="AnimationManager.cs" />
     <Compile Include="Entities\TorchEntity.cs" />
     <Compile Include="AnimationState.cs" />
+    <Compile Include="Entities\FlytrapEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Icon.png" />
@@ -73,8 +74,11 @@
     <None Include="Content\torchlit.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Content\torchunlit.PNG">
+    <None Include="Content\torchunlit.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\flytrap.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

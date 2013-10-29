@@ -19,6 +19,7 @@ namespace EC_Proto
 			position.X = rect.X;
 			position.Y = rect.Y;
 			spriteChoice.texture = torchUnlit;
+			spriteChoice.rect = new Rectangle (0, 0, 20, 20);
 			Visible = true;
 		}
 

@@ -83,11 +83,15 @@ namespace EC_Proto
 			return new Rectangle(hitbox.X + (int)position.X, hitbox.Y + (int)position.Y, hitbox.Width, hitbox.Height);
 		}
 
-
+		//Handle collision you want.
 		virtual public void CollidedWith(Entity e) {
 		}
-
+		//A frame's worth of time has passed. Do nothing by defualt, override if you have an animation.
+		virtual public void AnimationTick() {
+		}
 		abstract public void Update (KeyboardState state, GameTime gametime);
+
+
 
 	}
 }

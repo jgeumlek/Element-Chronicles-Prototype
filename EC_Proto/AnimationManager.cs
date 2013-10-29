@@ -32,7 +32,7 @@ namespace EC_Proto
 		/// <summary>
 		/// Adds the state change.
 		/// </summary>
-		/// <param name="sourceAnimation">Source animation. If empty, the animation change applies to all states.</param>
+		/// <param name="sourceAnimation">Source animation. If empty string, the animation change applies to all states.</param>
 		/// <param name="signal">Signal.</param>
 		/// <param name="destAnimation">Destination animation.</param>
 		/// <param name="resetCount">If set to <c>true</c> reset count.</param>
@@ -69,6 +69,21 @@ namespace EC_Proto
 				}
 			}
 
+			return currentState;
+		}
+
+		//increments one frame, and handles animation ending signals. Note that all animations loop by default.
+		public AnimationState Tick(AnimationState currentState) {
+			currentState.CurrentFrame++;
+			if (!Frames.ContainsKey (currentState.AnimationName)) { //Shouldn't happen, let's fail gracefully.
+				//TODO: Log this?
+				return currentState;
+			}
+
+			if (currentState.CurrentFrame == Frames[currentState.AnimationName].Length) { //The current animation just ended and looped!
+				currentState.CurrentFrame = 0;
+				currentState = Update (currentState, "anim_end"); //Could probably be optimized. Perhaps the current animation stores a next_anim? If none, stop. If it has one, switch. Looping would switching to self.
+			}
 			return currentState;
 		}
 	}

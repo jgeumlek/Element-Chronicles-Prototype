@@ -50,7 +50,7 @@ namespace EC_Proto
 		
 		public override void Update (KeyboardState keyboard, GameTime gameTime) {
 
-			animState.CurrentFrame++;
+
 
 			if (!collidedWithTerrain) { //Really lazy collsion resolution. Needs work.
 				SetResetPosition (position);
@@ -113,6 +113,11 @@ namespace EC_Proto
 				collidedWithTerrain = true;
 				ResetWarp ();
 			}
+		}
+
+		public override void AnimationTick ()
+		{
+			if (currentSpeed.LengthSquared() > 2) animState = anim.Tick(animState);
 		}
 
 		//Set where player goes when out of bounds/in a pit/drowned/etc.

@@ -87,6 +87,8 @@ namespace EC_Proto
 							}
 							if (tile.SpawnType == "torch")
 								blocks.Add (new TorchEntity (destination));
+							if (tile.SpawnType == "flytrap") 
+								blocks.Add (new FlytrapEntity (destination));
 						}
 					}
 				}

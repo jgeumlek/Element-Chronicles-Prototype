@@ -14,7 +14,7 @@ namespace EC_Proto
 
 		public FireballEntity ()
 		{
-			hitbox = new Rectangle (13, 13, 6, 6);
+			hitbox = new Rectangle (13, 24, 6, 6);
 		}
 
 		public FireballEntity(Vector2 position, Texture2D texture, Direction direction, Vector2 momentum) : this()
@@ -36,8 +36,7 @@ namespace EC_Proto
 
 		override public void CollidedWith(Entity e) {
 			if (e is TerrainEntity) {
-				//alive = false;
-				movement = new Vector2 (0, 0);
+				alive = false;
 			}
 		}
 	}

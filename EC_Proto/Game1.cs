@@ -1,6 +1,7 @@
 #region Using Statements
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Storage;
@@ -20,6 +21,7 @@ namespace EC_Proto
 		Texture2D playertex;
 		Texture2D firetex;
 		Texture2D blankTex; //For drawing rectangles!
+		int tickcount = 0; //For dividing the framerate. This implementation will change.
 
 		//Should probably make a class to hold the game state.
 		private bool drawHitBoxes = false; //For debugging.
@@ -67,10 +69,11 @@ namespace EC_Proto
 			playertex = Content.Load<Texture2D>("blob");
 			firetex = Content.Load<Texture2D> ("fire");
 			//TODO: This probably isn't the cleanest spot for initializing the player
-			player = new PlayerEntity (new Vector2 (5, 0), playertex);
+			player = new PlayerEntity (new Vector2 (500, 400), playertex);
 			PlayerEntity.InitAnimation ();
+			FlytrapEntity.InitAnimation ();
 
-
+			FlytrapEntity.spritesheet = Content.Load<Texture2D> ("flytrap");
 			TorchEntity.torchUnlit = Content.Load<Texture2D>("torchunlit");
 			TorchEntity.torchLit = Content.Load<Texture2D>("torchlit");
 
@@ -93,7 +96,9 @@ namespace EC_Proto
         protected override void Update(GameTime gameTime)
         {
 
-
+			tickcount++;
+			if (tickcount == 3) //Divide framerate by three, should get 20fps animations.
+				tickcount = 0;
             // Back or Escape to quit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 			{
@@ -106,16 +111,20 @@ namespace EC_Proto
 			//TODO: Better event based system? Let entities register as Keyboard listeners, etc.
 
 			player.Update (state, gameTime);
+			if (tickcount == 0)
+				player.AnimationTick ();
 
-			for (int i = 0; i < projectileEntities.Count; i++) {
-				FireballEntity e = (FireballEntity)projectileEntities [i];
+			foreach (FireballEntity e in projectileEntities) {
 				if (e.Active) e.Update (state, gameTime); 
-				if (!e.Alive ()) {
-					projectileEntities.RemoveAt (i);
-					i--; //One less element in the list
-				}
 			}
 
+			foreach (TerrainEntity e in terrainEntities) {
+				e.Update (state, gameTime);
+				if (tickcount == 0)
+					e.AnimationTick ();
+			}
+			terrainEntities = terrainEntities.Where( x => x.Alive()).ToList();
+			projectileEntities = projectileEntities.Where( x => x.Alive()).ToList();
 			DetectCollisions ();
 
 
@@ -152,8 +161,7 @@ namespace EC_Proto
 
 			//Care should be taken to not check the same pair of objects twice.
 			//Let's check each projectile with the terrain and the enemies.
-			for (int i = 0; i < projectileEntities.Count; i++) {
-				Entity e = projectileEntities [i];
+			foreach (Entity e in projectileEntities) {
 
 				Rectangle proj_rect = e.getHitBox ();
 
@@ -161,16 +169,13 @@ namespace EC_Proto
 
 					if (proj_rect.Intersects (terrain.getHitBox())) {
 						e.CollidedWith (terrain);
-						if (e is FireballEntity && terrain is TorchEntity) {
+						if (e is FireballEntity) {
 							terrain.CollidedWith (e);
 						}
 					}
 				}
 
-				if (!e.Alive ()) {
-					projectileEntities.RemoveAt (i);
-					i--; //One less element in the list
-				}
+				
 
 			}
 
@@ -207,16 +212,13 @@ namespace EC_Proto
 						//tileID = 3;
 						if (tileID > 0) {
 							GameTile tile = map.Tiles [tileID];
-							spriteBatch.Draw (tile.display.texture, destination, tile.display.rect, Color.White);
+							 if (tile.SpawnType.Equals("")) spriteBatch.Draw (tile.display.texture, destination, tile.display.rect, Color.White);
 						}
 					}
 				}
 			}
 		
-			spriteBatch.Draw (player.getTexture (),player.position, player.spriteChoice.rect, Color.White);
 
-			if (drawHitBoxes)
-				spriteBatch.Draw (blankTex, player.getHitBox (), Color.Aquamarine); //Debugging!
 
 			foreach (FireballEntity e in projectileEntities) { //Currently just the fireballs.
 				if (e.Visible) spriteBatch.Draw (e.getTexture (), e.position, Color.White);
@@ -225,10 +227,14 @@ namespace EC_Proto
 			}
 			foreach (TerrainEntity e in terrainEntities) {
 				if (e.Visible)
-					spriteBatch.Draw (e.getTexture (), e.position, Color.White);
+					spriteBatch.Draw (e.getTexture (), e.position, e.spriteChoice.rect, Color.White);
 				if (drawHitBoxes) //Debugging
 					spriteBatch.Draw (blankTex, e.getHitBox (), Color.White);
 			}
+			spriteBatch.Draw (player.getTexture (),player.position, player.spriteChoice.rect, Color.White);
+
+			if (drawHitBoxes)
+				spriteBatch.Draw (blankTex, player.getHitBox (), Color.Aquamarine); //Debugging!
 
 			spriteBatch.End();
 
