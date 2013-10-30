@@ -20,6 +20,7 @@ namespace EC_Proto
         SpriteBatch spriteBatch;		
 		Texture2D playertex;
 		Texture2D firetex;
+		Texture2D frosttex;
 		Texture2D blankTex; //For drawing rectangles!
 		int tickcount = 0; //For dividing the framerate. This implementation will change.
 
@@ -30,7 +31,7 @@ namespace EC_Proto
 		private Matrix screenMatrix;
 		private GameMap map; //Game state, scene handling, level changes still need work.
 
-
+		public List<FrostEntity> frostEntities = new List<FrostEntity> ();
 		public List<FireballEntity> projectileEntities = new List<FireballEntity> ();
 		public List<TerrainEntity> terrainEntities = new List<TerrainEntity> ();
 		public List<TorchEntity> torchEntities = new List<TorchEntity> ();
@@ -68,6 +69,7 @@ namespace EC_Proto
             spriteBatch = new SpriteBatch(GraphicsDevice);
 			playertex = Content.Load<Texture2D>("blob");
 			firetex = Content.Load<Texture2D> ("fire");
+			frosttex = Content.Load<Texture2D> ("frost");
 			//TODO: This probably isn't the cleanest spot for initializing the player
 			player = new PlayerEntity (new Vector2 (500, 400), playertex);
 			PlayerEntity.InitAnimation ();
@@ -118,6 +120,10 @@ namespace EC_Proto
 				if (e.Active) e.Update (state, gameTime); 
 			}
 
+			foreach (FrostEntity e in frostEntities) {
+				if (e.Active) e.Update (state, gameTime);
+			}
+
 			foreach (TerrainEntity e in terrainEntities) {
 				e.Update (state, gameTime);
 				if (tickcount == 0)
@@ -125,6 +131,7 @@ namespace EC_Proto
 			}
 			terrainEntities = terrainEntities.Where( x => x.Alive()).ToList();
 			projectileEntities = projectileEntities.Where( x => x.Alive()).ToList();
+			frostEntities = frostEntities.Where (x => x.Alive ()).ToList ();
 			DetectCollisions ();
 
 
@@ -132,6 +139,12 @@ namespace EC_Proto
 			if (state.IsKeyDown (Keys.A) && prevState.IsKeyUp(Keys.A)) { //Use prev state to simulate onKeyDown
 				FireballEntity fireball = new FireballEntity (player.position, firetex, player.direction, player.getCurrentSpeed());
 				projectileEntities.Add (fireball);
+			}
+
+			//Frost spawning.
+			if (state.IsKeyDown (Keys.S) && prevState.IsKeyUp (Keys.S)) {
+				FrostEntity frost = new FrostEntity (player.position + new Vector2(7,10), frosttex, player.direction);
+				frostEntities.Add (frost);
 			}
 
 			//Toggle Fullscreen with a common shortcut. 
@@ -170,6 +183,9 @@ namespace EC_Proto
 					if (proj_rect.Intersects (terrain.getHitBox())) {
 						e.CollidedWith (terrain);
 						if (e is FireballEntity) {
+							terrain.CollidedWith (e);
+						}
+						if (e is FrostEntity) {
 							terrain.CollidedWith (e);
 						}
 					}
@@ -222,6 +238,12 @@ namespace EC_Proto
 
 			foreach (FireballEntity e in projectileEntities) { //Currently just the fireballs.
 				if (e.Visible) spriteBatch.Draw (e.getTexture (), e.position, Color.White);
+				if (drawHitBoxes) //Debugging
+					spriteBatch.Draw (blankTex, e.getHitBox (), Color.White);
+			}
+			foreach (FrostEntity e in frostEntities) {
+				if (e.Visible)
+					spriteBatch.Draw (e.getTexture (), e.position, Color.White);
 				if (drawHitBoxes) //Debugging
 					spriteBatch.Draw (blankTex, e.getHitBox (), Color.White);
 			}

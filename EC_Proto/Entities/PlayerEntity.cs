@@ -109,7 +109,7 @@ namespace EC_Proto
 
 		//Collision rules.
 		override public void CollidedWith(Entity e) {
-			if (e is TerrainEntity) {
+			if (e is TerrainEntity && !(e is WaterEntity && ((WaterEntity)e).frozen)) { // if it's a frozen WaterEntity, don't ResetWarp
 				collidedWithTerrain = true;
 				ResetWarp ();
 			}

@@ -26,7 +26,7 @@ namespace EC_Proto
 		}
 
 		public override void Update (KeyboardState keyboard, GameTime gameTime) {
-			moveOffset( movement);
+			moveOffset(movement);
 			lifespan--;
 
 			if (lifespan < 0) {
