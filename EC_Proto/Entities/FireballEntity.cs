@@ -11,13 +11,15 @@ namespace EC_Proto
 		private float speed = 6;
 		private Vector2 movement = new Vector2(0,0);
 		int lifespan = 40;
+		public static Texture2D texture;
 
 		public FireballEntity ()
 		{
 			hitbox = new Rectangle (13, 24, 6, 6);
+			spriteChoice.texture = texture;
 		}
 
-		public FireballEntity(Vector2 position, Texture2D texture, Direction direction, Vector2 momentum) : this()
+		public FireballEntity(Vector2 position, Direction direction, Vector2 momentum) : this()
 		{
 			this.position = position;
 			spriteChoice.texture = texture;

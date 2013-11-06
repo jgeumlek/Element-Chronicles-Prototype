@@ -14,6 +14,7 @@ namespace EC_Proto
 		private Vector2 resetPosition = new Vector2 (0, 0);
 		bool collidedWithTerrain = false; //For really hack-ish collision resolution! Needs to be reworked.
 		static AnimationManager anim = new AnimationManager();
+		public static Texture2D texture; 
 
 		static public void InitAnimation() {
 			anim.AddAnimation ("south", 0, 0, 32, 32,4);
@@ -29,6 +30,7 @@ namespace EC_Proto
 
 		public PlayerEntity ()
 		{
+			spriteChoice.texture = texture;
 			hitbox = new Rectangle (10, 24, 12, 8);
 			hurtbox = new Rectangle (0, 0, 32, 32);
 			direction = Direction.South;
@@ -36,10 +38,10 @@ namespace EC_Proto
 
 		}
 		//Need to clean up constructors, and use base class better
-		public PlayerEntity(Vector2 position, Texture2D texture) : this()
+		public PlayerEntity(Vector2 position) : this()
 		{
 			this.position = position;
-			spriteChoice.texture = texture;
+
 			resetPosition.X = position.X;
 			resetPosition.Y = position.Y;
 		}

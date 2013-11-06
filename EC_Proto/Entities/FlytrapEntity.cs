@@ -50,7 +50,7 @@ namespace EC_Proto
 		override public void CollidedWith (Entity e) {
 			if ( e is FireballEntity) {
 				animState = anim.Update (animState, "fire");
-				Console.Out.WriteLine ("Fire!");
+				spriteChoice.rect = anim.GetRectangle (animState);
 			}
 		}
 	}

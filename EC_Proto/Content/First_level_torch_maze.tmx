@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="20" tileheight="20">
+<map version="1.0" orientation="orthogonal" width="41" height="35" tilewidth="20" tileheight="20">
  <tileset firstgid="1" name="grass and bush" tilewidth="20" tileheight="20">
-  <image source="grass and bush.png" trans="ffffff" width="60" height="40"/>
+  <image source="grass and bush.png" trans="ffffff" width="60" height="80"/>
   <tile id="1">
    <properties>
-    <property name="solid" value="yes"/>
+    <property name="solid" value=""/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="Solid" value=""/>
    </properties>
   </tile>
   <tile id="3">
@@ -17,20 +22,40 @@
     <property name="spawn" value="flytrap"/>
    </properties>
   </tile>
+  <tile id="6">
+   <properties>
+    <property name="spawn" value="water"/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="spawn" value="water"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="spawn" value="water"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="spawn" value="water"/>
+   </properties>
+  </tile>
  </tileset>
- <layer name="Tile Layer 1" width="50" height="50">
-  <data encoding="base64" compression="zlib">
-   eJztktEKwCAIRe3/f3qvIWoJW9k6wmHoSrzXmog0gEOQAjPcrMOKm/2opuMv+zhFh9e/D5339eo6ZnSu0DHyL4rs/0zfVb5bc82cW/WOMjpE5dE3egc7dIz2o+9/NWc0z4w/4py36l6s0Jft783l9flah/Yre97Kvf1E9apkfNk951ux23MAAAAAAAAAAAAAgNt4AAANCTQ=
+ <layer name="Tile Layer 1" width="41" height="35">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+3DQQ0AAAwDoat/0xOxLySsmqqqqqqqPh4TyUm+bBYAAA==
   </data>
  </layer>
- <layer name="Tile Layer 2" width="50" height="50">
-  <data encoding="base64" compression="zlib">
-   eJztlMEKAyEMRGVp//+Xe2lBxJiZSfbQZR4soiZZk4mO8SyuP/jQPOYxs4vmqB9i9xr4uVb/ebyCObqOxkH9mDyivDL7aD/TD9W3osdvzHSI7FT7SB8lj8wummf26j6TR7W/q3bZOdA8dnO1f1UdTv2NcMd7xMY96aDqke1X683GUe45Wn+1zmpcJo9Tfsy+et9QHSOU9ynzy0blXjF5nNbZfmbvw2zXkUdW950f2/er/fv77c7dpQcaj9WB1TmD6VfVf11n7kP1vWLprKvqh35dcZj/dNUZjdf9v7t4Uh6VvjPGGGOMMcYYY4wxxhjTwwfOnwNL
+ <layer name="Tile Layer 2" width="41" height="35">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA9VVUQ7FIAgj+3j3P/L7NQTaIuocybI4sJZa3WNmzwceG95Z+Dyr79aNvDzHiHvWE+pVqa/My/hHoerNdFf3JetjzCE9srrZeqQr6iPrs1o/m1/lp25dNjb3LeIffc/6ZXUqjuK5FeeWzVd9aC6XxWqdqjizus3q08FlfVTys/5G68ycY7828xOrV8aoL6anWs/mI5yKLuM6HZ8pfkN75zlk4wizMi/qN6ur+gNhZONoLc+RnYcVoeqs4lQ8o/ZSxVJ8aqat7fvz8SP5bqD9Z2cqwtoRCofqXXKCI/LFG4G4oPcNOirvCGtHrNLxNo4Ia0dUOXbuplMcMwyU74Zyx9zqx6/9ZzyH03e8X0v51zGuOzmuwNoRinY3PH8ZEEkrbBYAAA==
   </data>
  </layer>
- <layer name="Tile Layer 3" width="50" height="50">
-  <data encoding="base64" compression="zlib">
-   eJzt1jEOwCAIAEAS9f9f7tCtcZK01Hi3OGlQIhDB7np1AB9p1QEsGov7TsnrH63mDLj5Q+ygxXy2eLP/7jrLVJjVkf5Ys+dVydzjFN4GAAAAAADIuAAfmABG
+ <layer name="Tile Layer 3" width="41" height="35">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+2W0Q6AIAhF3bLV6v//N99iDpcRKAFnc71YwL2BpmSLbCDOIvhtKivxvVF+WIKqdRDMIv7ZoAV2nnk7P5942z/Y/lw9ueNz9PiXHC3gtW4PbGXtymMfZZ3CuUDgLIaxpbTivIfUWs30t5fR/rb4o1ZYztrqwPzV4rlFYqbfYPlom5E9WkS/zOECx401rGwWAAA=
   </data>
  </layer>
 </map>

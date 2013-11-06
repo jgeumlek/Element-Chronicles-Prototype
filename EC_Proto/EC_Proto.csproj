@@ -56,6 +56,9 @@
     <Compile Include="Entities\TorchEntity.cs" />
     <Compile Include="AnimationState.cs" />
     <Compile Include="Entities\FlytrapEntity.cs" />
+    <Compile Include="Entities\FrostEntity.cs" />
+    <Compile Include="Entities\WaterEntity.cs" />
+    <Compile Include="GameState.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Icon.png" />
@@ -78,6 +81,24 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\flytrap.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\frost.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\grass tile2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\level2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Second_level.tmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\water.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\water test.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
