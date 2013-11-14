@@ -25,11 +25,17 @@ namespace EC_Proto
 
 		static public void InitAnimation() {
 			anim.AddAnimation ("alive", 0, 0, 20, 20,1);
-			anim.AddAnimation ("dying", 20, 0, 20, 20,3);
+			anim.AddAnimation ("dying1", 20, 0, 20, 20,2);
+			anim.AddAnimation ("dying2", 20, 0, 20, 20,2);
+			anim.AddAnimation ("dying3", 20, 0, 20, 20,2);
 			anim.AddAnimation ("dead", 60, 0, 20, 20,1);
 
-			anim.AddStateChange ("alive", "fire", "dying", true);
-			anim.AddStateChange ("dying","anim_end","dead",true);
+			anim.AddStateChange ("alive", "fire", "dying1", true);
+			anim.AddStateChange ("dying1","anim_end","dying2",true);
+			anim.AddStateChange ("dying2","anim_end","dying3",true);
+			anim.AddStateChange ("dying3","anim_end","dead",true);
+
+
 		}
 
 

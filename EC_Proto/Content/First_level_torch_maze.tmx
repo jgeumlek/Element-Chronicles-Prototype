@@ -58,4 +58,8 @@
    H4sIAAAAAAAAA+2W0Q6AIAhF3bLV6v//N99iDpcRKAFnc71YwL2BpmSLbCDOIvhtKivxvVF+WIKqdRDMIv7ZoAV2nnk7P5942z/Y/lw9ueNz9PiXHC3gtW4PbGXtymMfZZ3CuUDgLIaxpbTivIfUWs30t5fR/rb4o1ZYztrqwPzV4rlFYqbfYPlom5E9WkS/zOECx401rGwWAAA=
   </data>
  </layer>
+ <objectgroup name="Object Layer 1" width="41" height="35">
+  <object name="player" type="spawn" x="266" y="371"/>
+  <object name="Second_level.tmx" type="warp" x="340" y="300" width="20" height="20"/>
+ </objectgroup>
 </map>

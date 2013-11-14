@@ -4,7 +4,7 @@ using TiledMax;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using System.IO;
 using Microsoft.Xna.Framework.Content;
 using System.Collections.ObjectModel;
 
@@ -18,6 +18,8 @@ namespace EC_Proto
 		public Collection<Layer> Layers;
 		public int TileWidth = 0;
 		public int TileHeight = 0;
+		public int MapWidth = 0;
+		public int MapHeight = 0;
 
 		public GameMap (String mapFile)
 		{
@@ -28,18 +30,18 @@ namespace EC_Proto
 
 		public void Load(ContentManager content, GameState game) {
 			//This process can be sped up by editing the TiledMax files to parse directly into our data structures.
-			TiledMax.Map map = TiledMax.Map.Open (mapFile);
+			FileInfo fi = new FileInfo(mapFile);
+			TiledMax.Map map = TiledMax.Map.Open (File.OpenRead(mapFile), fi.DirectoryName);
 			Layers = map.Layers;
-			Console.Out.WriteLine (Layers.Count);
 
 			int tileID = 1;
 
 			//Read in textures and set up convenient structures for drawing tiles.
 			foreach (TiledMax.TileSet ts in map.TileSets) {
-				Texture2D tileSheet = content.Load<Texture2D> (ts.Images [0].Source);
+				string filename = Path.Combine(fi.DirectoryName, ts.Images[0].Source);
+				Texture2D tileSheet = content.Load<Texture2D> (filename);
 				TileWidth = ts.TileWidth;
 				TileHeight = ts.TileHeight; //Multiple tileset sizes? How to handle? Take the max?
-				Console.Out.WriteLine (ts.Name);
 
 				//TODO: Account for margins and spacing here!
 				int colCount = tileSheet.Width / TileWidth;
@@ -51,8 +53,6 @@ namespace EC_Proto
 				//Note: tileID is held outside of loop to handle multiple tilesheets; each starts off where the last left.
 				//The code below should be rewritten so that tile.ID does not require addition, and instead the loop
 				//boundaries take on the additional math.
-				Console.Out.WriteLine ("Getting tileset textures...");
-				Console.Out.WriteLine ("tw" + TileWidth + "th" + TileHeight + "rc" + rowCount + "cc" + colCount);
 				for (int i = 0; i < tileCount; i++) {
 					GameTile tile = new GameTile ();
 					tile.display.texture = tileSheet;
@@ -74,11 +74,14 @@ namespace EC_Proto
 					}
 				}
 				tileID += tileCount;
-				Console.Out.WriteLine ("Yep!");
 
 			}
-			//Add in block entities for each solid tile
+			//Spawn things that should be spawned.
 			foreach (TiledMax.Layer layer in map.Layers) {
+				MapWidth = layer.Width * TileWidth;
+				MapHeight = layer.Height * TileHeight;
+				bool layerSolid = layer.Properties.ContainsKey ("solid");
+				String layerSpawnType = layer.Properties.ContainsKey ("spawn") ? (String)layer.Properties ["spawn"] : "";
 				int width = layer.Width;
 				int height = layer.Height;
 				for (int y = 0; y < layer.Height; y++) {
@@ -87,13 +90,23 @@ namespace EC_Proto
 						tileID = layer.Data [y, x] - 1;
 						if (tileID > 0) {
 							GameTile tile = Tiles [tileID];
-							if (tile.solid) {
-								if (tile.SpawnType == "")
+							if (layerSolid || tile.solid) {
+								if (layerSpawnType == "" && tile.SpawnType == "")
 									game.SpawnEntity ("Terrain", destination);
 							}
-							game.SpawnEntity (tile.SpawnType, destination);
+							game.SpawnEntity (layerSpawnType == "" ? tile.SpawnType : layerSpawnType, destination);
 						}
 					}
+				}
+			}
+			//Look for special objects, like player spawn points.
+			foreach (TiledMax.ObjectGroup og in map.ObjectGroups) {
+				foreach (TiledMax.MapObject obj in og) {
+					Rectangle destination = new Rectangle (obj.X, obj.Y, obj.Width, obj.Height);
+					if (obj.Type == "spawn")
+						game.SpawnEntity (obj.Name, destination);
+					if (obj.Type == "warp")
+						game.AddLoadTrigger (obj.Name, destination);
 				}
 			}
 		}

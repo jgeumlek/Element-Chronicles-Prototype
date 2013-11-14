@@ -98,4 +98,9 @@
    eJzt1sENACAIBDDfuv++xp8DGBVoJ7iQC9Aat4zXAT4RfQ7R8+/66wAAlJPpjnKeflCBH5xFD6CmrL+OncbPJugvAGs=
   </data>
  </layer>
+ <objectgroup name="Object Layer 1" width="40" height="40">
+  <object name="player" type="spawn" x="272" y="187"/>
+  <object name="flytrap" type="spawn" x="350" y="187"/>
+  <object name="First_level_torch_maze.tmx" type="warp" x="175" y="101" width="76" height="12"/>
+ </objectgroup>
 </map>

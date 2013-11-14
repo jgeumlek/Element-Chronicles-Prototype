@@ -14,23 +14,31 @@ namespace EC_Proto
 		private PlayerEntity player;
 
 		private Matrix screenMatrix = Matrix.Identity;
+		public int ViewWidth { get; set; }
+		public int ViewHeight { get; set; }
+		private float zoomLevel = 1.5f;
+
 		private GameMap map; //Game state, scene handling, level changes still need work.
 
 		public Dictionary<String, Spawn> EntitySpawners = new Dictionary<String, Spawn>();
+		Dictionary<String, String> LevelNames = new Dictionary<String, String> ();
 
 		public List<FrostEntity> frostEntities = new List<FrostEntity> ();
 		public List<FireballEntity> projectileEntities = new List<FireballEntity> ();
 		public List<TerrainEntity> terrainEntities = new List<TerrainEntity> ();
-		public List<TorchEntity> torchEntities = new List<TorchEntity> ();
+
 
 		public ContentManager Content;
 
 		public GameState() {
+			//Add in spawning code. Not yet used.
 			EntitySpawners.Add("flytrap",delegate(Rectangle position) {return new FlytrapEntity(position);});
 			EntitySpawners.Add("torch",delegate(Rectangle position) {return new TorchEntity(position);});
 			EntitySpawners.Add("Terrain",delegate(Rectangle position) {return new TerrainEntity(position);});
 
-
+			//Add in level names. Should be read from a file in the future.
+			LevelNames.Add ("level1", "Level1/level1.tmx");
+			LevelNames.Add ("level2", "Level2/level2.tmx");
 		}
 		public void Update (GameTime gameTime,KeyboardState state, KeyboardState prevState) {
 
@@ -78,14 +86,34 @@ namespace EC_Proto
 				drawHitBoxes = !drawHitBoxes;
 
 		
+			ScreenCalculate ();
 
 
 
+		}
+
+		private void ScreenCalculate() {
 			//These calculations requirement significant refinement! They are pretty naive in several ways.
 			screenMatrix = Matrix.CreateTranslation (-player.position.X, -player.position.Y, 1);
 
-			screenMatrix *= Matrix.CreateScale (1.5f, 1.5f, 1);
+			screenMatrix *= Matrix.CreateScale (zoomLevel, zoomLevel, 1);
 			screenMatrix *= Matrix.CreateTranslation (300,200,0);
+
+			Matrix invScreen = Matrix.Invert (screenMatrix);
+			Vector2 topLeft = Vector2.Transform(new Vector2(0,0), invScreen);
+			Vector2 bottomRight = Vector2.Transform (new Vector2 (ViewWidth, ViewHeight), invScreen);
+		
+			//Clip with map boundaries! If a corner coordinate is valid, no translation needed.
+			topLeft.X = topLeft.X < 0 ? topLeft.X : 0;
+			topLeft.Y = topLeft.Y < 0 ? topLeft.Y : 0;
+
+			bottomRight.X = bottomRight.X > map.MapWidth  ? bottomRight.X - map.MapWidth  : 0;
+			bottomRight.Y = bottomRight.Y > map.MapHeight ? bottomRight.Y - map.MapHeight : 0;
+
+			screenMatrix *= Matrix.CreateTranslation (zoomLevel*topLeft.X,zoomLevel*topLeft.Y,0); //Fix scrolling too far left/up
+			screenMatrix *= Matrix.CreateTranslation (zoomLevel*bottomRight.X,zoomLevel*bottomRight.Y,0); //Fix scrolling too far right/down
+
+
 		}
 
 		public void AnimationTick() {
@@ -128,6 +156,7 @@ namespace EC_Proto
 			foreach (TerrainEntity terrain in terrainEntities) {
 				if (playerbox.Intersects(terrain.getHitBox())) {
 					player.CollidedWith(terrain);
+					terrain.CollidedWith (player);
 				}
 			}
 		}
@@ -190,7 +219,7 @@ namespace EC_Proto
 			//Ideally use EntitySpawners dictionary, and add entity to appropriate list based on type!
 			switch (entityType) {
 			case "torch":
-				torchEntities.Add (new TorchEntity (position));
+				terrainEntities.Add (new TorchEntity (position));
 				break;
 			case "flytrap":
 				terrainEntities.Add (new FlytrapEntity (position));
@@ -198,13 +227,34 @@ namespace EC_Proto
 			case "Terrain":
 				terrainEntities.Add (new TerrainEntity (position));
 				break;
+			case "player":
+				Point center = position.Center;
+				player.SetResetPosition (new Vector2(center.X - 16, center.Y -16)); //HACK: -16 to reach top left corner! Should probably clean up player entity interface.
+				player.ResetWarp ();
+				break;
 			}
 
 		}
 
+		public void AddLoadTrigger (String mapName,Rectangle position) {
+			terrainEntities.Add (new WarpTrigger (mapName, position, this));
+
+		}
+
 		public void LoadMap(String mapName) {
+			if (!LevelNames.ContainsKey (mapName))
+				return; //No such map! Do nothing.
+
+			String mapfile = LevelNames [mapName];
+
+			frostEntities = new List<FrostEntity> ();
+			projectileEntities = new List<FireballEntity> ();
+			terrainEntities = new List<TerrainEntity> ();
+
+
+
 			player = new PlayerEntity (new Vector2 (400, 400));
-			map = new GameMap (mapName);
+			map = new GameMap ("Content/" + mapfile);
 			map.Load (Content,this);
 			screenMatrix = Matrix.Identity;
 		}

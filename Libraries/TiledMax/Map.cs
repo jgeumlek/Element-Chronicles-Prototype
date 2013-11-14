@@ -74,7 +74,6 @@ namespace TiledMax
 
                 foreach (XmlNode xNode in xMap.ChildNodes)
                 {
-					Console.Out.Write(xNode.Name);
                     switch (xNode.Name)
                     {
                         case "tileset": ReadTileset(xNode, ref result, base_path); break;
@@ -112,12 +111,10 @@ namespace TiledMax
             r.TileHeight = node.ReadInt("tileheight");
             r.Spacing    = node.ReadInt("spacing");
             r.Margin     = node.ReadInt("margin");
-			Console.Out.WriteLine ("Read tileset tag of {0}.",r.Name);
             if (node.HasChildNodes)
             {
                 foreach (XmlNode child in node.ChildNodes)
                 {
-					Console.Out.WriteLine (child.Name);
 
 					if (child.Name == "image") {
 						string c = child.ReadTag ("trans", "FFFFFF");
@@ -150,17 +147,14 @@ namespace TiledMax
 					}
                 }
             }
-			Console.Out.WriteLine ("Read tileset children. Added {0} img",r.Images.Count );
 
             //r.ReadBitmaps(base_path);
-			Console.Out.WriteLine ("Adding");
 
             map.TileSets.Add(r);
         }
 
         static void ReadLayer(XmlNode node, ref Map map)
         {
-			Console.Out.WriteLine ("What!");
 
             Layer r = new Layer(node.ReadInt("width"), node.ReadInt("height"));
             r.Name = node.ReadTag("name");
@@ -168,13 +162,17 @@ namespace TiledMax
             r.Y = node.ReadInt("y");
             r.Opacity = node.ReadDouble("opacity", 1);
             r.Visible = node.ReadInt("visible") == 1;
-			Console.Out.WriteLine (r.Name);
             if(node.HasChildNodes)
             {
 				XmlNode data = node.FirstChild;
 				foreach (XmlNode child in node.ChildNodes) {
 					if (child.Name == "data") {
 						data = child;
+					}
+					if (child.Name == "properties") {
+						foreach (XmlNode prop in child.ChildNodes) {
+							r.Properties.Add (prop.ReadTag ("name"), prop.ReadTag ("value"));
+						}
 					}
 				}
                
@@ -200,42 +198,31 @@ namespace TiledMax
 				} else {
 					dataDecompressed = dataToParse;
 				}
-				Console.Out.WriteLine (r.Name);
-				Console.Out.WriteLine (data.InnerText);
-				Console.Out.Write ("parse");
-				foreach (Byte b in dataToParse) {
-					Console.Out.Write (b);
-				}
-				Console.Out.Write ("decomp");
 
-				foreach (Byte b in dataDecompressed) {
-					Console.Out.Write (b);
-				}
 
 
 				BinaryReader br = new BinaryReader (new MemoryStream (dataDecompressed));
                 /*using ()
                 {*/
-					Console.Out.WriteLine ("br");
-					Console.Out.WriteLine (r.Width + "x" + r.Height + ":" + r.Data.Length);
+					
                     for (int y = 0; y < r.Height; y++)
                     {
                         for (int x = 0; x < r.Width; x++)
                         {
-						    //Console.Out.WriteLine (x + "," + y + ":?");
+						    
 
                             int v = br.ReadInt32();
 							
 
-							//Console.Out.WriteLine (x + "," + y + ":" + bytes[0]);
-                            r.Data[y,x] = v+1; //Why the +1? Investigate.
+							
+                            r.Data[y,x] = (v&0xFFF)+1; //Why the +1? Investigate.
+							//Throwing away high bits to suvive rotated tiles.
                         }
                     }
                 
-				Console.Out.WriteLine ("add.");
-
+		
                 map.Layers.Add(r);
-				Console.Out.WriteLine ("added");
+	
 
             }
 

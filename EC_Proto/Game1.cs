@@ -31,8 +31,8 @@ namespace EC_Proto
             graphics = new GraphicsDeviceManager(this);
 			graphics.IsFullScreen = false;
 			//TargetElapsedTime = TimeSpan.FromMilliseconds(500);
-			//graphics.PreferredBackBufferHeight = 720;
-			//graphics.PreferredBackBufferWidth = 1280;
+			graphics.PreferredBackBufferHeight = 480;
+			graphics.PreferredBackBufferWidth = 640;
             Content.RootDirectory = "Content";
         }
 
@@ -47,6 +47,8 @@ namespace EC_Proto
             // TODO: Add your initialization logic here
             base.Initialize();
 			prevState = Keyboard.GetState ();
+			game.ViewWidth = GraphicsDevice.Viewport.Width;
+			game.ViewHeight = GraphicsDevice.Viewport.Height;
 
         }
 
@@ -74,10 +76,10 @@ namespace EC_Proto
 
 			blankTex = new Texture2D(GraphicsDevice, 1, 1);
 			blankTex.SetData(new Color[] { Color.White });
+			WarpTrigger.texture = blankTex;
 
-
-			//game.LoadMap ("Content/First_level_torch_maze.tmx");
-			game.LoadMap ("Content/Second_level.tmx");
+			//game.LoadMap ("First_level_torch_maze.tmx");
+			game.LoadMap ("level1");
 
 
             //TODO: use this.Content to load your game content here 
