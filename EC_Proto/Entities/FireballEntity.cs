@@ -2,18 +2,20 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using EC_Proto;
 
 namespace EC_Proto
 {
-	public class FireballEntity : Entity 
+	public class FireballEntity : ProjectileEntity 
 	{
-		private float speed = 6;
-		private Vector2 movement = new Vector2(0,0);
-		int lifespan = 40;
+		private const float FIREBALL_SPEED = 6;
+		private const int FIREBALL_LIFESPAN = 40;
+		private const float FIREBALL_DAMAGE = 5;
 		public static Texture2D texture;
 
 		public FireballEntity () {
+			speed = FIREBALL_SPEED;
+			lifespan = FIREBALL_LIFESPAN;
+			fireDamage = FIREBALL_DAMAGE;
 			hitbox = new Rectangle (13, 24, 6, 6);
 			spriteChoice.texture = texture;
 		}
@@ -21,7 +23,6 @@ namespace EC_Proto
 		public FireballEntity(Vector2 position, Direction direction, Vector2 momentum) : this()
 		{
 			this.position = position;
-			spriteChoice.texture = texture;
 			this.direction = direction;
 			movement = momentum + speed * Entity.dirVector (direction);
 		}
