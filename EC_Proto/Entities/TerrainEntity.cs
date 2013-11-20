@@ -10,16 +10,17 @@ namespace EC_Proto
 		{
 			hitbox = new Rectangle (0, 0, 20, 20);
 			Visible = false;
+			Collidable = true;
 		}
 		public TerrainEntity(Rectangle rect) {
 			position.X = rect.X;
 			position.Y = rect.Y;
 			hitbox = new Rectangle (0, 0, rect.Width, rect.Height);
 			Visible = false;
+			Collidable = true;
 		}
 
 		override public void Update(KeyboardState state, GameTime time) {
 		}
 	}
 }
-

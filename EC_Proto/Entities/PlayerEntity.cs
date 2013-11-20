@@ -7,14 +7,13 @@ namespace EC_Proto
 {
 	public class PlayerEntity : Entity
 	{
-
-
 		private float playerspeed = 2;
 		private Vector2 currentSpeed = new Vector2(0,0); //Used for adding momentum to projectiles.
 		private Vector2 resetPosition = new Vector2 (0, 0);
 		bool collidedWithTerrain = false; //For really hack-ish collision resolution! Needs to be reworked.
 		static AnimationManager anim = new AnimationManager();
 		public static Texture2D texture; 
+		public bool strength = true;
 
 		static public void InitAnimation() {
 			anim.AddAnimation ("south", 0, 0, 32, 32,4);
@@ -49,7 +48,7 @@ namespace EC_Proto
 		public Vector2 getCurrentSpeed () {
 			return currentSpeed;
 		}
-		
+
 		public override void Update (KeyboardState keyboard, GameTime gameTime) {
 
 
@@ -111,7 +110,7 @@ namespace EC_Proto
 
 		//Collision rules.
 		override public void CollidedWith(Entity e) {
-			if (e is TerrainEntity && !(e is WaterEntity && ((WaterEntity)e).frozen)) { // if it's a frozen WaterEntity, don't ResetWarp
+			if (e is TerrainEntity && e.Collidable) {
 				collidedWithTerrain = true;
 				ResetWarp ();
 			}
@@ -134,6 +133,8 @@ namespace EC_Proto
 			position.Y = resetPosition.Y;
 		}
 
+		public void EarthenShield () {
+			strength = true;
+		}
 	}
 }
-

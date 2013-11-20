@@ -13,8 +13,7 @@ namespace EC_Proto
 		int lifespan = 40;
 		public static Texture2D texture;
 
-		public FireballEntity ()
-		{
+		public FireballEntity () {
 			hitbox = new Rectangle (13, 24, 6, 6);
 			spriteChoice.texture = texture;
 		}
@@ -37,10 +36,9 @@ namespace EC_Proto
 		}
 
 		override public void CollidedWith(Entity e) {
-			if (e is TerrainEntity) {
+			if (e is TerrainEntity && e.Collidable) {
 				alive = false;
 			}
 		}
 	}
 }
-

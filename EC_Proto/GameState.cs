@@ -75,7 +75,7 @@ namespace EC_Proto
 
 			//Frost spawning.
 			if (state.IsKeyDown (Keys.S) && prevState.IsKeyUp (Keys.S)) {
-				FrostEntity frost = new FrostEntity (player.position + new Vector2(7,10), player.direction);
+				FrostEntity frost = new FrostEntity (player.position + new Vector2(7,10), player.direction, player.getCurrentSpeed());
 				frostEntities.Add (frost);
 			}
 
@@ -121,6 +121,9 @@ namespace EC_Proto
 			foreach (Entity e in projectileEntities) {
 				e.AnimationTick ();
 			}
+			foreach (Entity e in frostEntities) {
+				e.AnimationTick ();
+			}
 			foreach (Entity e in terrainEntities) {
 				e.AnimationTick ();
 			}
@@ -140,14 +143,21 @@ namespace EC_Proto
 						if (e is FireballEntity) {
 							terrain.CollidedWith (e);
 						}
+					}
+				}
+			}
+
+			foreach (Entity e in frostEntities) {
+				Rectangle frost_rect = e.getHitBox ();
+
+				foreach (TerrainEntity terrain in terrainEntities) {
+					if (frost_rect.Intersects (terrain.getHitBox ())) {
+						e.CollidedWith (terrain);
 						if (e is FrostEntity) {
 							terrain.CollidedWith (e);
 						}
 					}
 				}
-
-
-
 			}
 
 			//Now let's check player collisions.
@@ -226,6 +236,12 @@ namespace EC_Proto
 				break;
 			case "Terrain":
 				terrainEntities.Add (new TerrainEntity (position));
+				break;
+			case "water":
+				terrainEntities.Add (new WaterEntity (position));
+				break;
+			case "boulder":
+				terrainEntities.Add (new BoulderEntity (position));
 				break;
 			case "player":
 				Point center = position.Center;

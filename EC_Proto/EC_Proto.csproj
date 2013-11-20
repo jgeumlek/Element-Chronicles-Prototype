@@ -36,9 +36,8 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="MonoGame.Framework, Version=3.0.1.0, Culture=neutral, PublicKeyToken=b1c3306074c7ec98">
+    <Reference Include="MonoGame.Framework, Version=3.0.1.0, Culture=neutral">
       <Private>False</Private>
-      <Package>monogame</Package>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +60,7 @@
     <Compile Include="Entities\WaterEntity.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="Entities\WarpTrigger.cs" />
+    <Compile Include="Entities\BoulderEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Icon.png" />
@@ -126,6 +126,12 @@
     </None>
     <None Include="Content\Level2\level2water.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\boulder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\ice.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

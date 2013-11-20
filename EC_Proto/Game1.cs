@@ -73,6 +73,9 @@ namespace EC_Proto
 			FlytrapEntity.spritesheet = Content.Load<Texture2D> ("flytrap");
 			TorchEntity.torchUnlit = Content.Load<Texture2D>("torchunlit");
 			TorchEntity.torchLit = Content.Load<Texture2D>("torchlit");
+			WaterEntity.waterTex = Content.Load<Texture2D> ("water");
+			WaterEntity.iceTex = Content.Load<Texture2D> ("ice");
+			BoulderEntity.texture = Content.Load<Texture2D> ("boulder");
 
 			blankTex = new Texture2D(GraphicsDevice, 1, 1);
 			blankTex.SetData(new Color[] { Color.White });

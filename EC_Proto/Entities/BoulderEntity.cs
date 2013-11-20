@@ -1,24 +1,22 @@
 using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace EC_Proto
 {
-	public class WaterEntity : TerrainEntity
+	public class BoulderEntity : TerrainEntity
 	{
-		public bool frozen = false;
-		static public Texture2D waterTex;
-		static public Texture2D iceTex;
-
-		public WaterEntity () {
+		static public Texture2D texture;
+		public BoulderEntity ()
+		{
 			Visible = true;
 		}
 
-		public WaterEntity (Rectangle rect) {
+		public BoulderEntity (Rectangle rect) {
 			position.X = rect.X;
 			position.Y = rect.Y;
-			spriteChoice.texture = waterTex;
+			spriteChoice.texture = texture;
 			spriteChoice.rect = new Rectangle (0, 0, 20, 20);
 			Visible = true;
 		}
@@ -28,10 +26,8 @@ namespace EC_Proto
 		}
 
 		override public void CollidedWith (Entity e) {
-			if (!frozen && e is FrostEntity) {
-				frozen = true;
-				spriteChoice.texture = iceTex;
-				Collidable = false;
+			if (e is PlayerEntity) {
+				position += 20 * Entity.dirVector (((PlayerEntity)e).direction); // ((PlayerEntity)e).getCurrentSpeed ()
 			}
 		}
 	}
