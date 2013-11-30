@@ -8,8 +8,8 @@ namespace EC_Proto
 	public class TorchEntity : TerrainEntity
 	{
 		public bool lit = false;
-		public static Texture2D torchUnlit;
-		public static Texture2D torchLit;
+		public static Texture2D torchOff;
+		public static Texture2D torchOn;
 
 		public TorchEntity () {
 			Visible = true;
@@ -18,7 +18,7 @@ namespace EC_Proto
 		public TorchEntity (Rectangle rect) {
 			position.X = rect.X;
 			position.Y = rect.Y;
-			spriteChoice.texture = torchUnlit;
+			spriteChoice.texture = torchOff;
 			spriteChoice.rect = new Rectangle (0, 0, 20, 20);
 			Visible = true;
 		}
@@ -30,7 +30,7 @@ namespace EC_Proto
 		override public void CollidedWith (Entity e) {
 			if (!lit && e is FireballEntity) {
 				lit = true;
-				spriteChoice.texture = torchLit;
+				spriteChoice.texture = torchOn;
 			}
 		}
 	}

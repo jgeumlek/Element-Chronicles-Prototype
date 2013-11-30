@@ -27,7 +27,7 @@
   </tile>
   <tile id="4">
    <properties>
-    <property name="spawn" value="waterc"/>
+    <property name="spawn" value="water"/>
    </properties>
   </tile>
   <tile id="5">

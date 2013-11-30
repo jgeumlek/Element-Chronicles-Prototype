@@ -1,10 +1,7 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Media;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Input;
 
 #endregion
@@ -16,6 +13,7 @@ namespace EC_Proto
     /// </summary>
     public class Game1 : Game
     {
+		SoundPlayer bgm;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;		
 		public static Texture2D blankTex; //For drawing rectangles!
@@ -65,14 +63,17 @@ namespace EC_Proto
 			FireballEntity.texture = Content.Load<Texture2D> ("fire");
 			FrostEntity.texture = Content.Load<Texture2D> ("frost");
 
+			bgm = new SoundPlayer ("Content\\bgm.wav");
+			bgm.PlayLooping ();
+
 			//TODO: This probably isn't the cleanest spot for initializing the player
 
 			PlayerEntity.InitAnimation ();
 			FlytrapEntity.InitAnimation ();
 
 			FlytrapEntity.spritesheet = Content.Load<Texture2D> ("flytrap");
-			TorchEntity.torchUnlit = Content.Load<Texture2D>("torchunlit");
-			TorchEntity.torchLit = Content.Load<Texture2D>("torchlit");
+			TorchEntity.torchOff = Content.Load<Texture2D>("torchOff");
+			TorchEntity.torchOn = Content.Load<Texture2D>("torchOn");
 			WaterEntity.waterTex = Content.Load<Texture2D> ("water");
 			WaterEntity.iceTex = Content.Load<Texture2D> ("ice");
 			BoulderEntity.texture = Content.Load<Texture2D> ("boulder");
@@ -82,7 +83,7 @@ namespace EC_Proto
 			WarpTrigger.texture = blankTex;
 
 			//game.LoadMap ("First_level_torch_maze.tmx");
-			game.LoadMap ("level1");
+			game.LoadMap ("level2");
 
 
             //TODO: use this.Content to load your game content here 

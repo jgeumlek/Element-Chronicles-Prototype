@@ -13,7 +13,7 @@ namespace EC_Proto
 		bool collidedWithTerrain = false; //For really hack-ish collision resolution! Needs to be reworked.
 		static AnimationManager anim = new AnimationManager();
 		public static Texture2D texture; 
-		public bool strength = true;
+		public bool strength = false; // Able to push boulders?
 
 		static public void InitAnimation() {
 			anim.AddAnimation ("south", 0, 0, 32, 32,4);
@@ -68,27 +68,25 @@ namespace EC_Proto
 			}
 
 
-			if (keyboard.IsKeyDown (Keys.Left)) {
-
+			if (keyboard.IsKeyDown (Keys.A)) {
 				newDirection = Direction.West;
 				if (direction == newDirection) { changedirection = false; } //Already heading this way; don't turn, just move diagonally.
 				moveDirection += Entity.dirVector (newDirection);
-
 			}
-			if (keyboard.IsKeyDown (Keys.Right)) {
+			if (keyboard.IsKeyDown (Keys.D)) {
 
 				newDirection = Direction.East;
 				if (direction == newDirection) { changedirection = false; }
 				moveDirection += Entity.dirVector (newDirection);
 			}
-			if (keyboard.IsKeyDown (Keys.Up)) {
+			if (keyboard.IsKeyDown (Keys.W)) {
 
 				newDirection = Direction.North;				
 				if (direction == newDirection) { changedirection = false; }
 
 				moveDirection += Entity.dirVector (newDirection);
 			}
-			if (keyboard.IsKeyDown (Keys.Down)) {
+			if (keyboard.IsKeyDown (Keys.S)) {
 
 				newDirection = Direction.South;
 				if (direction == newDirection) { changedirection = false; }

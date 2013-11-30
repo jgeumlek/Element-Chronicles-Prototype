@@ -16,7 +16,7 @@ namespace EC_Proto
 			speed = FROST_SPEED;
 			lifespan = FROST_LIFESPAN;
 			fireDamage = FROST_DAMAGE;
-			hitbox = new Rectangle (13, 24, 6, 6);
+			hitbox = new Rectangle (5, 5, 10, 10);
 			spriteChoice.texture = texture;
 		}
 

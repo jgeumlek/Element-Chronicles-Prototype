@@ -26,7 +26,7 @@ namespace EC_Proto
 		public List<FrostEntity> frostEntities = new List<FrostEntity> ();
 		public List<FireballEntity> projectileEntities = new List<FireballEntity> ();
 		public List<TerrainEntity> terrainEntities = new List<TerrainEntity> ();
-
+		public List<BoulderEntity> movableEntities = new List<BoulderEntity> ();
 
 		public ContentManager Content;
 
@@ -35,10 +35,12 @@ namespace EC_Proto
 			EntitySpawners.Add("flytrap",delegate(Rectangle position) {return new FlytrapEntity(position);});
 			EntitySpawners.Add("torch",delegate(Rectangle position) {return new TorchEntity(position);});
 			EntitySpawners.Add("Terrain",delegate(Rectangle position) {return new TerrainEntity(position);});
+			EntitySpawners.Add("boulder",delegate(Rectangle position) {return new BoulderEntity(position);});
 
 			//Add in level names. Should be read from a file in the future.
 			LevelNames.Add ("level1", "Level1/level1.tmx");
 			LevelNames.Add ("level2", "Level2/level2.tmx");
+			LevelNames.Add ("Third_level", "Level3/Third_level.tmx");
 		}
 		public void Update (GameTime gameTime,KeyboardState state, KeyboardState prevState) {
 
@@ -58,27 +60,34 @@ namespace EC_Proto
 
 			foreach (TerrainEntity e in terrainEntities) {
 				e.Update (state, gameTime);
+			}
 
+			foreach (BoulderEntity e in movableEntities) {
+				e.Update (state, gameTime);
 			}
 
 			terrainEntities = terrainEntities.Where( x => x.Alive()).ToList();
 			projectileEntities = projectileEntities.Where( x => x.Alive()).ToList();
 			frostEntities = frostEntities.Where (x => x.Alive ()).ToList ();
+			movableEntities = movableEntities.Where( x => x.Alive()).ToList();
 			DetectCollisions ();
 
 
 			//Fire spawning. Should later be handled my some spell managing class.
-			if (state.IsKeyDown (Keys.A) && prevState.IsKeyUp(Keys.A)) { //Use prev state to simulate onKeyDown
+			if (state.IsKeyDown (Keys.Up) && prevState.IsKeyUp(Keys.Up)) { //Use prev state to simulate onKeyDown
 				FireballEntity fireball = new FireballEntity (player.position, player.direction, player.getCurrentSpeed());
 				projectileEntities.Add (fireball);
 			}
 
 			//Frost spawning.
-			if (state.IsKeyDown (Keys.S) && prevState.IsKeyUp (Keys.S)) {
+			if (state.IsKeyDown (Keys.Down) && prevState.IsKeyUp (Keys.Down)) {
 				FrostEntity frost = new FrostEntity (player.position + new Vector2(7,10), player.direction, player.getCurrentSpeed());
 				frostEntities.Add (frost);
 			}
 
+			if (state.IsKeyDown (Keys.Left) && prevState.IsKeyUp (Keys.Left)) {
+				player.EarthenShield ();
+			}
 
 
 			//Debug code!
@@ -127,13 +136,15 @@ namespace EC_Proto
 			foreach (Entity e in terrainEntities) {
 				e.AnimationTick ();
 			}
+			foreach (Entity e in movableEntities) {
+				e.AnimationTick ();
+			}
 		}
 
 		public void DetectCollisions() {
 			//Care should be taken to not check the same pair of objects twice.
 			//Let's check each projectile with the terrain and the enemies.
 			foreach (Entity e in projectileEntities) {
-
 				Rectangle proj_rect = e.getHitBox ();
 
 				foreach (TerrainEntity terrain in terrainEntities) {
@@ -142,6 +153,15 @@ namespace EC_Proto
 						e.CollidedWith (terrain);
 						if (e is FireballEntity) {
 							terrain.CollidedWith (e);
+						}
+					}
+				}
+
+				foreach (BoulderEntity boulder in movableEntities) {
+					if (proj_rect.Intersects (boulder.getHitBox())) {
+						e.CollidedWith (boulder);
+						if (e is FireballEntity) {
+							boulder.CollidedWith (e);
 						}
 					}
 				}
@@ -158,6 +178,15 @@ namespace EC_Proto
 						}
 					}
 				}
+
+				foreach (BoulderEntity boulder in movableEntities) {
+					if (frost_rect.Intersects (boulder.getHitBox ())) {
+						e.CollidedWith (boulder);
+						if (e is FrostEntity) {
+							boulder.CollidedWith (e);
+						}
+					}
+				}
 			}
 
 			//Now let's check player collisions.
@@ -167,6 +196,32 @@ namespace EC_Proto
 				if (playerbox.Intersects(terrain.getHitBox())) {
 					player.CollidedWith(terrain);
 					terrain.CollidedWith (player);
+				}
+				foreach (BoulderEntity boulder in movableEntities) {
+					if (terrain.getHitBox ().Intersects (boulder.getHitBox ())) {
+						boulder.CollidedWith (terrain);
+						terrain.CollidedWith (boulder);
+					}
+				}
+			}
+
+			foreach (BoulderEntity boulder in movableEntities) {
+				if (playerbox.Intersects(boulder.getHitBox())) {
+					player.CollidedWith(boulder);
+					if (player.strength)
+						boulder.CollidedWith (player);
+				}
+				foreach (TerrainEntity terrain in terrainEntities) {
+					if (boulder.getHitBox ().Intersects (terrain.getHitBox ())) {
+						terrain.CollidedWith (boulder);
+						boulder.CollidedWith (terrain);
+					}
+				}
+				foreach (BoulderEntity b in movableEntities) {
+					if (boulder != b && boulder.getHitBox ().Intersects (b.getHitBox ())) {
+						boulder.CollidedWith (b);
+						b.CollidedWith (boulder);
+					}
 				}
 			}
 		}
@@ -216,6 +271,12 @@ namespace EC_Proto
 				if (drawHitBoxes) //Debugging
 					spriteBatch.Draw (Game1.blankTex, e.getHitBox (), Color.White);
 			}
+			foreach (BoulderEntity e in movableEntities) {
+				if (e.Visible)
+					spriteBatch.Draw (e.getTexture (), e.position, e.spriteChoice.rect, Color.White);
+				if (drawHitBoxes) //Debugging
+					spriteBatch.Draw (Game1.blankTex, e.getHitBox (), Color.White);
+			}
 			spriteBatch.Draw (player.getTexture (),player.position, player.spriteChoice.rect, Color.White);
 
 			if (drawHitBoxes)
@@ -241,7 +302,7 @@ namespace EC_Proto
 				terrainEntities.Add (new WaterEntity (position));
 				break;
 			case "boulder":
-				terrainEntities.Add (new BoulderEntity (position));
+				movableEntities.Add (new BoulderEntity (position));
 				break;
 			case "player":
 				Point center = position.Center;
@@ -266,7 +327,7 @@ namespace EC_Proto
 			frostEntities = new List<FrostEntity> ();
 			projectileEntities = new List<FireballEntity> ();
 			terrainEntities = new List<TerrainEntity> ();
-
+			movableEntities = new List<BoulderEntity> ();
 
 
 			player = new PlayerEntity (new Vector2 (400, 400));

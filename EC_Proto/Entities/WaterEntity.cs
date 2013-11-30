@@ -5,8 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace EC_Proto
 {
-	public class WaterEntity : TerrainEntity
-	{
+	public class WaterEntity : TerrainEntity {
 		public bool frozen = false;
 		static public Texture2D waterTex;
 		static public Texture2D iceTex;
