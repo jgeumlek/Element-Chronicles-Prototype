@@ -63,7 +63,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\TiledMaxDemo\zlib\zlib.csproj">
+    <ProjectReference Include="..\zlib\zlib.csproj">
       <Project>{E858963F-40ED-4A41-888D-505ED0CD2869}</Project>
       <Name>zlib</Name>
     </ProjectReference>
