@@ -36,8 +36,9 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="MonoGame.Framework, Version=3.0.1.0, Culture=neutral">
+    <Reference Include="MonoGame.Framework, Version=3.0.1.0, Culture=neutral, PublicKeyToken=b1c3306074c7ec98">
       <Private>False</Private>
+      <Package>monogame</Package>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +70,10 @@
     <Compile Include="Game1.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="GameScene\GameScene.cs" />
+    <Compile Include="GameScene\TmxScene.cs" />
+    <Compile Include="Camera\CameraManager.cs" />
+    <Compile Include="GameScene\ImageScene.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Icon.png" />
@@ -153,6 +158,33 @@
     <None Include="Content\torchOn.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Content\lazylogo.tmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\templogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\tempintro.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\central_earth.tmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\central_hub.tmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\central_tutorial.tmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\central_water.tmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\spritesheet_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\spritesheetcharacter1 copy.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\" />
@@ -160,6 +192,8 @@
     <Folder Include="Map Loading\" />
     <Folder Include="Content\Level1\" />
     <Folder Include="Content\Level2\" />
+    <Folder Include="Camera\" />
+    <Folder Include="GameScene\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -39,8 +39,13 @@
    eJzt1bsNwCAMBUDa7EwyOwVKl4IYAQLdDcDHz4aU2F2+ztrnNHewbuq9TjQzoDJD7Mz/+9+Imf9a880mklHLGWe9XT33gFaP/gKAZQrlTgha
   </data>
  </layer>
- <objectgroup name="Player" width="50" height="30">
+ <objectgroup name="MapObjects" width="50" height="30">
   <object name="player" type="spawn" x="284" y="420"/>
-  <object name="level2" type="warp" x="100" y="280" width="20" height="20"/>
+  <object name="level1" type="warp" x="100" y="280" width="20" height="20">
+   <properties>
+    <property name="location" value="exit"/>
+   </properties>
+  </object>
+  <object name="exit" type="location" x="811" y="384"/>
  </objectgroup>
 </map>

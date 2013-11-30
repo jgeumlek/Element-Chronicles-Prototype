@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="24" height="24" tilewidth="100" tileheight="100">
+ <tileset firstgid="1" name="spritesheet_1" tilewidth="100" tileheight="100">
+  <image source="spritesheet_1.png" trans="ffffff" width="400" height="200"/>
+  <tile id="4">
+   <properties>
+    <property name="spawn" value="boulder"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="grass" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJxjY2BgYBvFo3gUj+JRPIpH8SgeQRgA54QNgQ==
+  </data>
+ </layer>
+ <layer name="wall" width="24" height="24">
+  <properties>
+   <property name="solid" value=""/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzlk9sKACAIQ/fQ/39zr9HF6VAiGkRUclxpDUB7YOyUzc/wxFTlS30PDLPl+Xe+dy+SR1Fl/yj8bB+eWqqx7K7RnOpd2fkcM+cDVr8WfxcX5bN4D5/plNPLr/av1o+tb/AzFO1p6y9W8dno7AQGAQ==
+  </data>
+ </layer>
+ <layer name="boulders" width="24" height="24">
+  <properties>
+   <property name="boulder" value="spawn"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgF9ACsA+2AUTAoAbHpYjT94AfUDB9izBrI+BjuaYGVgTQ/0js8hnv44wO09ju9wxYA49QAQg==
+  </data>
+ </layer>
+ <objectgroup name="locations" width="24" height="24">
+  <object name="south_entrance" type="location" x="200" y="2100" width="100" height="100"/>
+  <object name="central_hub" type="warp" x="200" y="2300" width="100" height="100">
+   <properties>
+    <property name="location" value="north_east_entrance"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

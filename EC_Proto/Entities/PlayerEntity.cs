@@ -7,7 +7,7 @@ namespace EC_Proto
 {
 	public class PlayerEntity : Entity
 	{
-		private float playerspeed = 2;
+		private float playerspeed = 5;
 		private Vector2 currentSpeed = new Vector2(0,0); //Used for adding momentum to projectiles.
 		private Vector2 resetPosition = new Vector2 (0, 0);
 		bool collidedWithTerrain = false; //For really hack-ish collision resolution! Needs to be reworked.
@@ -16,10 +16,10 @@ namespace EC_Proto
 		public bool strength = false; // Able to push boulders?
 
 		static public void InitAnimation() {
-			anim.AddAnimation ("south", 0, 0, 32, 32,4);
-			anim.AddAnimation ("west", 0, 32, 32, 32,4);
-			anim.AddAnimation ("east", 0, 64, 32, 32,4);
-			anim.AddAnimation ("north", 0, 96, 32, 32,4);
+			anim.AddAnimation ("south", 230, 0, 80, 150,1); //TODO: Fix spritesheet alignment! The others seem to be multiples of 80.
+			anim.AddAnimation ("west", 320, 0, 80, 150,1);
+			anim.AddAnimation ("east", 400, 0, 80, 150,1);
+			anim.AddAnimation ("north", 80, 0, 80, 150,1);
 
 			anim.AddStateChange ("", "west", "west", false);
 			anim.AddStateChange ("", "south", "south", false);
@@ -30,8 +30,8 @@ namespace EC_Proto
 		public PlayerEntity ()
 		{
 			spriteChoice.texture = texture;
-			hitbox = new Rectangle (10, 24, 12, 8);
-			hurtbox = new Rectangle (0, 0, 32, 32);
+			hitbox = new Rectangle (10, 110, 60, 27);
+			hurtbox = new Rectangle (10, 5, 60, 140);
 			direction = Direction.South;
 			animState.AnimationName = "south";
 
@@ -47,6 +47,10 @@ namespace EC_Proto
 
 		public Vector2 getCurrentSpeed () {
 			return currentSpeed;
+		}
+
+		public Vector2 Center() {
+		return position + new Vector2 (40, 75);
 		}
 
 		public override void Update (KeyboardState keyboard, GameTime gameTime) {
@@ -130,9 +134,15 @@ namespace EC_Proto
 			position.X = resetPosition.X;
 			position.Y = resetPosition.Y;
 		}
-
-		public void EarthenShield () {
+		
+        public void EarthenShield () {
 			strength = true;
-		}
+        }
+		//Move to the center of a rectangle, and update the reset positions as well.
+		public void MoveToRect(Rectangle location) {
+			Point center = location.Center;
+			SetResetPosition (new Vector2 (center.X - 40, center.Y - 90)); //HACK: subtract to reach top left corner! Should probably clean up player entity interface.
+			ResetWarp ();
+                }
 	}
 }

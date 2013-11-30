@@ -10,10 +10,11 @@ namespace EC_Proto
 			public static Texture2D texture;
 			private GameState game;
 			private String mapName;
+			private String locationTarget;
 
 
 
-			public WarpTrigger (String mapName, Rectangle rect, GameState game) {
+			public WarpTrigger (String mapName, String locationTarget, Rectangle rect, GameState game) {
 				position.X = rect.X;
 				position.Y = rect.Y;
 				hitbox = new Rectangle (0, 0, rect.Width, rect.Height);
@@ -22,6 +23,7 @@ namespace EC_Proto
 				Visible = true;
 				this.game = game;
 				this.mapName = mapName;
+				this.locationTarget = locationTarget;
 			}
 
 
@@ -30,7 +32,7 @@ namespace EC_Proto
 
 			override public void CollidedWith (Entity e) {
 				if ( e is PlayerEntity) {
-					game.LoadMap (mapName);
+					game.LoadMap (mapName, locationTarget);
 				}
 			}
 		}

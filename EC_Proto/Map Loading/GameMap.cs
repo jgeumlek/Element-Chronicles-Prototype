@@ -16,10 +16,12 @@ namespace EC_Proto
 		private String mapFile;
 		public Dictionary<int,GameTile> Tiles = new Dictionary<int,GameTile> ();
 		public Collection<Layer> Layers;
+		public Dictionary<String,Rectangle> Locations = new Dictionary<String,Rectangle>();
 		public int TileWidth = 0;
 		public int TileHeight = 0;
 		public int MapWidth = 0;
 		public int MapHeight = 0;
+
 
 		public GameMap (String mapFile)
 		{
@@ -28,17 +30,18 @@ namespace EC_Proto
 			Tiles.Add (0, empty);
 		}
 
-		public void Load(ContentManager content, GameState game) {
+		public void Load(ContentManager content, GameScene game) {
 			//This process can be sped up by editing the TiledMax files to parse directly into our data structures.
 			FileInfo fi = new FileInfo(mapFile);
-			TiledMax.Map map = TiledMax.Map.Open (File.OpenRead(mapFile), fi.DirectoryName);
+			TiledMax.Map map = TiledMax.Map.Open (File.OpenRead(Path.Combine(content.RootDirectory,mapFile)), fi.DirectoryName);
 			Layers = map.Layers;
 
 			int tileID = 1;
 
 			//Read in textures and set up convenient structures for drawing tiles.
 			foreach (TiledMax.TileSet ts in map.TileSets) {
-				string filename = Path.Combine(fi.DirectoryName, ts.Images[0].Source);
+				string filename = Path.Combine(Path.GetDirectoryName(mapFile), ts.Images[0].Source);
+
 				Texture2D tileSheet = content.Load<Texture2D> (filename);
 				TileWidth = ts.TileWidth;
 				TileHeight = ts.TileHeight; //Multiple tileset sizes? How to handle? Take the max?
@@ -103,10 +106,19 @@ namespace EC_Proto
 			foreach (TiledMax.ObjectGroup og in map.ObjectGroups) {
 				foreach (TiledMax.MapObject obj in og) {
 					Rectangle destination = new Rectangle (obj.X, obj.Y, obj.Width, obj.Height);
-					if (obj.Type == "spawn")
+
+					switch (obj.Type) {
+					case "spawn":
 						game.SpawnEntity (obj.Name, destination);
-					if (obj.Type == "warp")
-						game.AddLoadTrigger (obj.Name, destination);
+						break;
+					case "warp":
+						String locationTarget = (obj.Properties.ContainsKey ("location")) ? (String)obj.Properties ["location"] : "default";
+						game.AddLoadTrigger (obj.Name, locationTarget, destination);
+						break;
+					case "location":
+						Locations.Add (obj.Name, destination);
+						break;
+					}
 				}
 			}
 		}

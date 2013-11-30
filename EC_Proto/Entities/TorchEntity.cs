@@ -19,7 +19,8 @@ namespace EC_Proto
 			position.X = rect.X;
 			position.Y = rect.Y;
 			spriteChoice.texture = torchOff;
-			spriteChoice.rect = new Rectangle (0, 0, 20, 20);
+			spriteChoice.rect = torchOff.Bounds;
+			hitbox = torchOff.Bounds;
 			Visible = true;
 		}
 

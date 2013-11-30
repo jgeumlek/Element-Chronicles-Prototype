@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="20" height="20" tilewidth="20" tileheight="20">
+ <tileset firstgid="1" name="grass and bush" tilewidth="20" tileheight="20">
+  <image source="grass and bush.png" width="60" height="80"/>
+  <tile id="1">
+   <properties>
+    <property name="solid" value=""/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="spawn" value="torch"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="spawn" value="flytrap"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="13" name="templogo" tilewidth="20" tileheight="20">
+  <image source="templogo.png" width="200" height="40"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjZGBgYBzFo3gUj+JRPIpJxADrnAGR
+  </data>
+ </layer>
+ <layer name="Tile Layer 2" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztT1sKgDAM26p++lbU+1/UChuEuPlGfwyEtmubpcb8+PEtEqotUCjak3p+D3viYuJ6odyQhsCMkIbXxD8s9dg3+ojpY447bwD/XJC6mO3Ufh59ykNkbx65slCWykpZKxtlq+yU/cZ9Ib0riN07UD2a9V1T4C3kSSBKpBaaPeL5jt4MFnEB3g==
+  </data>
+ </layer>
+ <objectgroup name="Object Layer 1" width="20" height="20">
+  <object name="player" type="spawn" x="69" y="314"/>
+  <object name="level2" type="warp" x="160" y="380" width="20" height="20">
+   <properties>
+    <property name="offset" value="south"/>
+   </properties>
+  </object>
+  <object name="lazylogo" type="warp" x="260" y="380" width="20" height="20"/>
+  <object name="level1" type="warp" x="80" y="400" width="20" height="20"/>
+ </objectgroup>
+</map>

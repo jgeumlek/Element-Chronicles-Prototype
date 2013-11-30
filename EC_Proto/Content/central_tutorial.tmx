@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="41" height="19" tilewidth="100" tileheight="100">
+ <tileset firstgid="1" name="spritesheet_1" tilewidth="100" tileheight="100">
+  <image source="spritesheet_1.png" trans="ffffff" width="400" height="200"/>
+ </tileset>
+ <layer name="grass" width="41" height="19">
+  <data encoding="base64" compression="zlib">
+   eJztwzENAAAMBKGb3r/k7tUACaumqqr6HlTdEkM=
+  </data>
+ </layer>
+ <layer name="walls" width="41" height="19">
+  <properties>
+   <property name="solid" value=""/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzVU0sOBSEIYzH3P/PbGkI/1Fm8ITFGqUhrfarq+cCoY0bR8wp/izv76j1OvSNOivMWz86h/h2+KK90d98F8Thzb+jj4pmujAfiucWn+cQXG91Sfac+UP/TPuKrcG4dx3OOH3terdP/XS2H4m2dtnVS3VJ9buoqHpt86m92T/KP+93KTwrvrN3aLBR+61PVI9uf7tj6zPEbezvFD8WNfskbMX9M59P/O9VAeIeLCleLbR3HM/8wfu81Bm0=
+  </data>
+ </layer>
+ <objectgroup name="spawn" width="41" height="19">
+  <object name="torch" type="spawn" x="1100" y="1300" width="100" height="100"/>
+  <object name="torch" type="spawn" x="1100" y="1500" width="100" height="100"/>
+  <object name="torch" type="spawn" x="1700" y="1500" width="100" height="100"/>
+  <object name="torch" type="spawn" x="1700" y="1300" width="100" height="100"/>
+  <object name="torch" type="spawn" x="700" y="1300" width="100" height="100"/>
+  <object name="torch" type="spawn" x="1100" y="100" width="100" height="100"/>
+  <object name="torch" type="spawn" x="3700" y="100" width="100" height="100"/>
+  <object name="torch" type="spawn" x="2700" y="300" width="100" height="100"/>
+  <object name="torch" type="spawn" x="3500" y="1700" width="100" height="100"/>
+  <object name="player" type="spawn" x="1400" y="1600" width="100" height="100"/>
+  <object name="central_hub" type="warp" x="4075" y="1500" width="25" height="100">
+   <properties>
+    <property name="location" value="west_entrance"/>
+   </properties>
+  </object>
+  <object name="exit" type="location" x="3900" y="1500" width="100" height="100"/>
+ </objectgroup>
+ <layer name="Tile Layer 3" width="41" height="19">
+  <data encoding="base64" compression="zlib">
+   eJztwYEAAAAAw6D5Ux/gClUBAAC8AQwsAAE=
+  </data>
+ </layer>
+</map>

@@ -3,6 +3,7 @@ using System.Media;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.IO;
 
 #endregion
 
@@ -21,17 +22,17 @@ namespace EC_Proto
 		private KeyboardState prevState;
 
 
-		GameState game = new GameState();
+		GameState game;
 
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
 			graphics.IsFullScreen = false;
-			//TargetElapsedTime = TimeSpan.FromMilliseconds(500);
 			graphics.PreferredBackBufferHeight = 480;
 			graphics.PreferredBackBufferWidth = 640;
             Content.RootDirectory = "Content";
+			game = new GameState (this);
         }
 
         /// <summary>
@@ -59,17 +60,18 @@ namespace EC_Proto
 			game.Content = Content;
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-			PlayerEntity.texture = Content.Load<Texture2D>("blob");
+			PlayerEntity.texture = Content.Load<Texture2D>("spritesheetcharacter1 copy");
 			FireballEntity.texture = Content.Load<Texture2D> ("fire");
 			FrostEntity.texture = Content.Load<Texture2D> ("frost");
 
-			bgm = new SoundPlayer ("Content\\bgm.wav");
+			bgm = new SoundPlayer (Path.Combine("Content","bgm.wav"));
 			bgm.PlayLooping ();
 
 			//TODO: This probably isn't the cleanest spot for initializing the player
 
 			PlayerEntity.InitAnimation ();
 			FlytrapEntity.InitAnimation ();
+			FireballEntity.InitAnimation ();
 
 			FlytrapEntity.spritesheet = Content.Load<Texture2D> ("flytrap");
 			TorchEntity.torchOff = Content.Load<Texture2D>("torchOff");
@@ -82,11 +84,11 @@ namespace EC_Proto
 			blankTex.SetData(new Color[] { Color.White });
 			WarpTrigger.texture = blankTex;
 
-			//game.LoadMap ("First_level_torch_maze.tmx");
-			game.LoadMap ("level2");
+
+			game.LoadScene ("logo");
 
 
-            //TODO: use this.Content to load your game content here 
+            
         }
 
         /// <summary>
@@ -98,11 +100,7 @@ namespace EC_Proto
         {
 			KeyboardState state = Keyboard.GetState ();
 
-            // Back or Escape to quit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-			{
-				Exit();
-			}
+           
             // TODO: Add your update logic here		
 			//Toggle Fullscreen with a common shortcut. 
 			if (state.IsKeyDown(Keys.RightAlt) && state.IsKeyDown(Keys.Enter)  && (prevState.IsKeyUp(Keys.Enter) || prevState.IsKeyUp(Keys.RightAlt)))
@@ -134,7 +132,7 @@ namespace EC_Proto
         {
            	graphics.GraphicsDevice.Clear(Color.Tan);
 			//Perhaps: Hud.draw
-			game.Draw (spriteBatch);
+			game.Draw (spriteBatch,graphics);
             
             base.Draw(gameTime);
         }

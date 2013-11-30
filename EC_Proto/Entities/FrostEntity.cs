@@ -16,13 +16,14 @@ namespace EC_Proto
 			speed = FROST_SPEED;
 			lifespan = FROST_LIFESPAN;
 			fireDamage = FROST_DAMAGE;
-			hitbox = new Rectangle (5, 5, 10, 10);
+			hitbox = new Rectangle (20, 20, 60, 60);
 			spriteChoice.texture = texture;
+			spriteChoice.rect = texture.Bounds;
 		}
 
 		public FrostEntity (Vector2 position, Direction direction, Vector2 momentum) : this()
 		{
-			this.position = position + 20*Entity.dirVector(direction);
+			this.position = position + 20*Entity.dirVector(direction) - new Vector2(50,50); //Subtract to fix top left corner. TODO: Clean up entity interface to handle this.
 			this.direction = direction;
 			movement = momentum + speed * Entity.dirVector (direction);
 		}
