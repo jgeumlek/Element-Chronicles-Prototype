@@ -18,7 +18,7 @@
    <property name="solid" value=""/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzlk9sKACAIQ/fQ/39zr9HF6VAiGkRUclxpDUB7YOyUzc/wxFTlS30PDLPl+Xe+dy+SR1Fl/yj8bB+eWqqx7K7RnOpd2fkcM+cDVr8WfxcX5bN4D5/plNPLr/av1o+tb/AzFO1p6y9W8dno7AQGAQ==
+   eJztkzsKwEAIRKcI7P1vnDa4uqMTLQIZsBD0KX4WgPUB89TN7+iJSalxJUydBx75kX7+Puto/pU6iqbuWuV398Hm8ibW5ng79BTFVW6G3c/pn209YO/3xPfiqnyb6/mMzxTVzPKn+8/uN9pBdb+T/A6p/638r8pndgOAFglS
   </data>
  </layer>
  <layer name="boulders" width="24" height="24">
@@ -37,4 +37,20 @@
    </properties>
   </object>
  </objectgroup>
+ <layer name="torches" width="24" height="24">
+  <properties>
+   <property name="spawn" value="torch"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBiagHmgHTAKSAajcTYKRgF1wWDKU4PJLaNgFBADAEdwAA0=
+  </data>
+ </layer>
+ <layer name="flytrap" width="24" height="24">
+  <properties>
+   <property name="spawn" value="flytrap"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2BgAMdAO2AUjIJRQDEgNh9zkKCWWmC0jBkF+AAAjSAAKQ==
+  </data>
+ </layer>
 </map>

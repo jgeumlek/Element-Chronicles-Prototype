@@ -36,9 +36,8 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="MonoGame.Framework, Version=3.0.1.0, Culture=neutral, PublicKeyToken=b1c3306074c7ec98">
+    <Reference Include="MonoGame.Framework, Version=3.0.1.0, Culture=neutral">
       <Private>False</Private>
-      <Package>monogame</Package>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -174,13 +173,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\central_tutorial.tmx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\central_water.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\spritesheet_1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\spritesheetcharacter1 copy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

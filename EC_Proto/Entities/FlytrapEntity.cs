@@ -24,11 +24,11 @@ namespace EC_Proto
 		}
 
 		static public void InitAnimation() {
-			anim.AddAnimation ("alive", 0, 0, 20, 20,1);
-			anim.AddAnimation ("dying1", 20, 0, 20, 20,2);
-			anim.AddAnimation ("dying2", 20, 0, 20, 20,2);
-			anim.AddAnimation ("dying3", 20, 0, 20, 20,2);
-			anim.AddAnimation ("dead", 60, 0, 20, 20,1);
+			anim.AddAnimation ("alive", 0, 0, 100, 100,1);
+			anim.AddAnimation ("dying1", 100, 0, 100, 100,2);
+			anim.AddAnimation ("dying2", 200, 0, 100, 100,2);
+			anim.AddAnimation ("dying3", 100, 0, 100, 100,2);
+			anim.AddAnimation ("dead", 300, 0, 100, 100,1);
 
 			anim.AddStateChange ("alive", "fire", "dying1", true);
 			anim.AddStateChange ("dying1","anim_end","dying2",true);
@@ -57,6 +57,11 @@ namespace EC_Proto
 			if ( e is FireballEntity) {
 				animState = anim.Update (animState, "fire");
 				spriteChoice.rect = anim.GetRectangle (animState);
+			}
+
+			if (e is PlayerEntity) {
+				((PlayerEntity)e).KnockBack ();
+
 			}
 		}
 	}

@@ -8,7 +8,7 @@ namespace EC_Proto
 	{
 		public TerrainEntity ()
 		{
-			hitbox = new Rectangle (0, 0, 20, 20);
+			hitbox = new Rectangle (0, 0, 100, 100);
 			Visible = false;
 			Collidable = true;
 		}

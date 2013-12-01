@@ -7,6 +7,8 @@ namespace EC_Proto
 {
 	public class PlayerEntity : Entity
 	{
+		private const int KNOCKBACK_DISTANCE = -50;
+		private const int FLINCH_TIME = 500; // how long the player flinches for in milliseconds
 		private float playerspeed = 5;
 		private Vector2 currentSpeed = new Vector2(0,0); //Used for adding momentum to projectiles.
 		private Vector2 resetPosition = new Vector2 (0, 0);
@@ -14,6 +16,8 @@ namespace EC_Proto
 		static AnimationManager anim = new AnimationManager();
 		public static Texture2D texture; 
 		public bool strength = false; // Able to push boulders?
+		public TimeSpan flinchTime;
+
 
 		static public void InitAnimation() {
 			anim.AddAnimation ("south", 230, 0, 80, 150,1); //TODO: Fix spritesheet alignment! The others seem to be multiples of 80.
@@ -71,43 +75,52 @@ namespace EC_Proto
 				changedirection = false;
 			}
 
+			if (flinchTime <= TimeSpan.Zero) {
+				if (keyboard.IsKeyDown (Keys.A)) {
+					newDirection = Direction.West;
+					if (direction == newDirection) {
+						changedirection = false;
+					} //Already heading this way; don't turn, just move diagonally.
+					moveDirection += Entity.dirVector (newDirection);
+				}
+				if (keyboard.IsKeyDown (Keys.D)) {
 
-			if (keyboard.IsKeyDown (Keys.A)) {
-				newDirection = Direction.West;
-				if (direction == newDirection) { changedirection = false; } //Already heading this way; don't turn, just move diagonally.
-				moveDirection += Entity.dirVector (newDirection);
+					newDirection = Direction.East;
+					if (direction == newDirection) {
+						changedirection = false;
+					}
+					moveDirection += Entity.dirVector (newDirection);
+				}
+				if (keyboard.IsKeyDown (Keys.W)) {
+
+					newDirection = Direction.North;				
+					if (direction == newDirection) {
+						changedirection = false;
+					}
+
+					moveDirection += Entity.dirVector (newDirection);
+				}
+				if (keyboard.IsKeyDown (Keys.S)) {
+
+					newDirection = Direction.South;
+					if (direction == newDirection) {
+						changedirection = false;
+					}
+
+					moveDirection += Entity.dirVector (newDirection);
+				}
+
+				if (changedirection && newDirection != Direction.Undefined) {
+					direction = newDirection; //We aren't still heading the same way, and we are moving. We should change direction.
+					animState = anim.Update (animState, Entity.dirName (newDirection));
+				}
+			
+				currentSpeed = moveDirection * playerspeed;
+				moveOffset (currentSpeed);
+				spriteChoice.rect = anim.GetRectangle (animState);
 			}
-			if (keyboard.IsKeyDown (Keys.D)) {
-
-				newDirection = Direction.East;
-				if (direction == newDirection) { changedirection = false; }
-				moveDirection += Entity.dirVector (newDirection);
-			}
-			if (keyboard.IsKeyDown (Keys.W)) {
-
-				newDirection = Direction.North;				
-				if (direction == newDirection) { changedirection = false; }
-
-				moveDirection += Entity.dirVector (newDirection);
-			}
-			if (keyboard.IsKeyDown (Keys.S)) {
-
-				newDirection = Direction.South;
-				if (direction == newDirection) { changedirection = false; }
-
-				moveDirection += Entity.dirVector (newDirection);
-			}
-
-			if (changedirection && newDirection != Direction.Undefined) {
-				direction = newDirection; //We aren't still heading the same way, and we are moving. We should change direction.
-				animState = anim.Update (animState,Entity.dirName(newDirection));
-			}
-
-			currentSpeed = moveDirection * playerspeed;
-			moveOffset (currentSpeed);
-			spriteChoice.rect = anim.GetRectangle (animState);
-
-
+			else if (flinchTime > TimeSpan.Zero)
+				flinchTime -= gameTime.ElapsedGameTime;
 		}
 
 		//Collision rules.
@@ -143,6 +156,11 @@ namespace EC_Proto
 			Point center = location.Center;
 			SetResetPosition (new Vector2 (center.X - 40, center.Y - 90)); //HACK: subtract to reach top left corner! Should probably clean up player entity interface.
 			ResetWarp ();
-                }
+		}
+
+		public void KnockBack () {
+			position += KNOCKBACK_DISTANCE * Entity.dirVector (direction);
+			flinchTime = new TimeSpan (0, 0, 0, 0, FLINCH_TIME);
+		}
 	}
 }
