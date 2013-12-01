@@ -77,8 +77,7 @@ namespace EC_Proto
 			if (state.IsKeyDown (Keys.F3) && prevState.IsKeyUp(Keys.F3))
 				drawHitBoxes = !drawHitBoxes;
 
-			if (state.IsKeyDown (Keys.F4) && prevState.IsKeyUp (Keys.F4))
-				LoadMap ("lazylogo", "default");
+
 
 		
 			screenMatrix = CameraManager.LookAtPoint (new Point ((int)scene.player.Center().X, (int)scene.player.Center().Y), ViewWidth, ViewHeight, zoomLevel, scene.SceneWidth, scene.SceneHeight);
@@ -112,6 +111,9 @@ namespace EC_Proto
 		public void LoadScene(String sceneName) {
 			//TODO: specify these!
 			if (sceneName == "logo") {
+				scene = new ImageScene (this, Content.Load<Texture2D> ("TitlePage"), "instruction");
+			}
+			if (sceneName == "instruction") {
 				scene = new ImageScene (this, Content.Load<Texture2D> ("tempintro"), "game");
 			}
 			if (sceneName == "game") {

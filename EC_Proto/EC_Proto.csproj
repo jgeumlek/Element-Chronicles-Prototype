@@ -52,9 +52,7 @@
     <Compile Include="Entities\TerrainEntity.cs" />
     <Compile Include="SpriteChoice.cs" />
     <Compile Include="Map Loading\GameTile.cs" />
-    <Compile Include="Map Loading\GameMap.cs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
+    <Compile Include="Map Loading\GameMap.cs" />
     <Compile Include="AnimationManager.cs" />
     <Compile Include="Entities\TorchEntity.cs" />
     <Compile Include="AnimationState.cs" />
@@ -66,9 +64,7 @@
     <Compile Include="Entities\BoulderEntity.cs" />
     <Compile Include="Entities\ProjectileEntity.cs" />
     <Compile Include="Entities\MonsterEntity.cs" />
-    <Compile Include="Game1.cs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
+    <Compile Include="Game1.cs" />
     <Compile Include="GameScene\GameScene.cs" />
     <Compile Include="GameScene\TmxScene.cs" />
     <Compile Include="Camera\CameraManager.cs" />
@@ -182,6 +178,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\spritesheetcharacter1 copy.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\TitlePage.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

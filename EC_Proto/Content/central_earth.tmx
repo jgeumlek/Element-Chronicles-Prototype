@@ -7,6 +7,11 @@
     <property name="spawn" value="boulder"/>
    </properties>
   </tile>
+  <tile id="7">
+   <properties>
+    <property name="spawn" value="flytrap"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="grass" width="24" height="24">
   <data encoding="base64" compression="zlib">

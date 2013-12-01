@@ -7,6 +7,11 @@
     <property name="spawn" value="water"/>
    </properties>
   </tile>
+  <tile id="2">
+   <properties>
+    <property name="spawn" value="torch"/>
+   </properties>
+  </tile>
   <tile id="3">
    <properties>
     <property name="solid" value=""/>
@@ -25,18 +30,24 @@
   </data>
  </layer>
  <layer name="Water" width="40" height="20">
+  <properties>
+   <property name="spawn" value="water"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJzt0TEKADAIxdDv/S9d3Erp4GaGPHA2aDJT1xBVuI1vG62R3te22yZ7N+9G/JkkSdLPAT8vAB4=
   </data>
  </layer>
  <layer name="Landscape" width="40" height="20">
+  <properties>
+   <property name="solid" value=""/>
+  </properties>
   <data encoding="base64" compression="zlib">
-   eJztlkEKACAIBPfg/98c3UIsCmFbwYGlOjkIiQbAlsC9mdnVxuHO4NbD3Mkkqs3u0yvtl6P9cvgZo0Y0B5VQdFqp0D9Vt4my26T9clTz+/lfoto3eyvbTWGPf8kA7LMCTQ==
+   eJzFVtEKxDAI68NB//+Pj8E9SEiiFtcThM45TY2z3WutHXTB801VuR/5/BTXN0TljvgW+HRiszzO5uJEX8T3lpzyMYmP5cfadr59ZBof0wyDE4evwonymfq3TvCx/kf/qVmAM8bhiHb2zzrcXcH50u1DrE8UjKNwV8RxW7FFu5p7yLPinfFQrZ/rxUr/4V5wrWJm/Zf1FvvG5XM2Fud0/jku1Z5O4rPzN8vB3nfOjspeqvWbmL0VLm+dbxWfzrxh/G4RQ80DlkdxmNURc7P7abf3JkTl/tc9vqNffBYF7w==
   </data>
  </layer>
  <layer name="Spawn" width="40" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYBgF+AArieK0BgNlLzXBYPDDYHDDUAfoYciKR24gACvD4HDHKBgFo2AUjIJRMApQAQDdPwAz
+   eJzt1TsKADAIRMGF4P2vnDZYCILBLd6UWvhBUEIlmvHftupOyjMcgx7Ql3cYRW5DyKMPAHht/Dx44QakCwdmADw=
   </data>
  </layer>
  <objectgroup name="Player" width="40" height="20">

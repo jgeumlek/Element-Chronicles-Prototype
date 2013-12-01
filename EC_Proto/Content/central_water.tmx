@@ -19,13 +19,19 @@
   </data>
  </layer>
  <layer name="Water" width="30" height="30">
+  <properties>
+   <property name="spawn" value="water"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJzllEsKwCAMRO39L919IXW+lOKAK+O8mGjWwnUNixF7ZmKqHi4T9WHiER7i1WROni4TzSXFRPN6xqs9SPYB9WD0BXPHRc8pcv+zKoXpSr3rH7nqe2oxW1x3VjSZafYpXJbXmEVNLuuT4DozXmW7TNZDzXUX+7afqg2bW+IdJGOTPqm/najRDcv/AVU=
   </data>
  </layer>
  <layer name="Landscape" width="30" height="30">
+  <properties>
+   <property name="solid" value=""/>
+  </properties>
   <data encoding="base64" compression="zlib">
-   eJztl8sKQCEIRF34/9/c9iJk42XGCByQCsxDLys3M/+YhbbSLKkrFON7KLu4XXqBW/E7+VZ84j5UcxUa7nCHi8W9xc3iKuc5i63Iz0gflMuel+q90M1l69Xz+7c/Y7wdXNaaVM/vDS5TCi7y9lfmAyQ/K/9bO1sbzwJt
+   eJztl0sOgDAIRFk06f1v7FYJhQGHqomTEH9Nn4DQOkVknkzUdaeJc94hPf9Ux7saIHeXvsBdxcwaF41FuMOwHdwO/dzrMy00x3e5jHhY74rM25GHN3MrytQvkx99e13ciJ1Zcyu1g66DKzajZj2udY/ZKzyuFsvPLJfFZHLR+Ee5rLKzynKZuc7sr57gMuVxq/4hfZftL9p3d/xvrewA0/UEkA==
   </data>
  </layer>
  <layer name="Spawn" width="30" height="30">
