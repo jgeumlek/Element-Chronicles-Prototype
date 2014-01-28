@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.IO;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 #endregion
 
@@ -14,7 +16,6 @@ namespace EC_Proto
     /// </summary>
     public class Game1 : Game
     {
-		SoundPlayer bgm;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;		
 		public static Texture2D blankTex; //For drawing rectangles!
@@ -29,8 +30,8 @@ namespace EC_Proto
         {
             graphics = new GraphicsDeviceManager(this);
 			graphics.IsFullScreen = false;
-			graphics.PreferredBackBufferHeight = 480;
-			graphics.PreferredBackBufferWidth = 640;
+			//graphics.PreferredBackBufferHeight = 720;
+			//graphics.PreferredBackBufferWidth = 640;
             Content.RootDirectory = "Content";
 			game = new GameState (this);
         }
@@ -64,8 +65,7 @@ namespace EC_Proto
 			FireballEntity.texture = Content.Load<Texture2D> ("fire");
 			FrostEntity.texture = Content.Load<Texture2D> ("frost");
 
-			bgm = new SoundPlayer (Path.Combine("Content","bgm.wav"));
-			bgm.PlayLooping ();
+
 
 			//TODO: This probably isn't the cleanest spot for initializing the player
 
@@ -83,6 +83,12 @@ namespace EC_Proto
 			blankTex = new Texture2D(GraphicsDevice, 1, 1);
 			blankTex.SetData(new Color[] { Color.White });
 			WarpTrigger.texture = blankTex;
+
+
+			MediaPlayer.Volume = 0.5f;
+
+
+
 
 
 			game.LoadScene ("logo");
@@ -103,7 +109,7 @@ namespace EC_Proto
            
             // TODO: Add your update logic here		
 			//Toggle Fullscreen with a common shortcut. 
-			if (state.IsKeyDown(Keys.RightAlt) && state.IsKeyDown(Keys.Enter)  && (prevState.IsKeyUp(Keys.Enter) || prevState.IsKeyUp(Keys.RightAlt)))
+			if ((state.IsKeyDown(Keys.F11) && prevState.IsKeyUp(Keys.F11)) || state.IsKeyDown(Keys.RightAlt) && state.IsKeyDown(Keys.Enter)  && (prevState.IsKeyUp(Keys.Enter) || prevState.IsKeyUp(Keys.RightAlt)))
 			{
 				graphics.ToggleFullScreen ();
 				graphics.ApplyChanges ();

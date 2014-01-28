@@ -131,6 +131,9 @@ namespace EC_Proto
 					if (rect1.Intersects (e2.getHitBox())) {
 						e1.CollidedWith (e2);
 						e2.CollidedWith (e1);
+						if (e1 is PhysicsEntity && e2 is PhysicsEntity) {
+							ResolveCollisions ((PhysicsEntity)e1, (PhysicsEntity)e2);
+						}
 					}
 				}
 
@@ -146,6 +149,9 @@ namespace EC_Proto
 				if (rect1.Intersects (e2.getHitBox())) {
 					entity.CollidedWith (e2);
 					e2.CollidedWith (entity);
+					if (entity is PhysicsEntity && e2 is PhysicsEntity) {
+						ResolveCollisions ((PhysicsEntity)entity, (PhysicsEntity)e2);
+					}
 				}
 			}
 
@@ -164,6 +170,9 @@ namespace EC_Proto
 				    	if (rect1.Intersects (e2.getHitBox())) {
 				       		e1.CollidedWith (e2);
 							e2.CollidedWith (e1);
+						if (e1 is PhysicsEntity && e2 is PhysicsEntity) {
+							ResolveCollisions ((PhysicsEntity)e1, (PhysicsEntity)e2);
+						}
 			            }
 			 	  }
               }
@@ -172,8 +181,86 @@ namespace EC_Proto
 		}
 
 
-		//TODO: Still needs implementation!
-		public void ResolveCollisions() {
+		//TODO: Implementation relies on AABB
+		public void ResolveCollisions(PhysicsEntity e1, PhysicsEntity e2) {
+			if (e1.inverseMass == 0 && e2.inverseMass == 0)
+				return; // Two immovable objects. Nothing to be done.
+			if (!e1.Collidable || !e2.Collidable) {
+				return; //One of the objects doesn't wish for collsion resolution.
+			}
+			Vector2 diff = new Vector2 (e1.getHitBox ().Center.X - e2.getHitBox ().Center.X, e1.getHitBox ().Center.Y - e2.getHitBox ().Center.Y);
+			Vector2 rel_motion = e1.Momentum - e2.Momentum;
+			if (diff.X * rel_motion.X + diff.Y * rel_motion.Y > 0)
+				return; //Don't mess with objects moving out of each other!
+
+			float x_depth = (e1.getHitBox().Width + e2.getHitBox().Width) / 2.0f - Math.Abs (e1.getHitBox().Center.X - e2.getHitBox().Center.X);
+			float y_depth = (e1.getHitBox().Height + e2.getHitBox().Height) / 2.0f - Math.Abs (e1.getHitBox().Center.Y - e2.getHitBox().Center.Y);
+
+			if (e1.inverseMass == 0) {
+				MomentumSink (e2, e1.getHitBox (), x_depth, y_depth);
+				return;
+			} else if (e2.inverseMass == 0) {
+				MomentumSink (e1, e2.getHitBox (), x_depth, y_depth);
+				return;
+			}
+
+			if ( x_depth < y_depth && x_depth >= Math.Min (e1.getHitBox ().Width, e2.getHitBox ().Width)) {
+				diff.X = 0;
+			} else if (y_depth >= Math.Min (e1.getHitBox ().Height, e2.getHitBox ().Height)) {
+				diff.Y = 0;
+			}
+
+			x_depth = Math.Max (0, x_depth);
+
+
+
+			y_depth = Math.Max (0, y_depth);
+			if (diff.LengthSquared() == 0)
+				return;
+
+
+			x_depth *= Math.Sign (e1.getHitBox().Center.X - e2.getHitBox().Center.X);
+			y_depth *= Math.Sign (e1.getHitBox ().Center.Y - e2.getHitBox ().Center.Y);
+			diff.Normalize();
+			float displac_dot = diff.X * x_depth + diff.Y * y_depth;
+
+			Vector2 displacement = diff * displac_dot;
+			diff.Normalize ();
+			double totalMass = e1.inverseMass + e2.inverseMass;
+			Console.Out.WriteLine (x_depth.ToString () + "," + y_depth.ToString ());
+			Console.Out.WriteLine (diff);
+
+			Console.Out.WriteLine (displacement);
+			//displacement.Normalize ();
+			e1.Impulse (displacement * (float)(e1.inverseMass/totalMass));
+			e2.Impulse (-displacement * (float)(e2.inverseMass/totalMass));
+			Console.Out.WriteLine (displacement * (float)(e1.inverseMass/totalMass));
+			Console.Out.WriteLine (-displacement * (float)(e2.inverseMass/totalMass));
+
+
+
+		}
+
+		private void MomentumSink(PhysicsEntity entity, Rectangle immovable, float x_depth, float y_depth) {
+			Point entityCenter = entity.getHitBox ().Center;
+			Vector2 momentum = entity.Momentum;
+			if (x_depth < y_depth && entityCenter.X < immovable.X ) {
+				momentum.X = 0;
+				entity.moveOffset (new Vector2 (-x_depth, 0));
+			} else if (x_depth < y_depth && entityCenter.X > immovable.Right) {
+				momentum.X = 0;
+				entity.moveOffset (new Vector2 (x_depth, 0));
+
+			}
+			if (x_depth > y_depth && entityCenter.Y < immovable.Y ) {
+				momentum.Y = 0;
+				entity.moveOffset (new Vector2 (0,-y_depth));
+
+			} else if (x_depth > y_depth && entityCenter.Y > immovable.Y + immovable.Height) {
+				momentum.Y = 0;
+				entity.moveOffset (new Vector2 (0,y_depth));
+
+			}
 		}
 
 		virtual public void Draw(Matrix screenMatrix, SpriteBatch spriteBatch, GraphicsDeviceManager graphics, bool drawHitBoxes) {

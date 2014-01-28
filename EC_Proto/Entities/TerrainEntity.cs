@@ -4,10 +4,11 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EC_Proto
 {
-	public class TerrainEntity : Entity
+	public class TerrainEntity : PhysicsEntity
 	{
 		public TerrainEntity ()
 		{
+			inverseMass = 0;
 			hitbox = new Rectangle (0, 0, 100, 100);
 			Visible = false;
 			Collidable = true;

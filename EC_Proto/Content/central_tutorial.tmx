@@ -38,6 +38,8 @@
    </properties>
   </object>
   <object name="exit" type="location" x="3900" y="1500" width="100" height="100"/>
+  <object name="torch" type="spawn" x="1332" y="1344" width="104" height="112"/>
+  <object name="torch" type="spawn" x="1432" y="1544" width="108" height="116"/>
  </objectgroup>
  <layer name="flytraps" width="41" height="19">
   <properties>

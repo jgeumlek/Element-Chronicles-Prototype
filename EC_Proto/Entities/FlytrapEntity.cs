@@ -21,6 +21,7 @@ namespace EC_Proto
 			animState.AnimationName = "alive";
 			spriteChoice.rect = anim.GetRectangle (animState);
 			Visible = true;
+			inverseMass = 5;
 		}
 
 		static public void InitAnimation() {
@@ -60,7 +61,12 @@ namespace EC_Proto
 			}
 
 			if (e is PlayerEntity) {
+				Point diff = e.getHitBox ().Center - getHitBox().Center;
+				Vector2 dirvec = new Vector2 (diff.X, diff.Y);
+				dirvec = Entity.align (dirvec); 
+				((PlayerEntity)e).Impulse (dirvec * 50);
 				((PlayerEntity)e).KnockBack ();
+
 
 			}
 		}

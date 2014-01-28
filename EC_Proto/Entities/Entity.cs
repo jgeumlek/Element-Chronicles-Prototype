@@ -74,6 +74,24 @@ namespace EC_Proto
 			}
 		}
 
+		//Takes a vector, and returns the closest axis-aligned vector.
+		public static Vector2 align(Vector2 vector) {
+			float x = Math.Abs (vector.X);
+			float y = Math.Abs (vector.Y);
+
+			if (x > y) {
+				if (vector.X < 0)
+					return new Vector2 (-1, 0);
+				return new Vector2 (1, 0);
+			} else {
+				if (vector.Y < 0)
+					return new Vector2 (0, -1);
+				return new Vector2 (0, 1);
+			}
+			//Note the arbitrary tie breakers.
+		}
+
+
 		public bool Alive() {
 			return alive;
 		}
@@ -83,7 +101,7 @@ namespace EC_Proto
 			return new Rectangle(hitbox.X + (int)position.X, hitbox.Y + (int)position.Y, hitbox.Width, hitbox.Height);
 		}
 
-		//Handle collision you want.
+		//Handle collision how you want.
 		virtual public void CollidedWith(Entity e) {
 		}
 		//A frame's worth of time has passed. Do nothing by defualt, override if you have an animation.

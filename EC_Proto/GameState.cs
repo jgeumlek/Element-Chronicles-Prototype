@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,7 +21,8 @@ namespace EC_Proto
 		public int ViewWidth { get; set; }
 		public int ViewHeight { get; set; }
 		private float zoomLevel = 0.5f;
-
+		Song bgm;
+		Song title;
 
 
 
@@ -48,6 +51,8 @@ namespace EC_Proto
 			LevelNames.Add ("central_earth", "central_earth.tmx");
 			LevelNames.Add ("central_tutorial", "central_tutorial.tmx");
 			LevelNames.Add ("central_water", "central_water.tmx");
+
+
 
 		}
 		public void Update (GameTime gameTime,KeyboardState state, KeyboardState prevState) {
@@ -112,13 +117,19 @@ namespace EC_Proto
 			//TODO: specify these!
 			if (sceneName == "logo") {
 				scene = new ImageScene (this, Content.Load<Texture2D> ("TitlePage"), "instruction");
-			}
+				title = Content.Load<Song> ("TitleSong.mp3");
+				MediaPlayer.Play (title);
+				MediaPlayer.IsRepeating = false;			}
 			if (sceneName == "instruction") {
 				scene = new ImageScene (this, Content.Load<Texture2D> ("tempintro"), "game");
+
 			}
 			if (sceneName == "game") {
 				scene = new TmxScene(this);
 				((TmxScene)scene).LoadMap (LevelNames["central_tutorial"],"default",Content);
+				bgm = Content.Load<Song> ("bgm.wav");
+				MediaPlayer.Play (bgm);
+				MediaPlayer.IsRepeating = true;
 			}
 		}
 

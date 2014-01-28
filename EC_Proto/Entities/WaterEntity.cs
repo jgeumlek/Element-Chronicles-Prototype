@@ -33,6 +33,10 @@ namespace EC_Proto
 				spriteChoice.texture = iceTex;
 				Collidable = false;
 			}
+			if (frozen && e is PlayerEntity) {
+				((PlayerEntity)e).FrictionFactor = .99f;
+			}
 		}
+
 	}
 }

@@ -5,18 +5,25 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EC_Proto
 {
-	public class PlayerEntity : Entity
+	public class PlayerEntity : PhysicsEntity
 	{
 		private const int KNOCKBACK_DISTANCE = -50;
 		private const int FLINCH_TIME = 500; // how long the player flinches for in milliseconds
-		private float playerspeed = 5;
-		private Vector2 currentSpeed = new Vector2(0,0); //Used for adding momentum to projectiles.
+		private const float DEFAULT_FRICTION = .9f;
+		//private float playerspeed = 5;
+		//private Vector2 currentSpeed = new Vector2(0,0); //Used for adding momentum to projectiles.
+		private float maxSpeed = 5;
+		private float acceleration = 2;
+		public float FrictionFactor = .9f;
+
+
 		private Vector2 resetPosition = new Vector2 (0, 0);
 		bool collidedWithTerrain = false; //For really hack-ish collision resolution! Needs to be reworked.
 		static AnimationManager anim = new AnimationManager();
 		public static Texture2D texture; 
 		public bool strength = false; // Able to push boulders?
 		public TimeSpan flinchTime;
+
 
 
 		static public void InitAnimation() {
@@ -38,6 +45,7 @@ namespace EC_Proto
 			hurtbox = new Rectangle (10, 5, 60, 140);
 			direction = Direction.South;
 			animState.AnimationName = "south";
+			inverseMass = 5;
 
 		}
 		//Need to clean up constructors, and use base class better
@@ -50,7 +58,7 @@ namespace EC_Proto
 		}
 
 		public Vector2 getCurrentSpeed () {
-			return currentSpeed;
+			return momentum;
 		}
 
 		public Vector2 Center() {
@@ -62,7 +70,7 @@ namespace EC_Proto
 
 
 			if (!collidedWithTerrain) { //Really lazy collsion resolution. Needs work.
-				SetResetPosition (position);
+				//SetResetPosition (position);
 			} else {
 				collidedWithTerrain = false;
 			}
@@ -114,26 +122,44 @@ namespace EC_Proto
 					direction = newDirection; //We aren't still heading the same way, and we are moving. We should change direction.
 					animState = anim.Update (animState, Entity.dirName (newDirection));
 				}
+
+				momentum += moveDirection * acceleration;
 			
-				currentSpeed = moveDirection * playerspeed;
-				moveOffset (currentSpeed);
-				spriteChoice.rect = anim.GetRectangle (animState);
-			}
-			else if (flinchTime > TimeSpan.Zero)
+
+
+			} else if (flinchTime > TimeSpan.Zero) {
 				flinchTime -= gameTime.ElapsedGameTime;
+			}
+
+
+				moveOffset (momentum);
+				spriteChoice.rect = anim.GetRectangle (animState);
+				momentum *= FrictionFactor;
+				if (momentum.LengthSquared() > maxSpeed*maxSpeed) {
+					momentum.Normalize ();
+					momentum *= maxSpeed;
+				}
+				if (momentum.LengthSquared() < .5) {
+					momentum.X = 0;
+					momentum.Y = 0;
+				}
+				Console.Out.WriteLine (momentum);
+				momentum *= FrictionFactor;
+				Console.Out.WriteLine ("after" + momentum.ToString());
+				//Set up friction factor for next frame.
+				FrictionFactor = DEFAULT_FRICTION;
 		}
 
 		//Collision rules.
 		override public void CollidedWith(Entity e) {
-			if (e is TerrainEntity && e.Collidable) {
-				collidedWithTerrain = true;
-				ResetWarp ();
+			if (e is WaterEntity && e.Collidable) {
+
 			}
 		}
 
 		public override void AnimationTick ()
 		{
-			if (currentSpeed.LengthSquared() > 2) animState = anim.Tick(animState);
+			if (momentum.LengthSquared() > 2) animState = anim.Tick(animState);
 		}
 
 		//Set where player goes when out of bounds/in a pit/drowned/etc.
@@ -159,7 +185,7 @@ namespace EC_Proto
 		}
 
 		public void KnockBack () {
-			position += KNOCKBACK_DISTANCE * Entity.dirVector (direction);
+			//position += KNOCKBACK_DISTANCE * Entity.dirVector (direction);
 			flinchTime = new TimeSpan (0, 0, 0, 0, FLINCH_TIME);
 		}
 	}

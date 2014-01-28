@@ -7,5 +7,7 @@ namespace EC_Proto
 		North, East, South, West, Undefined
 
 	}
+
+
 }
 
