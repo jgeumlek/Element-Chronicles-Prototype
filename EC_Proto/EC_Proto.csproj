@@ -64,12 +64,20 @@
     <Compile Include="Entities\BoulderEntity.cs" />
     <Compile Include="Entities\ProjectileEntity.cs" />
     <Compile Include="Entities\MonsterEntity.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="Game1.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="GameScene\GameScene.cs" />
     <Compile Include="GameScene\TmxScene.cs" />
     <Compile Include="Camera\CameraManager.cs" />
     <Compile Include="GameScene\ImageScene.cs" />
     <Compile Include="Entities\PhysicsEntity.cs" />
+    <Compile Include="Gui\Gui.cs" />
+    <Compile Include="Gui\GuiText.cs" />
+    <Compile Include="Gui\GuiTexture.cs" />
+    <Compile Include="Gui\GuiState.cs" />
+    <Compile Include="PlayerStats.cs" />
+    <Compile Include="Entities\MonsterPatrolEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Icon.png" />
@@ -186,6 +194,17 @@
     </None>
     <None Include="Content\TitleSong.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="Content\barBackground.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\hpBar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\manaBar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\expBar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +215,7 @@
     <Folder Include="Content\Level2\" />
     <Folder Include="Camera\" />
     <Folder Include="GameScene\" />
+    <Folder Include="Gui\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

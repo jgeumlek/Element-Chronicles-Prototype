@@ -17,14 +17,20 @@ namespace EC_Proto
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;		
+        SpriteBatch spriteBatch;
 		public static Texture2D blankTex; //For drawing rectangles!
 		int tickcount = 0; //For dividing the framerate. This implementation will change.
 		private KeyboardState prevState;
 
+		//Move all of these to a Gui class
+		public Texture2D hpBarBackground; // Black bar behind the health bar, which does not change in length
+		public Texture2D hpBar;
+		public Texture2D manaBarBackground;
+		public Texture2D manaBar;
+		public Texture2D expBarBackground;
+		public Texture2D expBar;
 
 		GameState game;
-
 
         public Game1()
         {
@@ -61,17 +67,27 @@ namespace EC_Proto
 			game.Content = Content;
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
 			PlayerEntity.texture = Content.Load<Texture2D>("spritesheetcharacter1 copy");
 			FireballEntity.texture = Content.Load<Texture2D> ("fire");
 			FrostEntity.texture = Content.Load<Texture2D> ("frost");
 
+			Gui.hpBarBackground = Content.Load<Texture2D> ("barBackground");
+			Gui.hpBar = Content.Load<Texture2D> ("hpBar");
+			Gui.manaBarBackground = Content.Load<Texture2D> ("barBackground");
+			Gui.manaBar = Content.Load<Texture2D> ("manaBar");
+			Gui.expBarBackground = Content.Load<Texture2D> ("barBackground");
+			Gui.expBar = Content.Load<Texture2D> ("expBar");
 
+			bgm = new SoundPlayer (Path.Combine("Content","bgm.wav"));
+			bgm.PlayLooping ();
 
 			//TODO: This probably isn't the cleanest spot for initializing the player
 
 			PlayerEntity.InitAnimation ();
 			FlytrapEntity.InitAnimation ();
 			FireballEntity.InitAnimation ();
+			FrostEntity.InitAnimation ();
 
 			FlytrapEntity.spritesheet = Content.Load<Texture2D> ("flytrap");
 			TorchEntity.torchOff = Content.Load<Texture2D>("torchOff");

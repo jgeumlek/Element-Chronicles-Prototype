@@ -33,10 +33,9 @@ namespace EC_Proto
 			animHitBox.AddAnimation ("west", 10, 40, 20, 25,1);
 			animHitBox.AddAnimation ("east", 70, 40, 20, 25,1);
 			animHitBox.AddAnimation ("north", 30, 10, 25, 20,1);
-		
 		}
 
-		public FireballEntity(Vector2 position, Direction direction, Vector2 momentum) : this()
+		public FireballEntity (Vector2 position, Direction direction, Vector2 momentum) : this()
 		{
 			this.position = position - new Vector2(50,50); //subtract to fix left corner offset. TODO: What if each animation has it's own notion of center?
 			this.direction = direction;

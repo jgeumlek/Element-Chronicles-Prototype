@@ -5,13 +5,20 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace EC_Proto
 {
-	public class FlytrapEntity : TerrainEntity
+	public class FlytrapEntity : MonsterEntity
 	{
 		public static Texture2D spritesheet;
 		static AnimationManager anim = new AnimationManager();
 
 		public FlytrapEntity () {
 			Visible = true;
+
+			health = 60;
+			contactDamage = 40;
+			fireDefense = 0;
+			waterDefense = 10;
+			earthDefense = 10;
+			airDefense = 10;
 		}
 
 		public FlytrapEntity (Rectangle rect) {
@@ -22,6 +29,13 @@ namespace EC_Proto
 			spriteChoice.rect = anim.GetRectangle (animState);
 			Visible = true;
 			inverseMass = 5;
+
+			health = 10;
+			contactDamage = 10;
+			fireDefense = 0;
+			waterDefense = 10;
+			earthDefense = 10;
+			airDefense = 10;
 		}
 
 		static public void InitAnimation() {
@@ -66,8 +80,7 @@ namespace EC_Proto
 				dirvec = Entity.align (dirvec); 
 				((PlayerEntity)e).Impulse (dirvec * 50);
 				((PlayerEntity)e).KnockBack ();
-
-
+				((PlayerEntity)e).Hit (contactDamage);
 			}
 		}
 	}

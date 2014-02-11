@@ -2,14 +2,14 @@ using System;
 
 namespace EC_Proto
 {
-	abstract public class MonsterEntity : Entity
+	abstract public class MonsterEntity : TerrainEntity
 	{
-		protected float health;
-		protected float contactDamage;
-		protected float fireDefense;
-		protected float waterDefense;
-		protected float earthDefense;
-		protected float airDefense;
+		protected int health;
+		protected int contactDamage;
+		protected int fireDefense;
+		protected int waterDefense;
+		protected int earthDefense;
+		protected int airDefense;
 
 		public MonsterEntity ()
 		{

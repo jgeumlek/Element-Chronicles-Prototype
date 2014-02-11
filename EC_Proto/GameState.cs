@@ -12,6 +12,9 @@ namespace EC_Proto
 {
 	public delegate Entity Spawn(Rectangle position);
 	public class GameState {
+		private PlayerStats stats;
+		private Gui gui;
+
 		private bool drawHitBoxes = false; //For debugging.
 
 		public Game1 gamesystem;
@@ -23,9 +26,8 @@ namespace EC_Proto
 		private float zoomLevel = 0.5f;
 		Song bgm;
 		Song title;
-
-
-
+		private bool projectileLaunched = false;
+		TimeSpan timer = new TimeSpan (0, 0, 0, 0, 500);
 		public Dictionary<String, Spawn> EntitySpawners = new Dictionary<String, Spawn>();
 		Dictionary<String, String> LevelNames = new Dictionary<String, String> ();
 
@@ -52,25 +54,51 @@ namespace EC_Proto
 			LevelNames.Add ("central_tutorial", "central_tutorial.tmx");
 			LevelNames.Add ("central_water", "central_water.tmx");
 
+			gui = new Gui ();
 
-
+			stats = new PlayerStats ();
 		}
 		public void Update (GameTime gameTime,KeyboardState state, KeyboardState prevState) {
-
-
 			//TODO: Better event based system? Let entities register as Keyboard listeners, etc.
 
 			scene.Update (gameTime, state, prevState);
+
+			stats.Update (gameTime);
+			gui.Update (gameTime);
+
+			if (state.IsKeyDown (Keys.D1) && prevState.IsKeyUp (Keys.D1)) {
+				scene.player.Hit (5);
+			}
+
+			if (state.IsKeyDown (Keys.D2) && prevState.IsKeyUp (Keys.D2)) {
+				scene.player.ConsumeMana (5);
+			}
+
+			if (state.IsKeyDown (Keys.D3) && prevState.IsKeyUp (Keys.D3)) {
+				scene.player.PlusExp (5);
+			}
+
 			//Fire spawning. Should later be handled my some spell managing class.
-			if (state.IsKeyDown (Keys.H) && prevState.IsKeyUp(Keys.H)) { //Use prev state to simulate onKeyDown
+			if (!projectileLaunched && state.IsKeyDown (Keys.H) && prevState.IsKeyUp(Keys.H)) { //Use prev state to simulate onKeyDown
 				FireballEntity fireball = new FireballEntity (scene.player.Center(), scene.player.direction, scene.player.getCurrentSpeed());
 				scene.AddSpellEntity (fireball);
+				projectileLaunched = true;
 			}
 
 			//Frost spawning.
-			if (state.IsKeyDown (Keys.J) && prevState.IsKeyUp (Keys.J)) {
+			if (!projectileLaunched && state.IsKeyDown (Keys.J) && prevState.IsKeyUp (Keys.J)) {
 				FrostEntity frost = new FrostEntity (scene.player.Center() + new Vector2(7,10), scene.player.direction, scene.player.getCurrentSpeed());
 				scene.AddSpellEntity (frost);
+				projectileLaunched = true;
+			}
+
+			if (projectileLaunched) {
+				if (timer > TimeSpan.Zero) {
+					timer -= gameTime.ElapsedGameTime;
+				} else {
+					projectileLaunched = false;
+					timer = new TimeSpan (0, 0, 0, 0, 500);
+				}
 			}
 
 			if (state.IsKeyDown (Keys.K) && prevState.IsKeyUp (Keys.K)) {
@@ -84,11 +112,8 @@ namespace EC_Proto
 
 
 
-		
+			
 			screenMatrix = CameraManager.LookAtPoint (new Point ((int)scene.player.Center().X, (int)scene.player.Center().Y), ViewWidth, ViewHeight, zoomLevel, scene.SceneWidth, scene.SceneHeight);
-
-
-
 		}
 
 
@@ -114,6 +139,8 @@ namespace EC_Proto
 		}
 
 		public void LoadScene(String sceneName) {
+			Gui.sceneName = sceneName;
+
 			//TODO: specify these!
 			if (sceneName == "logo") {
 				scene = new ImageScene (this, Content.Load<Texture2D> ("TitlePage"), "instruction");
@@ -135,6 +162,8 @@ namespace EC_Proto
 
 		public void Draw( SpriteBatch spriteBatch, GraphicsDeviceManager graphics) {
 			scene.Draw (screenMatrix, spriteBatch, graphics, drawHitBoxes);
+			if(Gui.sceneName == "game")
+				gui.Draw (screenMatrix, spriteBatch, graphics);
 		}
 	}
 }

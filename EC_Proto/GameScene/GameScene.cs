@@ -16,7 +16,7 @@ namespace EC_Proto
 		public List<FrostEntity> frostEntities = new List<FrostEntity> ();
 		public List<Entity> projectileEntities = new List<Entity> ();
 		public List<TerrainEntity> terrainEntities = new List<TerrainEntity> ();
-                public List<Entity> movableEntities = new List<Entity>();
+		public List<Entity> movableEntities = new List<Entity>();
 
 		public int SceneWidth;
 		public int SceneHeight;
@@ -31,21 +31,20 @@ namespace EC_Proto
 			//Ideally use EntitySpawners dictionary, and add entity to appropriate list based on type!
 			switch (entityType) {
 				case "torch":
-				terrainEntities.Add (new TorchEntity (position));
-				break;
+					terrainEntities.Add (new TorchEntity (position));
+					break;
 				case "flytrap":
-				terrainEntities.Add (new FlytrapEntity (position));
-				break;
+					terrainEntities.Add (new FlytrapEntity (position));
+					break;
 				case "Terrain":
-				terrainEntities.Add (new TerrainEntity (position));
-				break;
-                                case "water":
-                                terrainEntities.Add (new WaterEntity (position));
-                                break;
-                                case "boulder":
-                                movableEntities.Add (new BoulderEntity (position));
-                                break;
-
+					terrainEntities.Add (new TerrainEntity (position));
+					break;
+                case "water":
+                	terrainEntities.Add (new WaterEntity (position));
+                	break;
+                case "boulder":
+                	movableEntities.Add (new BoulderEntity (position));
+                	break;
 			}
 
 		}
@@ -264,23 +263,18 @@ namespace EC_Proto
 		}
 
 		virtual public void Draw(Matrix screenMatrix, SpriteBatch spriteBatch, GraphicsDeviceManager graphics, bool drawHitBoxes) {
-
-
-
 			spriteBatch.Begin(SpriteSortMode.Deferred,null, null, null, null, null,screenMatrix);
 
-
-			DrawList (spriteBatch, terrainEntities, drawHitBoxes); 
+			DrawList (spriteBatch, terrainEntities, drawHitBoxes);
+            DrawList (spriteBatch, movableEntities, drawHitBoxes);
 			DrawList (spriteBatch, projectileEntities, drawHitBoxes);
 			DrawList (spriteBatch, frostEntities, drawHitBoxes);
-                        DrawList (spriteBatch, movableEntities, drawHitBoxes);
 
 			spriteBatch.Draw (player.getTexture (),player.position, player.spriteChoice.rect, Color.White);
 			if (drawHitBoxes)
 				spriteBatch.Draw (Game1.blankTex, player.getHitBox (), Color.Aquamarine); //Debugging!
 
 			spriteBatch.End();
-
 		}
 
 		protected void DrawList<E>(SpriteBatch spriteBatch, List<E> entities, bool drawHitBoxes) where E:Entity {

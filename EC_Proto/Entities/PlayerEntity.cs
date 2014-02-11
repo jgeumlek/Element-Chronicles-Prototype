@@ -24,8 +24,6 @@ namespace EC_Proto
 		public bool strength = false; // Able to push boulders?
 		public TimeSpan flinchTime;
 
-
-
 		static public void InitAnimation() {
 			anim.AddAnimation ("south", 230, 0, 80, 150,1); //TODO: Fix spritesheet alignment! The others seem to be multiples of 80.
 			anim.AddAnimation ("west", 320, 0, 80, 150,1);
@@ -38,16 +36,15 @@ namespace EC_Proto
 			anim.AddStateChange ("", "north", "north", false);
 		}
 
-		public PlayerEntity ()
-		{
+		public PlayerEntity () {
 			spriteChoice.texture = texture;
 			hitbox = new Rectangle (10, 110, 60, 27);
 			hurtbox = new Rectangle (10, 5, 60, 140);
 			direction = Direction.South;
 			animState.AnimationName = "south";
 			inverseMass = 5;
-
 		}
+
 		//Need to clean up constructors, and use base class better
 		public PlayerEntity(Vector2 position) : this()
 		{
@@ -92,7 +89,6 @@ namespace EC_Proto
 					moveDirection += Entity.dirVector (newDirection);
 				}
 				if (keyboard.IsKeyDown (Keys.D)) {
-
 					newDirection = Direction.East;
 					if (direction == newDirection) {
 						changedirection = false;
@@ -100,16 +96,13 @@ namespace EC_Proto
 					moveDirection += Entity.dirVector (newDirection);
 				}
 				if (keyboard.IsKeyDown (Keys.W)) {
-
 					newDirection = Direction.North;				
 					if (direction == newDirection) {
 						changedirection = false;
 					}
-
 					moveDirection += Entity.dirVector (newDirection);
 				}
 				if (keyboard.IsKeyDown (Keys.S)) {
-
 					newDirection = Direction.South;
 					if (direction == newDirection) {
 						changedirection = false;
@@ -169,7 +162,7 @@ namespace EC_Proto
 		}
 
 		//Warp to the player's reset position.
-		public void ResetWarp() {
+		public void ResetWarp () {
 			position.X = resetPosition.X;
 			position.Y = resetPosition.Y;
 		}
@@ -187,6 +180,18 @@ namespace EC_Proto
 		public void KnockBack () {
 			//position += KNOCKBACK_DISTANCE * Entity.dirVector (direction);
 			flinchTime = new TimeSpan (0, 0, 0, 0, FLINCH_TIME);
+		}
+
+		public void Hit (int damage) {
+			PlayerStats.curHp -= damage;
+		}
+
+		public void ConsumeMana (int mana) {
+			PlayerStats.curMana -= mana;
+		}
+
+		public void PlusExp (int exp) {
+			PlayerStats.curExp += exp;
 		}
 	}
 }
