@@ -7,8 +7,8 @@ namespace EC_Proto
 	abstract public class PhysicsEntity : Entity
 	{
 		public double inverseMass = 0;
-		protected Vector2 momentum;
-		public Vector2 Momentum { get { return momentum; } set { momentum = Momentum;}}
+		public Vector2 momentum;
+		public Vector2 Momentum { get { return momentum; } set { }}
 
 
 		public PhysicsEntity ()

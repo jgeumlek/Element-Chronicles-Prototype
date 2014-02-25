@@ -19,7 +19,7 @@ namespace EC_Proto
 
 		public Game1 gamesystem;
 
-		private GameScene scene;
+		private static GameScene scene;
 		private Matrix screenMatrix = Matrix.Identity;
 		public int ViewWidth { get; set; }
 		public int ViewHeight { get; set; }
@@ -67,27 +67,27 @@ namespace EC_Proto
 			gui.Update (gameTime);
 
 			if (state.IsKeyDown (Keys.D1) && prevState.IsKeyUp (Keys.D1)) {
-				scene.player.Hit (5);
+				GameScene.player.Hit (5);
 			}
 
 			if (state.IsKeyDown (Keys.D2) && prevState.IsKeyUp (Keys.D2)) {
-				scene.player.ConsumeMana (5);
+				GameScene.player.ConsumeMana (5);
 			}
 
 			if (state.IsKeyDown (Keys.D3) && prevState.IsKeyUp (Keys.D3)) {
-				scene.player.PlusExp (5);
+				GameScene.player.PlusExp (5);
 			}
 
 			//Fire spawning. Should later be handled my some spell managing class.
 			if (!projectileLaunched && state.IsKeyDown (Keys.H) && prevState.IsKeyUp(Keys.H)) { //Use prev state to simulate onKeyDown
-				FireballEntity fireball = new FireballEntity (scene.player.Center(), scene.player.direction, scene.player.getCurrentSpeed());
+				FireballEntity fireball = new FireballEntity (GameScene.player.Center(), GameScene.player.direction, GameScene.player.getCurrentSpeed());
 				scene.AddSpellEntity (fireball);
 				projectileLaunched = true;
 			}
 
 			//Frost spawning.
 			if (!projectileLaunched && state.IsKeyDown (Keys.J) && prevState.IsKeyUp (Keys.J)) {
-				FrostEntity frost = new FrostEntity (scene.player.Center() + new Vector2(7,10), scene.player.direction, scene.player.getCurrentSpeed());
+				FrostEntity frost = new FrostEntity (GameScene.player.Center() + new Vector2(7,10), GameScene.player.direction, GameScene.player.getCurrentSpeed());
 				scene.AddSpellEntity (frost);
 				projectileLaunched = true;
 			}
@@ -102,7 +102,7 @@ namespace EC_Proto
 			}
 
 			if (state.IsKeyDown (Keys.K) && prevState.IsKeyUp (Keys.K)) {
-				scene.player.EarthenShield ();
+				GameScene.player.EarthenShield ();
 			}
 
 
@@ -112,8 +112,10 @@ namespace EC_Proto
 
 
 
-			
-			screenMatrix = CameraManager.LookAtPoint (new Point ((int)scene.player.Center().X, (int)scene.player.Center().Y), ViewWidth, ViewHeight, zoomLevel, scene.SceneWidth, scene.SceneHeight);
+
+		
+			screenMatrix = CameraManager.LookAtPoint (new Point ((int)GameScene.player.Center().X, (int)GameScene.player.Center().Y), ViewWidth, ViewHeight, zoomLevel, scene.SceneWidth, scene.SceneHeight);
+
 		}
 
 
@@ -164,6 +166,10 @@ namespace EC_Proto
 			scene.Draw (screenMatrix, spriteBatch, graphics, drawHitBoxes);
 			if(Gui.sceneName == "game")
 				gui.Draw (screenMatrix, spriteBatch, graphics);
+		}
+
+		public static GameScene Scene() {
+			return scene;
 		}
 	}
 }

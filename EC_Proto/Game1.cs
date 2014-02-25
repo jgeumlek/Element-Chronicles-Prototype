@@ -79,8 +79,7 @@ namespace EC_Proto
 			Gui.expBarBackground = Content.Load<Texture2D> ("barBackground");
 			Gui.expBar = Content.Load<Texture2D> ("expBar");
 
-			bgm = new SoundPlayer (Path.Combine("Content","bgm.wav"));
-			bgm.PlayLooping ();
+
 
 			//TODO: This probably isn't the cleanest spot for initializing the player
 

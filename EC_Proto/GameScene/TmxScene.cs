@@ -15,7 +15,6 @@ namespace EC_Proto
 
 		public TmxScene (GameState state) : base(state)
 		{
-
 		}
 
 		public void LoadMap(String mapfile, String locationTarget, ContentManager content) {
@@ -78,19 +77,6 @@ namespace EC_Proto
 			spriteBatch.Draw (mapTex, new Vector2 (0, 0), Color.White);
 			spriteBatch.End ();
 
-			/*spriteBatch.Begin(SpriteSortMode.Deferred,null, null, null, null, null,screenMatrix);
-
-
-			DrawList (spriteBatch, terrainEntities, drawHitBoxes); 
-			DrawList (spriteBatch, projectileEntities, drawHitBoxes);
-			DrawList (spriteBatch, frostEntities, drawHitBoxes);
-			DrawList (spriteBatch, movableEntities, drawHitBoxes);
-
-			spriteBatch.Draw (player.getTexture (),player.position, player.spriteChoice.rect, Color.White);
-			if (drawHitBoxes)
-				spriteBatch.Draw (Game1.blankTex, player.getHitBox (), Color.Aquamarine); //Debugging!
-
-			spriteBatch.End();*/
 			base.Draw (screenMatrix, spriteBatch, graphics, drawHitBoxes);
 		}
 	}

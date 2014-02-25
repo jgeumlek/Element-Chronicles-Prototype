@@ -5,10 +5,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace EC_Proto
 {
+
 	public class FlytrapEntity : MonsterEntity
 	{
 		public static Texture2D spritesheet;
 		static AnimationManager anim = new AnimationManager();
+		AI ai = new SeePlayerAI();
 
 		public FlytrapEntity () {
 			Visible = true;
@@ -26,6 +28,7 @@ namespace EC_Proto
 			position.Y = rect.Y;
 			spriteChoice.texture = spritesheet;
 			animState.AnimationName = "alive";
+			hitbox = new Rectangle (0, 0, rect.Width, rect.Height);
 			spriteChoice.rect = anim.GetRectangle (animState);
 			Visible = true;
 			inverseMass = 5;
@@ -56,6 +59,13 @@ namespace EC_Proto
 
 		public override void Update (KeyboardState state, GameTime time) {
 
+			ai.update (this);
+			momentum *= .8f;
+			if (momentum.LengthSquared () > 1) {
+				momentum.Normalize ();
+				momentum *= 1;
+			}
+
 		}
 
 		public override void AnimationTick ()
@@ -75,12 +85,19 @@ namespace EC_Proto
 			}
 
 			if (e is PlayerEntity) {
-				Point diff = e.getHitBox ().Center - getHitBox().Center;
-				Vector2 dirvec = new Vector2 (diff.X, diff.Y);
+				Point TrapCenter = this.getHitBox ().Center;
+				Point PlayerCenter = e.getHitBox ().Center;
+				//Point diff = e.getHitBox ().Center - getHitBox().Center;
+				Vector2 dirvec = new Vector2 (PlayerCenter.X - TrapCenter.X, PlayerCenter.Y - TrapCenter.Y);
 				dirvec = Entity.align (dirvec); 
-				((PlayerEntity)e).Impulse (dirvec * 50);
-				((PlayerEntity)e).KnockBack ();
+
 				((PlayerEntity)e).Hit (contactDamage);
+
+				momentum *= -1;
+				this.Impulse (-dirvec * 5);
+				((PlayerEntity)e).Impulse (dirvec * 5);
+				//((PlayerEntity)e).KnockBack ();
+
 			}
 		}
 	}

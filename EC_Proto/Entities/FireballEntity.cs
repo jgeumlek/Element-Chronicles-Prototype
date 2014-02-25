@@ -37,7 +37,7 @@ namespace EC_Proto
 
 		public FireballEntity (Vector2 position, Direction direction, Vector2 momentum) : this()
 		{
-			this.position = position - new Vector2(50,50); //subtract to fix left corner offset. TODO: What if each animation has it's own notion of center?
+			this.position = position - new Vector2(50,50) + 20*Entity.dirVector(direction); //subtract to fix left corner offset. TODO: What if each animation has it's own notion of center?
 			this.direction = direction;
 			movement = momentum + speed * Entity.dirVector (direction);
 			animState.AnimationName = Entity.dirName (direction);

@@ -10,13 +10,15 @@ namespace EC_Proto
 {
 	public class GameScene
 	{
-		public PlayerEntity player = new PlayerEntity( new Vector2(0,0));
+		static public PlayerEntity player = new PlayerEntity( new Vector2(0,0));
 		protected Dictionary<String, Spawn> EntitySpawners;
 		protected GameState game;
 		public List<FrostEntity> frostEntities = new List<FrostEntity> ();
 		public List<Entity> projectileEntities = new List<Entity> ();
 		public List<TerrainEntity> terrainEntities = new List<TerrainEntity> ();
-		public List<Entity> movableEntities = new List<Entity>();
+        public List<Entity> movableEntities = new List<Entity>();
+		public List<Entity> enemyEntities = new List<Entity>();
+
 
 		public int SceneWidth;
 		public int SceneHeight;
@@ -25,6 +27,8 @@ namespace EC_Proto
 		{
 			this.game = state;
 			this.EntitySpawners = state.EntitySpawners;
+			player = new PlayerEntity(new Vector2(0,0));
+ 
 		}
 
 		virtual public void SpawnEntity(String entityType, Rectangle position) {
@@ -34,7 +38,7 @@ namespace EC_Proto
 					terrainEntities.Add (new TorchEntity (position));
 					break;
 				case "flytrap":
-					terrainEntities.Add (new FlytrapEntity (position));
+					enemyEntities.Add (new FlytrapEntity (position));
 					break;
 				case "Terrain":
 					terrainEntities.Add (new TerrainEntity (position));
@@ -45,6 +49,7 @@ namespace EC_Proto
                 case "boulder":
                 	movableEntities.Add (new BoulderEntity (position));
                 	break;
+
 			}
 
 		}
@@ -71,6 +76,7 @@ namespace EC_Proto
 			//TODO: Better event based system? Let entities register as Keyboard listeners, etc.
 
 			player.Update (state, gameTime);
+			player.moveOffset(player.Momentum * (float)player.inverseMass);
 
 
 			foreach (Entity e in projectileEntities) {
@@ -81,12 +87,13 @@ namespace EC_Proto
 				if (e.Active) e.Update (state, gameTime);
 			}
 
-			foreach (TerrainEntity e in terrainEntities) {
+			foreach (PhysicsEntity e in enemyEntities) {
 				e.Update (state, gameTime);
+				e.position += e.Momentum * (float)e.inverseMass;
 
 			}
 
-                  	foreach (Entity e in movableEntities) {
+            foreach (Entity e in movableEntities) {
 				e.Update (state, gameTime);
 
 			}
@@ -94,7 +101,9 @@ namespace EC_Proto
 			terrainEntities = terrainEntities.Where( x => x.Alive()).ToList();
 			projectileEntities = projectileEntities.Where( x => x.Alive()).ToList();
 			frostEntities = frostEntities.Where (x => x.Alive ()).ToList();
-                        movableEntities = movableEntities.Where (x => x.Alive ()).ToList();
+            movableEntities = movableEntities.Where (x => x.Alive ()).ToList();
+			enemyEntities = enemyEntities.Where (x => x.Alive ()).ToList();
+
 			DetectCollisions ();
 		}
 
@@ -103,7 +112,7 @@ namespace EC_Proto
 			foreach (Entity e in projectileEntities) {
 				e.AnimationTick ();
 			}
-			foreach (Entity e in terrainEntities) {
+			foreach (Entity e in enemyEntities) {
 				e.AnimationTick ();
 			}
 		}
@@ -112,11 +121,17 @@ namespace EC_Proto
 			//Care should be taken to not check the same pair of objects twice.
 			//Let's check each projectile with the terrain and the enemies.
 			DetectCollisionsBetween (projectileEntities, terrainEntities);
+			DetectCollisionsBetween (projectileEntities, enemyEntities);
+			DetectCollisionsBetween (frostEntities, enemyEntities);
 			DetectCollisionsBetween (frostEntities, terrainEntities);
+            DetectCollisionsBetween (player, movableEntities);
+			DetectCollisionsBetween (player, enemyEntities);
 			DetectCollisionsBetween (player, terrainEntities);
-                        DetectCollisionsBetween (player, movableEntities);
-                        DetectCollisionsBetween (movableEntities, terrainEntities);
-                        DetectCollisionsAmong (movableEntities);
+            DetectCollisionsBetween (movableEntities, terrainEntities);
+			DetectCollisionsBetween (enemyEntities, terrainEntities);
+            DetectCollisionsAmong (movableEntities);
+			DetectCollisionsAmong (enemyEntities);
+
 
 		}
 
@@ -128,11 +143,12 @@ namespace EC_Proto
 				foreach (Entity e2 in list2) {
 
 					if (rect1.Intersects (e2.getHitBox())) {
-						e1.CollidedWith (e2);
-						e2.CollidedWith (e1);
 						if (e1 is PhysicsEntity && e2 is PhysicsEntity) {
 							ResolveCollisions ((PhysicsEntity)e1, (PhysicsEntity)e2);
 						}
+						e1.CollidedWith (e2);
+						e2.CollidedWith (e1);
+
 					}
 				}
 
@@ -142,18 +158,24 @@ namespace EC_Proto
 
 
 			Rectangle rect1 = entity.getHitBox ();
+			List<Tuple<Entity,Entity>> collisions = new List<Tuple<Entity, Entity>>();
 
 			foreach (Entity e2 in list) {
 
 				if (rect1.Intersects (e2.getHitBox())) {
-					entity.CollidedWith (e2);
-					e2.CollidedWith (entity);
-					if (entity is PhysicsEntity && e2 is PhysicsEntity) {
-						ResolveCollisions ((PhysicsEntity)entity, (PhysicsEntity)e2);
-					}
+					collisions.Add (new Tuple<Entity, Entity> (entity, e2));
+
+
 				}
 			}
-
+			foreach (Tuple<Entity,Entity> coll in collisions) {
+				if (coll.Item1 is PhysicsEntity && coll.Item2 is PhysicsEntity)
+					ResolveCollisions ((PhysicsEntity)coll.Item1, (PhysicsEntity)coll.Item2);
+			}
+			foreach (Tuple<Entity,Entity> coll in collisions) {
+				coll.Item1.CollidedWith (coll.Item2);
+				coll.Item2.CollidedWith (coll.Item1);
+			}
 
 		}
                 
@@ -166,12 +188,13 @@ namespace EC_Proto
 				for (int j = i+1; j < list.Count; j++) {
       					Entity e2 = list[j];
 
-				    	if (rect1.Intersects (e2.getHitBox())) {
+				    	if ( rect1.Intersects (e2.getHitBox())) {
+							if (e1 is PhysicsEntity && e2 is PhysicsEntity) {
+								ResolveCollisions ((PhysicsEntity)e1, (PhysicsEntity)e2);
+							}
 				       		e1.CollidedWith (e2);
 							e2.CollidedWith (e1);
-						if (e1 is PhysicsEntity && e2 is PhysicsEntity) {
-							ResolveCollisions ((PhysicsEntity)e1, (PhysicsEntity)e2);
-						}
+
 			            }
 			 	  }
               }
@@ -181,21 +204,24 @@ namespace EC_Proto
 
 
 		//TODO: Implementation relies on AABB
+		//HACK: This code is ugly! It has a lot that isn't being used, and it isn't authentic physics.
 		public void ResolveCollisions(PhysicsEntity e1, PhysicsEntity e2) {
+
 			if (e1.inverseMass == 0 && e2.inverseMass == 0)
 				return; // Two immovable objects. Nothing to be done.
 			if (!e1.Collidable || !e2.Collidable) {
 				return; //One of the objects doesn't wish for collsion resolution.
 			}
+
 			Vector2 diff = new Vector2 (e1.getHitBox ().Center.X - e2.getHitBox ().Center.X, e1.getHitBox ().Center.Y - e2.getHitBox ().Center.Y);
-			Vector2 rel_motion = e1.Momentum - e2.Momentum;
-			if (diff.X * rel_motion.X + diff.Y * rel_motion.Y > 0)
-				return; //Don't mess with objects moving out of each other!
+//			Vector2 rel_motion = e1.Momentum - e2.Momentum;
+//			if (diff.X * rel_motion.X + diff.Y * rel_motion.Y > 0)
+//				return; //Don't mess with objects moving out of each other!
 
 			float x_depth = (e1.getHitBox().Width + e2.getHitBox().Width) / 2.0f - Math.Abs (e1.getHitBox().Center.X - e2.getHitBox().Center.X);
 			float y_depth = (e1.getHitBox().Height + e2.getHitBox().Height) / 2.0f - Math.Abs (e1.getHitBox().Center.Y - e2.getHitBox().Center.Y);
 
-			if (e1.inverseMass == 0) {
+			if (e1.inverseMass == 0 || (e1 is PlayerEntity && e2.inverseMass != 0)) {
 				MomentumSink (e2, e1.getHitBox (), x_depth, y_depth);
 				return;
 			} else if (e2.inverseMass == 0) {
@@ -203,38 +229,8 @@ namespace EC_Proto
 				return;
 			}
 
-			if ( x_depth < y_depth && x_depth >= Math.Min (e1.getHitBox ().Width, e2.getHitBox ().Width)) {
-				diff.X = 0;
-			} else if (y_depth >= Math.Min (e1.getHitBox ().Height, e2.getHitBox ().Height)) {
-				diff.Y = 0;
-			}
-
-			x_depth = Math.Max (0, x_depth);
 
 
-
-			y_depth = Math.Max (0, y_depth);
-			if (diff.LengthSquared() == 0)
-				return;
-
-
-			x_depth *= Math.Sign (e1.getHitBox().Center.X - e2.getHitBox().Center.X);
-			y_depth *= Math.Sign (e1.getHitBox ().Center.Y - e2.getHitBox ().Center.Y);
-			diff.Normalize();
-			float displac_dot = diff.X * x_depth + diff.Y * y_depth;
-
-			Vector2 displacement = diff * displac_dot;
-			diff.Normalize ();
-			double totalMass = e1.inverseMass + e2.inverseMass;
-			Console.Out.WriteLine (x_depth.ToString () + "," + y_depth.ToString ());
-			Console.Out.WriteLine (diff);
-
-			Console.Out.WriteLine (displacement);
-			//displacement.Normalize ();
-			e1.Impulse (displacement * (float)(e1.inverseMass/totalMass));
-			e2.Impulse (-displacement * (float)(e2.inverseMass/totalMass));
-			Console.Out.WriteLine (displacement * (float)(e1.inverseMass/totalMass));
-			Console.Out.WriteLine (-displacement * (float)(e2.inverseMass/totalMass));
 
 
 
@@ -269,8 +265,13 @@ namespace EC_Proto
             DrawList (spriteBatch, movableEntities, drawHitBoxes);
 			DrawList (spriteBatch, projectileEntities, drawHitBoxes);
 			DrawList (spriteBatch, frostEntities, drawHitBoxes);
+            DrawList (spriteBatch, movableEntities, drawHitBoxes);
+			DrawList (spriteBatch, enemyEntities, drawHitBoxes);
 
-			spriteBatch.Draw (player.getTexture (),player.position, player.spriteChoice.rect, Color.White);
+
+			if (player.getTexture () != null) {
+				spriteBatch.Draw (player.getTexture (), player.position, player.spriteChoice.rect, Color.White);
+			}
 			if (drawHitBoxes)
 				spriteBatch.Draw (Game1.blankTex, player.getHitBox (), Color.Aquamarine); //Debugging!
 
@@ -285,6 +286,44 @@ namespace EC_Proto
 					spriteBatch.Draw (Game1.blankTex, e.getHitBox (), Color.White);
 			}
 		}
+
+		public bool LineOfSight(Point point1, Point point2) {
+			Vector2 p1 = new Vector2 (point1.X, point1.Y);
+			Vector2 p2 = new Vector2 (point2.X, point2.Y);
+
+			foreach ( TerrainEntity block in terrainEntities) {
+				if (AABBSegmentIntersect (block.getHitBox (), p1, p2)) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		bool AABBSegmentIntersect(Rectangle aabb, Vector2 point1, Vector2 point2) {
+			Vector2 max = new Vector2 (aabb.Right, aabb.Bottom);
+			Vector2 min = new Vector2 (aabb.Left, aabb.Top);
+			//Let's check for a plane of sepration.
+			Vector2 segmid = (point2 - point1) * 0.5f;
+
+			Vector2 boxmid = (max - min) * 0.5f;
+
+			Vector2 axis = point1 + segmid - (min + max) * 0.5f;
+
+			Vector2 absolutesegmid = segmid;
+			absolutesegmid.X = (absolutesegmid.X < 0) ? -absolutesegmid.X : absolutesegmid.X;
+			absolutesegmid.Y = (absolutesegmid.Y < 0) ? -absolutesegmid.Y : absolutesegmid.Y;
+
+			if (Math.Abs(axis.X) > boxmid.X + absolutesegmid.X)
+				return false;
+
+			if (Math.Abs(axis.Y) > boxmid.Y + absolutesegmid.Y)
+				return false;
+
+
+
+			return true;
+		}
+
 
 	}
 }

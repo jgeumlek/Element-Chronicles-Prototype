@@ -26,7 +26,7 @@ namespace EC_Proto
 					position.X = currentNode.X;
 					GetNextNode (currentNode);
 				} else {
-					position.X += moveDirection;
+					position.X += moveDirection.X;
 				}
 			}
 			else if (moveDirection.X < 0) {
@@ -35,7 +35,7 @@ namespace EC_Proto
 					position.X = currentNode.X;
 					GetNextNode (currentNode);
 				} else {
-					position.X += moveDirection;
+					position.X += moveDirection.Y;
 				}
 			}
 			if (moveDirection.Y > 0) {
@@ -44,7 +44,7 @@ namespace EC_Proto
 					position.Y = currentNode.Y;
 					GetNextNode (currentNode);
 				} else {
-					position.Y += moveDirection;
+					position.Y += moveDirection.Y;
 				}
 			}
 			else if (moveDirection.Y < 0) {
@@ -53,7 +53,7 @@ namespace EC_Proto
 					position.Y = currentNode.Y;
 					GetNextNode (currentNode);
 				} else {
-					position.Y += moveDirection;
+					position.Y += moveDirection.Y;
 				}
 			}
 		}

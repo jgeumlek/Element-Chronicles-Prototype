@@ -12,7 +12,7 @@ namespace EC_Proto
 		private const float DEFAULT_FRICTION = .9f;
 		//private float playerspeed = 5;
 		//private Vector2 currentSpeed = new Vector2(0,0); //Used for adding momentum to projectiles.
-		private float maxSpeed = 5;
+		private float maxSpeed = 5.5f;
 		private float acceleration = 2;
 		public float FrictionFactor = .9f;
 
@@ -42,7 +42,10 @@ namespace EC_Proto
 			hurtbox = new Rectangle (10, 5, 60, 140);
 			direction = Direction.South;
 			animState.AnimationName = "south";
-			inverseMass = 5;
+
+			inverseMass = 1;
+
+
 		}
 
 		//Need to clean up constructors, and use base class better
@@ -80,52 +83,54 @@ namespace EC_Proto
 				changedirection = false;
 			}
 
+
+
+			if (keyboard.IsKeyDown (Keys.A)) {
+				newDirection = Direction.West;
+				if (direction == newDirection) {
+					changedirection = false;
+				} //Already heading this way; don't turn, just move diagonally.
+				moveDirection += Entity.dirVector (newDirection);
+			}
+			if (keyboard.IsKeyDown (Keys.D)) {
+
+				newDirection = Direction.East;
+				if (direction == newDirection) {
+					changedirection = false;
+				}
+				moveDirection += Entity.dirVector (newDirection);
+			}
+			if (keyboard.IsKeyDown (Keys.W)) {
+
+				newDirection = Direction.North;				
+				if (direction == newDirection) {
+					changedirection = false;
+				}
+
+				moveDirection += Entity.dirVector (newDirection);
+			}
+			if (keyboard.IsKeyDown (Keys.S)) {
+
+				newDirection = Direction.South;
+				if (direction == newDirection) {
+					changedirection = false;
+				}
+
+				moveDirection += Entity.dirVector (newDirection);
+			}
+
+			if (changedirection && newDirection != Direction.Undefined) {
+				direction = newDirection; //We aren't still heading the same way, and we are moving. We should change direction.
+				animState = anim.Update (animState, Entity.dirName (newDirection));
+			}
 			if (flinchTime <= TimeSpan.Zero) {
-				if (keyboard.IsKeyDown (Keys.A)) {
-					newDirection = Direction.West;
-					if (direction == newDirection) {
-						changedirection = false;
-					} //Already heading this way; don't turn, just move diagonally.
-					moveDirection += Entity.dirVector (newDirection);
-				}
-				if (keyboard.IsKeyDown (Keys.D)) {
-					newDirection = Direction.East;
-					if (direction == newDirection) {
-						changedirection = false;
-					}
-					moveDirection += Entity.dirVector (newDirection);
-				}
-				if (keyboard.IsKeyDown (Keys.W)) {
-					newDirection = Direction.North;				
-					if (direction == newDirection) {
-						changedirection = false;
-					}
-					moveDirection += Entity.dirVector (newDirection);
-				}
-				if (keyboard.IsKeyDown (Keys.S)) {
-					newDirection = Direction.South;
-					if (direction == newDirection) {
-						changedirection = false;
-					}
-
-					moveDirection += Entity.dirVector (newDirection);
-				}
-
-				if (changedirection && newDirection != Direction.Undefined) {
-					direction = newDirection; //We aren't still heading the same way, and we are moving. We should change direction.
-					animState = anim.Update (animState, Entity.dirName (newDirection));
-				}
-
 				momentum += moveDirection * acceleration;
-			
-
-
 			} else if (flinchTime > TimeSpan.Zero) {
 				flinchTime -= gameTime.ElapsedGameTime;
 			}
 
 
-				moveOffset (momentum);
+				//moveOffset (momentum);
 				spriteChoice.rect = anim.GetRectangle (animState);
 				momentum *= FrictionFactor;
 				if (momentum.LengthSquared() > maxSpeed*maxSpeed) {
@@ -136,9 +141,8 @@ namespace EC_Proto
 					momentum.X = 0;
 					momentum.Y = 0;
 				}
-				Console.Out.WriteLine (momentum);
 				momentum *= FrictionFactor;
-				Console.Out.WriteLine ("after" + momentum.ToString());
+				
 				//Set up friction factor for next frame.
 				FrictionFactor = DEFAULT_FRICTION;
 		}
