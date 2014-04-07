@@ -11,12 +11,13 @@ namespace EC_Proto
 		private Vector2 currentNode;
 		private int nodeIndex;
 
-		private float speed = 5;
-		private Vector2 moveDirection = new Vector2 (0, 0);
+		protected float speed = 5;
+		private Vector2 moveDirection;
 
 		public MonsterPatrolEntity () {
 			nodeIndex = 0;
 			currentNode = nodeList [nodeIndex];
+			moveDirection = new Vector2 (0, 0);
 		}
 
 		override public void Update(KeyboardState state, GameTime time) {

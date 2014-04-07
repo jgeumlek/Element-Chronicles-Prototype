@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="30" height="30" tilewidth="100" tileheight="100">
  <tileset firstgid="1" name="Sprite sheet" tilewidth="100" tileheight="100">
-  <image source="spritesheet_1.png" trans="ffffff" width="400" height="200"/>
+  <image source="spritesheet_1.png" trans="ffffff" width="400" height="400"/>
   <tile id="0">
    <properties>
     <property name="spawn" value="water"/>
    </properties>
   </tile>
+  <tile id="2">
+   <properties>
+    <property name="" value=""/>
+   </properties>
+  </tile>
   <tile id="3">
    <properties>
     <property name="solid" value=""/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="solid" value=""/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="spawn" value="nothing"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="spawn" value="nothing"/>
    </properties>
   </tile>
  </tileset>
@@ -36,20 +56,200 @@
  </layer>
  <layer name="Spawn" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJztwQEBAAAAgiD/r25IQAEAAPBoDhAAAQ==
+   eJxjYBhegGugHTAKRsEIB/TMgxx0tItYMFTLoKHq7lEwCogFg7G8oBQMRz/REoyGF3bAQyVziKlHRuNgcAIAgI4AZw==
   </data>
  </layer>
- <objectgroup name="Player" width="30" height="30">
-  <object name="player" type="spawn" x="2100" y="2700" width="75" height="75">
+ <objectgroup name="Spawn_location" width="30" height="30">
+  <object name="fireelemental" type="spawn" x="900" y="2600" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental1_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental1_1" type="node" x="500" y="2600" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental1_2"/>
+    <property name="nodeName" value="fireelemental1_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental1_2" type="node" x="500" y="2800" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental1_3"/>
+    <property name="nodeName" value="fireelemental1_2"/>
+   </properties>
+  </object>
+  <object name="fireelemental1_3" type="node" x="1000" y="2800" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental1_0"/>
+    <property name="nodeName" value="fireelemental1_3"/>
+   </properties>
+  </object>
+  <object name="fireelemental1_0" type="node" x="1000" y="2600" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental1_1"/>
+    <property name="nodeName" value="fireelemental1_0"/>
+   </properties>
+  </object>
+  <object name="fireelemental" type="spawn" x="2700" y="1200" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental2_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental2_1" type="node" x="2700" y="1300" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental2_2"/>
+    <property name="nodeName" value="fireelemental2_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental2_2" type="node" x="2400" y="1300" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental2_3"/>
+    <property name="nodeName" value="fireelemental2_2"/>
+   </properties>
+  </object>
+  <object name="fireelemental2_3" type="node" x="2400" y="1200" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental2_4"/>
+    <property name="nodeName" value="fireelemental2_3"/>
+   </properties>
+  </object>
+  <object name="fireelemental2_4" type="node" x="2800" y="1200" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental2_5"/>
+    <property name="nodeName" value="fireelemental2_4"/>
+   </properties>
+  </object>
+  <object name="fireelemental2_5" type="node" x="2800" y="1100" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental2_0"/>
+    <property name="nodeName" value="fireelemental2_5"/>
+   </properties>
+  </object>
+  <object name="fireelemental2_0" type="node" x="2700" y="1100" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental2_1"/>
+    <property name="nodeName" value="fireelemental2_0"/>
+   </properties>
+  </object>
+  <object name="fireelemental" type="spawn" x="1100" y="1100" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental3_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental3_1" type="node" x="1300" y="1100" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental3_2"/>
+    <property name="nodeName" value="fireelemental3_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental3_2" type="node" x="1000" y="1400" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental3_3"/>
+    <property name="nodeName" value="fireelemental3_2"/>
+   </properties>
+  </object>
+  <object name="fireelemental3_3" type="node" x="900" y="1300" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental3_0"/>
+    <property name="nodeName" value="fireelemental3_3"/>
+   </properties>
+  </object>
+  <object name="fireelemental3_0" type="node" x="900" y="1100" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental3_1"/>
+    <property name="nodeName" value="fireelemental3_0"/>
+   </properties>
+  </object>
+  <object name="fireelemental" type="spawn" x="2200" y="100" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental4_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental4_1" type="node" x="2400" y="100" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental4_2"/>
+    <property name="nodeName" value="fireelemental4_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental4_2" type="node" x="2400" y="300" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental4_3"/>
+    <property name="nodeName" value="fireelemental4_2"/>
+   </properties>
+  </object>
+  <object name="fireelemental4_3" type="node" x="2200" y="300" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental4_0"/>
+    <property name="nodeName" value="fireelemental4_3"/>
+   </properties>
+  </object>
+  <object name="fireelemental4_0" type="node" x="1900" y="100" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental4_1"/>
+    <property name="nodeName" value="fireelemental4_0"/>
+   </properties>
+  </object>
+  <object name="fireelemental" type="spawn" x="700" y="900" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental5_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental5_1" type="node" x="900" y="900" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental5_2"/>
+    <property name="nodeName" value="fireelemental5_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental5_2" type="node" x="1100" y="800" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental5_3"/>
+    <property name="nodeName" value="fireelemental5_2"/>
+   </properties>
+  </object>
+  <object name="fireelemental5_3" type="node" x="900" y="700" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental5_4"/>
+    <property name="nodeName" value="fireelemental5_3"/>
+   </properties>
+  </object>
+  <object name="fireelemental5_4" type="node" x="800" y="700" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental5_0"/>
+    <property name="nodeName" value="fireelemental5_4"/>
+   </properties>
+  </object>
+  <object name="fireelemental5_0" type="node" x="600" y="900" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental5_1"/>
+    <property name="nodeName" value="fireelemental5_0"/>
+   </properties>
+  </object>
+  <object name="flytrap" type="spawn" x="400" y="1000" width="100" height="100"/>
+  <object name="flytrap" type="spawn" x="200" y="1900" width="100" height="100"/>
+  <object name="flytrap" type="spawn" x="1100" y="2300" width="100" height="100"/>
+  <object name="flytrap" type="spawn" x="1800" y="2600" width="100" height="100"/>
+  <object name="flytrap" type="spawn" x="2500" y="2000" width="100" height="100"/>
+  <object name="scroll" type="spawn" x="2100" y="2500" width="100" height="100">
+   <properties>
+    <property name="spell" value="frostbreath"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="Player_location" width="30" height="30">
+  <object name="player" type="spawn" x="2100" y="2700" width="100" height="100">
    <properties>
     <property name="" value=""/>
    </properties>
   </object>
-  <object name="south_entrance" type="location" x="2100" y="2726" width="75" height="75"/>
-  <object name="north_entrance" type="location" x="400" y="200" width="75" height="75"/>
+  <object name="south_entrance" type="location" x="2100" y="2726" width="100" height="100"/>
+  <object name="north_entrance" type="location" x="400" y="200" width="100" height="100"/>
   <object name="central_hub" type="warp" x="2100" y="2975" width="100" height="25">
    <properties>
     <property name="location" value="north_west_entrance"/>
+   </properties>
+  </object>
+  <object name="water_hub" type="warp" x="400" y="0" width="100" height="25">
+   <properties>
+    <property name="location" value="south_entrance"/>
    </properties>
   </object>
  </objectgroup>

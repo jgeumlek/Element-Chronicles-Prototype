@@ -25,6 +25,13 @@ namespace EC_Proto
 		}
 
 		public void Update (GameTime gameTime) {
+			if (curHp < 0) {
+				curHp = 0;
+				Death ();
+			}
+			if (curMana < 0) {
+				curMana = 0;
+			}
 			if (hpTimer > TimeSpan.Zero) {
 				hpTimer -= gameTime.ElapsedGameTime;
 			} else {
@@ -40,6 +47,10 @@ namespace EC_Proto
 					curMana++;
 				manaTimer = new TimeSpan (0, 0, 0, 0, manaRegenTime);
 			}
+		}
+
+		private void Death () {
+
 		}
 	}
 }

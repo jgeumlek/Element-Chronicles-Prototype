@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2355D6FB-B215-4FDB-B246-F725C95F340D}</ProjectGuid>
     <ProjectTypeGuids>{9B831FEF-F496-498F-9FE8-180DA5CB4258};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>EC_Proto</RootNamespace>
     <MonoGamePlatform>Linux</MonoGamePlatform>
     <AssemblyName>EC_Proto</AssemblyName>
@@ -36,9 +36,7 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="MonoGame.Framework">
-      <HintPath>..\Monogame-SDL\MonoGame.Framework.dll</HintPath>
-    </Reference>
+    <Reference Include="MonoGame.Framework, Version=3.0.1.0, Culture=neutral" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs">
@@ -52,7 +50,9 @@
     <Compile Include="Entities\TerrainEntity.cs" />
     <Compile Include="SpriteChoice.cs" />
     <Compile Include="Map Loading\GameTile.cs" />
-    <Compile Include="Map Loading\GameMap.cs" />
+    <Compile Include="Map Loading\GameMap.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="AnimationManager.cs" />
     <Compile Include="Entities\TorchEntity.cs" />
     <Compile Include="AnimationState.cs" />
@@ -78,6 +78,17 @@
     <Compile Include="Gui\GuiState.cs" />
     <Compile Include="PlayerStats.cs" />
     <Compile Include="Entities\MonsterPatrolEntity.cs" />
+    <Compile Include="Entities\WolfEntity.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Entities\NodeEntity.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="AI\AI.cs" />
+    <Compile Include="AI\RandomWalkAI.cs" />
+    <Compile Include="AI\SeePlayerAI.cs" />
+    <Compile Include="AI\PatrolPathAI.cs" />
+    <Compile Include="Entities\FireElementalEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Icon.png" />
@@ -172,7 +183,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\central_earth.tmx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\central_hub.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -194,6 +205,7 @@
     </None>
     <None Include="Content\TitleSong.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\barBackground.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -205,6 +217,24 @@
     </None>
     <None Include="Content\expBar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\wolf.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\magicscroll.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\fireElemental.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\central_air.tmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\central_fire.tmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\AirZone.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -223,5 +253,10 @@
       <Project>{2B1A6CCC-4B80-40E6-B109-9C54A01C1376}</Project>
       <Name>TiledMax</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\TitleSong.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

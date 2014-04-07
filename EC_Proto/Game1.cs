@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.IO;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
 #endregion
@@ -80,15 +79,18 @@ namespace EC_Proto
 			Gui.expBar = Content.Load<Texture2D> ("expBar");
 
 
-
 			//TODO: This probably isn't the cleanest spot for initializing the player
 
 			PlayerEntity.InitAnimation ();
-			FlytrapEntity.InitAnimation ();
 			FireballEntity.InitAnimation ();
 			FrostEntity.InitAnimation ();
+			FlytrapEntity.InitAnimation ();
+			WolfEntity.InitAnimation ();
+			FireElementalEntity.InitAnimation ();
 
 			FlytrapEntity.spritesheet = Content.Load<Texture2D> ("flytrap");
+			WolfEntity.spritesheet = Content.Load<Texture2D> ("wolf");
+			FireElementalEntity.spritesheet = Content.Load<Texture2D> ("fireElemental");
 			TorchEntity.torchOff = Content.Load<Texture2D>("torchOff");
 			TorchEntity.torchOn = Content.Load<Texture2D>("torchOn");
 			WaterEntity.waterTex = Content.Load<Texture2D> ("water");

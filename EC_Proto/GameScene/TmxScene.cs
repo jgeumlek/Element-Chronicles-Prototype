@@ -1,3 +1,5 @@
+using TiledMax;
+
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
@@ -25,17 +27,19 @@ namespace EC_Proto
 			SceneWidth = map.MapWidth;
 			SceneHeight = map.MapHeight;
 
+			foreach (String location in map.Locations.Keys) {
+			}
 			if (map.Locations.ContainsKey (locationTarget)) {
 				player.MoveToRect (map.Locations [locationTarget]);
 			}
 		}
 
-		override public void SpawnEntity(String entityType, Rectangle position) {
+		override public void SpawnEntity(String entityType, Rectangle position, Properties properties) {
 			//Ideally use EntitySpawners dictionary, and add entity to appropriate list based on type!
 			if (entityType == "player") {
 				map.Locations.Add ("default", position);
 			}
-			base.SpawnEntity (entityType, position);
+			base.SpawnEntity (entityType, position, properties);
 
 		}
 
@@ -48,7 +52,6 @@ namespace EC_Proto
 
 
 				spriteBatch.Begin (SpriteSortMode.Deferred, null, null, null, null, null);
-				Console.Out.WriteLine (map.Layers.Count);
 				foreach (TiledMax.Layer layer in map.Layers) {
 
 					int width = layer.Width;

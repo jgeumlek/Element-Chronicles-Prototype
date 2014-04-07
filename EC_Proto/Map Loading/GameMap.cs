@@ -81,6 +81,7 @@ namespace EC_Proto
 			}
 			//Spawn things that should be spawned.
 			foreach (TiledMax.Layer layer in map.Layers) {
+			
 				MapWidth = layer.Width * TileWidth;
 				MapHeight = layer.Height * TileHeight;
 				bool layerSolid = layer.Properties.ContainsKey ("solid");
@@ -95,9 +96,9 @@ namespace EC_Proto
 							GameTile tile = Tiles [tileID];
 							if (layerSolid || tile.solid) {
 								if (layerSpawnType == "" && tile.SpawnType == "")
-									game.SpawnEntity ("Terrain", destination);
+									game.SpawnEntity ("Terrain", destination, layer.Properties);
 							}
-							game.SpawnEntity (layerSpawnType == "" ? tile.SpawnType : layerSpawnType, destination);
+							game.SpawnEntity (layerSpawnType == "" ? tile.SpawnType : layerSpawnType, destination, layer.Properties);
 						}
 					}
 				}
@@ -107,16 +108,21 @@ namespace EC_Proto
 				foreach (TiledMax.MapObject obj in og) {
 					Rectangle destination = new Rectangle (obj.X, obj.Y, obj.Width, obj.Height);
 
+					Properties properties = obj.Properties;
+
 					switch (obj.Type) {
 					case "spawn":
-						game.SpawnEntity (obj.Name, destination);
+						game.SpawnEntity (obj.Name, destination, obj.Properties);
 						break;
 					case "warp":
 						String locationTarget = (obj.Properties.ContainsKey ("location")) ? (String)obj.Properties ["location"] : "default";
-						game.AddLoadTrigger (obj.Name, locationTarget, destination);
+						game.AddLoadTrigger (obj.Name, locationTarget, destination); // , obj.Properties);
 						break;
 					case "location":
 						Locations.Add (obj.Name, destination);
+						break;
+					case "node":
+						game.AddNode (obj.Name, (string)obj.Properties ["next"], destination);
 						break;
 					}
 				}

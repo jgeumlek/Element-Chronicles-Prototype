@@ -1,3 +1,5 @@
+using TiledMax;
+
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
@@ -16,9 +18,10 @@ namespace EC_Proto
 		public List<FrostEntity> frostEntities = new List<FrostEntity> ();
 		public List<Entity> projectileEntities = new List<Entity> ();
 		public List<TerrainEntity> terrainEntities = new List<TerrainEntity> ();
-        public List<Entity> movableEntities = new List<Entity>();
-		public List<Entity> enemyEntities = new List<Entity>();
-
+		//public List<Entity> enemyEntities = new List<Entity>();
+		public List<Entity> movableEntities = new List<Entity>();
+		public List<NodeEntity> nodeEntities = new List<NodeEntity> ();
+		public List<MonsterEntity> monsterEntities = new List<MonsterEntity> ();
 
 		public int SceneWidth;
 		public int SceneHeight;
@@ -31,32 +34,43 @@ namespace EC_Proto
  
 		}
 
-		virtual public void SpawnEntity(String entityType, Rectangle position) {
+		virtual public void SpawnEntity(String entityType, Rectangle position, Properties properties) {
 			//Ideally use EntitySpawners dictionary, and add entity to appropriate list based on type!
 			switch (entityType) {
-				case "torch":
-					terrainEntities.Add (new TorchEntity (position));
-					break;
-				case "flytrap":
-					enemyEntities.Add (new FlytrapEntity (position));
-					break;
-				case "Terrain":
-					terrainEntities.Add (new TerrainEntity (position));
-					break;
-                case "water":
-                	terrainEntities.Add (new WaterEntity (position));
-                	break;
-                case "boulder":
-                	movableEntities.Add (new BoulderEntity (position));
-                	break;
-
+			case "torch":
+				terrainEntities.Add (new TorchEntity (position));
+				break;
+			case "Terrain":
+				terrainEntities.Add (new TerrainEntity (position));
+				break;
+            		case "water":
+            			terrainEntities.Add (new WaterEntity (position));
+            			break;
+            		case "boulder":
+            			movableEntities.Add (new BoulderEntity (position));
+            			break;
+			case "node":
+				nodeEntities.Add (new NodeEntity (position, properties));
+				break;
+			case "flytrap":
+				monsterEntities.Add (new FlytrapEntity (position));
+				break;
+			case "wolf":
+				monsterEntities.Add (new WolfEntity (position, properties, this));
+				break;
+			case "fireelemental":
+				monsterEntities.Add (new FireElementalEntity (position, properties, this));
+				break;
 			}
 
 		}
 
+		public void AddNode (String nodeName, String nextNode, Rectangle position) {
+			nodeEntities.Add (new NodeEntity (nodeName,nextNode,position));
+		}
+
 		public void AddLoadTrigger (String mapName,String locationTarget, Rectangle position) {
 			terrainEntities.Add (new WarpTrigger (mapName, locationTarget, position, game));
-
 		}
 
 		public void AddSpellEntity(Entity spell) {
@@ -87,22 +101,20 @@ namespace EC_Proto
 				if (e.Active) e.Update (state, gameTime);
 			}
 
-			foreach (PhysicsEntity e in enemyEntities) {
+			foreach (PhysicsEntity e in monsterEntities) {
 				e.Update (state, gameTime);
 				e.position += e.Momentum * (float)e.inverseMass;
-
 			}
 
             foreach (Entity e in movableEntities) {
 				e.Update (state, gameTime);
-
 			}
 
 			terrainEntities = terrainEntities.Where( x => x.Alive()).ToList();
 			projectileEntities = projectileEntities.Where( x => x.Alive()).ToList();
 			frostEntities = frostEntities.Where (x => x.Alive ()).ToList();
             movableEntities = movableEntities.Where (x => x.Alive ()).ToList();
-			enemyEntities = enemyEntities.Where (x => x.Alive ()).ToList();
+			monsterEntities = monsterEntities.Where (x => x.Alive ()).ToList();
 
 			DetectCollisions ();
 		}
@@ -112,7 +124,7 @@ namespace EC_Proto
 			foreach (Entity e in projectileEntities) {
 				e.AnimationTick ();
 			}
-			foreach (Entity e in enemyEntities) {
+			foreach (Entity e in monsterEntities) {
 				e.AnimationTick ();
 			}
 		}
@@ -121,16 +133,20 @@ namespace EC_Proto
 			//Care should be taken to not check the same pair of objects twice.
 			//Let's check each projectile with the terrain and the enemies.
 			DetectCollisionsBetween (projectileEntities, terrainEntities);
-			DetectCollisionsBetween (projectileEntities, enemyEntities);
-			DetectCollisionsBetween (frostEntities, enemyEntities);
+			DetectCollisionsBetween (projectileEntities, movableEntities);
+			DetectCollisionsBetween (projectileEntities, monsterEntities);
 			DetectCollisionsBetween (frostEntities, terrainEntities);
+			DetectCollisionsBetween (frostEntities, movableEntities);
+			DetectCollisionsBetween (frostEntities, monsterEntities);
             DetectCollisionsBetween (player, movableEntities);
-			DetectCollisionsBetween (player, enemyEntities);
+			DetectCollisionsBetween (player, monsterEntities);
 			DetectCollisionsBetween (player, terrainEntities);
             DetectCollisionsBetween (movableEntities, terrainEntities);
-			DetectCollisionsBetween (enemyEntities, terrainEntities);
+			DetectCollisionsBetween (monsterEntities, terrainEntities);
+			DetectCollisionsBetween (monsterEntities, movableEntities);
+
             DetectCollisionsAmong (movableEntities);
-			DetectCollisionsAmong (enemyEntities);
+			DetectCollisionsAmong (monsterEntities);
 
 
 		}
@@ -265,8 +281,7 @@ namespace EC_Proto
             DrawList (spriteBatch, movableEntities, drawHitBoxes);
 			DrawList (spriteBatch, projectileEntities, drawHitBoxes);
 			DrawList (spriteBatch, frostEntities, drawHitBoxes);
-            DrawList (spriteBatch, movableEntities, drawHitBoxes);
-			DrawList (spriteBatch, enemyEntities, drawHitBoxes);
+			DrawList (spriteBatch, monsterEntities, drawHitBoxes);
 
 
 			if (player.getTexture () != null) {

@@ -14,13 +14,11 @@ namespace EC_Proto
 			this.speed = speed;
 		}
 
-		public void update(PhysicsEntity actor) {
+		public void update(PhysicsEntity actor, GameTime time) {
 			if (GameState.Scene ().LineOfSight (actor.getHitBox ().Center, GameScene.player.getHitBox ().Center)) {
-				Point diff = GameScene.player.getHitBox ().Center - actor.getHitBox ().Center;
-				Console.Out.WriteLine (diff);
-				Vector2 dir = new Vector2 (diff.X, diff.Y);
+				Console.Out.WriteLine ("I see you.");
+				Vector2 dir = new Vector2 (GameScene.player.getHitBox().Center.X - actor.getHitBox().Center.X, GameScene.player.getHitBox().Center.Y - actor.getHitBox().Center.Y);
 				dir.Normalize ();
-				Console.Out.WriteLine (dir);
 				actor.Impulse (dir);
 
 			}

@@ -24,23 +24,31 @@ namespace EC_Proto
 		public int ViewWidth { get; set; }
 		public int ViewHeight { get; set; }
 		private float zoomLevel = 0.5f;
-		Song bgm;
-		Song title;
+		SoundEffect bgm;
+		SoundEffect title;
 		private bool projectileLaunched = false;
 		TimeSpan timer = new TimeSpan (0, 0, 0, 0, 500);
 		public Dictionary<String, Spawn> EntitySpawners = new Dictionary<String, Spawn>();
 		Dictionary<String, String> LevelNames = new Dictionary<String, String> ();
 
+		SoundEffectInstance bgmInstance;
+		SoundEffectInstance titleInstance;
+		SoundEffectInstance airZoneInstance;
+
+		bool airPlaying = false;
 
 		public ContentManager Content;
 
 		public GameState(Game1 gameSystem) {
 			//Add in spawning code. Not yet used.
 			EntitySpawners.Add("flytrap",delegate(Rectangle position) {return new FlytrapEntity(position);});
+			//EntitySpawners.Add ("wolf", delegate(Rectangle position) {return new WolfEntity (position);});
+			EntitySpawners.Add ("fireElemental", delegate(Rectangle position) {return null;});
 			EntitySpawners.Add("torch",delegate(Rectangle position) {return new TorchEntity(position);});
 			EntitySpawners.Add("Terrain",delegate(Rectangle position) {return new TerrainEntity(position);});
 			EntitySpawners.Add("boulder",delegate(Rectangle position) {return new BoulderEntity(position);});
 			EntitySpawners.Add("water",delegate(Rectangle position) {return new WaterEntity(position);});
+			EntitySpawners.Add ("nothing", delegate(Rectangle position) {return null;});
 
 			scene = new GameScene (this);
 			this.gamesystem = gameSystem;
@@ -53,6 +61,8 @@ namespace EC_Proto
 			LevelNames.Add ("central_earth", "central_earth.tmx");
 			LevelNames.Add ("central_tutorial", "central_tutorial.tmx");
 			LevelNames.Add ("central_water", "central_water.tmx");
+			LevelNames.Add ("central_fire", "central_fire.tmx");
+			LevelNames.Add ("central_air", "central_air.tmx");
 
 			gui = new Gui ();
 
@@ -79,17 +89,19 @@ namespace EC_Proto
 			}
 
 			//Fire spawning. Should later be handled my some spell managing class.
-			if (!projectileLaunched && state.IsKeyDown (Keys.H) && prevState.IsKeyUp(Keys.H)) { //Use prev state to simulate onKeyDown
+			if (!projectileLaunched && PlayerStats.curMana >= 2 && state.IsKeyDown (Keys.H) && prevState.IsKeyUp(Keys.H)) { //Use prev state to simulate onKeyDown
 				FireballEntity fireball = new FireballEntity (GameScene.player.Center(), GameScene.player.direction, GameScene.player.getCurrentSpeed());
 				scene.AddSpellEntity (fireball);
 				projectileLaunched = true;
+				PlayerStats.curMana -= 2;
 			}
 
 			//Frost spawning.
-			if (!projectileLaunched && state.IsKeyDown (Keys.J) && prevState.IsKeyUp (Keys.J)) {
+			if (!projectileLaunched && PlayerStats.curMana >= 1 && state.IsKeyDown (Keys.J) && prevState.IsKeyUp (Keys.J)) {
 				FrostEntity frost = new FrostEntity (GameScene.player.Center() + new Vector2(7,10), GameScene.player.direction, GameScene.player.getCurrentSpeed());
 				scene.AddSpellEntity (frost);
 				projectileLaunched = true;
+				PlayerStats.curMana -= 1;
 			}
 
 			if (projectileLaunched) {
@@ -110,10 +122,6 @@ namespace EC_Proto
 			if (state.IsKeyDown (Keys.F3) && prevState.IsKeyUp(Keys.F3))
 				drawHitBoxes = !drawHitBoxes;
 
-
-
-
-		
 			screenMatrix = CameraManager.LookAtPoint (new Point ((int)GameScene.player.Center().X, (int)GameScene.player.Center().Y), ViewWidth, ViewHeight, zoomLevel, scene.SceneWidth, scene.SceneHeight);
 
 		}
@@ -130,12 +138,31 @@ namespace EC_Proto
 			if (!LevelNames.ContainsKey (mapName))
 				return; //No such map! Do nothing.
 
+			Console.Out.WriteLine ("Map Name: " + mapName);
+			if (mapName == "central_air") {
+				airPlaying = true;
+
+				bgmInstance.Stop ();
+				bgmInstance.Dispose ();
+				bgm = Content.Load<SoundEffect> ("AirZone.wav");
+				bgmInstance = bgm.CreateInstance ();
+				bgmInstance.IsLooped = true;
+				bgmInstance.Play ();
+			} else if (airPlaying) {
+				airPlaying = false;
+
+				bgmInstance.Stop ();
+				bgmInstance.Dispose ();
+				bgm = Content.Load<SoundEffect> ("bgm.wav");
+				bgmInstance = bgm.CreateInstance ();
+				bgmInstance.IsLooped = true;
+				bgmInstance.Play ();
+			}
+
 			String mapfile = LevelNames [mapName];
 
 			scene = new TmxScene (this);
 			((TmxScene)scene).LoadMap (mapfile,locationTarget,Content);
-
-
 
 			screenMatrix = Matrix.Identity;
 		}
@@ -146,19 +173,23 @@ namespace EC_Proto
 			//TODO: specify these!
 			if (sceneName == "logo") {
 				scene = new ImageScene (this, Content.Load<Texture2D> ("TitlePage"), "instruction");
-				title = Content.Load<Song> ("TitleSong.mp3");
-				MediaPlayer.Play (title);
-				MediaPlayer.IsRepeating = false;			}
+				title = Content.Load<SoundEffect>("TitleSong.wav");
+				titleInstance = title.CreateInstance();
+				titleInstance.IsLooped = true;
+				titleInstance.Play ();
+			}
 			if (sceneName == "instruction") {
 				scene = new ImageScene (this, Content.Load<Texture2D> ("tempintro"), "game");
-
 			}
 			if (sceneName == "game") {
 				scene = new TmxScene(this);
 				((TmxScene)scene).LoadMap (LevelNames["central_tutorial"],"default",Content);
-				bgm = Content.Load<Song> ("bgm.wav");
-				MediaPlayer.Play (bgm);
-				MediaPlayer.IsRepeating = true;
+
+				titleInstance.Stop ();
+				bgm = Content.Load<SoundEffect>("bgm.wav");
+				bgmInstance = bgm.CreateInstance();
+				bgmInstance.IsLooped = true;
+				bgmInstance.Play();
 			}
 		}
 

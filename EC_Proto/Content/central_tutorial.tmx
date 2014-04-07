@@ -1,52 +1,160 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="41" height="19" tilewidth="100" tileheight="100">
+<map version="1.0" orientation="orthogonal" width="20" height="21" tilewidth="100" tileheight="100">
  <tileset firstgid="1" name="spritesheet_1" tilewidth="100" tileheight="100">
-  <image source="spritesheet_1.png" trans="ffffff" width="400" height="200"/>
+  <image source="spritesheet_1.png" trans="ffffff" width="400" height="400"/>
+  <tile id="2">
+   <properties>
+    <property name="spawn" value="torch"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="spawn" value="boulder"/>
+   </properties>
+  </tile>
   <tile id="7">
    <properties>
     <property name="spawn" value="flytrap"/>
    </properties>
   </tile>
  </tileset>
- <layer name="grass" width="41" height="19">
+ <layer name="Tile Layer 1" width="20" height="21">
   <data encoding="base64" compression="zlib">
-   eJztwzENAAAMBKGb3r/k7tUACaumqqr6HlTdEkM=
+   eJxjY2BgYBvFo3gUj+JRPIoHGAMAaOAJ2Q==
   </data>
  </layer>
- <layer name="walls" width="41" height="19">
+ <layer name="trees" width="20" height="21">
   <properties>
    <property name="solid" value=""/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzVU0sOBSEIYzf3v/HbGkI/1Fm8ITFGqUhrfarq+cCoY0bR8wp/izv76j1OvSNOivMWz86h/h2+KK90d98F8Thzb+jj4pmujAfiucWn+cQXG91Sfac+UP/TPuKrcG4dx3OOH3terdP/XS2H4m2dtnVS3VJ9buoqHpt86m92T/KP+93KTwrvrN3aLBR+61PVI9uf7tj6zPEbezvFD8WNfskbMX9M59P/O9VAeIeLCleLbR3HM/8wftmHCz4=
+   eJzF1MEKACEIBFAPC+3/f/GegmVIHWskwVP1ErSGmQ1xquKW90DueuhkbuRltazWPS+zvH0rj7VmvGAp+qucv855nv7peXV9kVfprWeitzN7f5PZy6wz7w3PRXcx/WD+gYpXiS5PmR9MjgMc
   </data>
  </layer>
- <objectgroup name="spawn" width="41" height="19">
-  <object name="torch" type="spawn" x="1100" y="1300" width="100" height="100"/>
-  <object name="torch" type="spawn" x="1100" y="1500" width="100" height="100"/>
-  <object name="torch" type="spawn" x="1700" y="1500" width="100" height="100"/>
-  <object name="torch" type="spawn" x="1700" y="1300" width="100" height="100"/>
-  <object name="torch" type="spawn" x="700" y="1300" width="100" height="100"/>
-  <object name="torch" type="spawn" x="1100" y="100" width="100" height="100"/>
-  <object name="torch" type="spawn" x="3700" y="100" width="100" height="100"/>
-  <object name="torch" type="spawn" x="2700" y="300" width="100" height="100"/>
-  <object name="torch" type="spawn" x="3500" y="1700" width="100" height="100"/>
-  <object name="player" type="spawn" x="1300" y="1600" width="100" height="100"/>
-  <object name="central_hub" type="warp" x="4075" y="1500" width="25" height="100">
-   <properties>
-    <property name="location" value="west_entrance"/>
-   </properties>
-  </object>
-  <object name="exit" type="location" x="3900" y="1500" width="100" height="100"/>
-  <object name="torch" type="spawn" x="1332" y="1344" width="104" height="112"/>
-  <object name="torch" type="spawn" x="1432" y="1544" width="108" height="116"/>
- </objectgroup>
- <layer name="flytraps" width="41" height="19">
+ <layer name="boulder" width="20" height="21">
   <properties>
-   <property name="spawn" value="flytrap"/>
+   <property name="boulder" value="spawn"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo4Aw4BhoB4wgMBrWo2CogdE0OwpGAflgoPMPMfaT6saB9tMooC4AABT7ADk=
+   eJxjYBgFowABWAeJGbQwn9buGgWjYBRQBgBXvAAV
   </data>
  </layer>
+ <layer name="torch" width="20" height="21">
+  <properties>
+   <property name="torch" value="spawn"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjALiAfMgNX+wumsUEA8AHRAADQ==
+  </data>
+ </layer>
+ <layer name="flytrap" width="20" height="21">
+  <properties>
+   <property name="flytrap" value="spawn"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2D4Ao5BbvdAuo8WYLj5ZxTQFwAAaDAAIQ==
+  </data>
+ </layer>
+ <objectgroup name="spawn" width="20" height="21"/>
+ <objectgroup name="locations" width="20" height="21">
+  <object name="wolf1_5" type="node" x="1800" y="600" width="104" height="100">
+   <properties>
+    <property name="next" value="wolf1_6"/>
+    <property name="nodeName" value="wolf1_5"/>
+   </properties>
+  </object>
+  <object name="wolf1_6" type="node" x="1800" y="100" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf1_0"/>
+    <property name="nodeName" value="wolf1_6"/>
+   </properties>
+  </object>
+  <object name="wolf1_4" type="node" x="1600" y="500" width="104" height="96">
+   <properties>
+    <property name="next" value="wolf1_5"/>
+    <property name="nodeName" value="wolf1_4"/>
+   </properties>
+  </object>
+  <object name="wolf1_3" type="node" x="1100" y="197" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf1_4"/>
+    <property name="nodeName" value="wolf1_3"/>
+   </properties>
+  </object>
+  <object name="wolf1_2" type="node" x="500" y="400" width="100" height="96">
+   <properties>
+    <property name="next" value="wolf1_3"/>
+    <property name="nodeName" value="wolf1_2"/>
+   </properties>
+  </object>
+  <object name="wolf1_1" type="node" x="100" y="704" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf1_2"/>
+    <property name="nodeName" value="wolf1_1"/>
+   </properties>
+  </object>
+  <object name="wolf" type="spawn" x="100" y="300" width="96" height="100">
+   <properties>
+    <property name="next" value="wolf1_1"/>
+   </properties>
+  </object>
+  <object name="wolf1_0" type="node" x="100" y="100" width="96" height="100">
+   <properties>
+    <property name="next" value="wolf1_1"/>
+    <property name="nodeName" value="wolf1_0"/>
+   </properties>
+  </object>
+  <object name="fireelemental1_6" type="node" x="200" y="1402" width="100" height="96">
+   <properties>
+    <property name="next" value="fireelemental1_0"/>
+    <property name="nodeName" value="fireelemental1_6"/>
+   </properties>
+  </object>
+  <object name="fireelemental1_5" type="node" x="100" y="1698" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental1_6"/>
+    <property name="nodeName" value="fireelemental1_5"/>
+   </properties>
+  </object>
+  <object name="fireelemental1_4" type="node" x="196" y="1898" width="104" height="104">
+   <properties>
+    <property name="next" value="fireelemental1_5"/>
+    <property name="nodename" value="fireelemental1_4"/>
+   </properties>
+  </object>
+  <object name="fireelemental1_0" type="node" x="600" y="1798" width="100" height="104">
+   <properties>
+    <property name="next" value="fireelemental1_1"/>
+    <property name="nodeName" value="fireelemental1_0"/>
+   </properties>
+  </object>
+  <object name="fireelemental1_1" type="node" x="1400" y="1802" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental1_2"/>
+    <property name="nodeName" value="fireelemental1_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental1_3" type="node" x="1696" y="1898" width="104" height="100">
+   <properties>
+    <property name="next" value="fireelemental1_4"/>
+    <property name="nodeName" value="fireelemental1_3"/>
+   </properties>
+  </object>
+  <object name="fireelemental1_2" type="node" x="1700" y="1502" width="104" height="100">
+   <properties>
+    <property name="next" value="fireelemental1_3"/>
+    <property name="nodeName" value="fireelemental1_2"/>
+   </properties>
+  </object>
+  <object name="fireelemental" type="spawn" x="998" y="1800" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental1_1"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="player_locations" width="20" height="21">
+  <object name="player" type="spawn" x="998" y="1002" width="104" height="96"/>
+  <object name="central_hub" type="warp" x="1976" y="1000" width="21" height="100"/>
+  <object name="east_entrance" type="location" x="1700" y="1002" width="100" height="96"/>
+ </objectgroup>
 </map>

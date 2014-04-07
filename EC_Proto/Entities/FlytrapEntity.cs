@@ -10,10 +10,11 @@ namespace EC_Proto
 	{
 		public static Texture2D spritesheet;
 		static AnimationManager anim = new AnimationManager();
-		AI ai = new SeePlayerAI();
 
 		public FlytrapEntity () {
 			Visible = true;
+
+			inverseMass = 0;
 
 			health = 60;
 			contactDamage = 40;
@@ -31,7 +32,7 @@ namespace EC_Proto
 			hitbox = new Rectangle (0, 0, rect.Width, rect.Height);
 			spriteChoice.rect = anim.GetRectangle (animState);
 			Visible = true;
-			inverseMass = 5;
+			inverseMass = 0;
 
 			health = 10;
 			contactDamage = 10;
@@ -42,30 +43,24 @@ namespace EC_Proto
 		}
 
 		static public void InitAnimation() {
-			anim.AddAnimation ("alive", 0, 0, 100, 100,1);
-			anim.AddAnimation ("dying1", 100, 0, 100, 100,2);
-			anim.AddAnimation ("dying2", 200, 0, 100, 100,2);
-			anim.AddAnimation ("dying3", 100, 0, 100, 100,2);
-			anim.AddAnimation ("dead", 300, 0, 100, 100,1);
+			anim.AddAnimation ("alive", 0, 0, 100, 100, 1);
+			anim.AddAnimation ("dying1", 100, 0, 100, 100, 2);
+			anim.AddAnimation ("dying2", 200, 0, 100, 100, 2);
+			anim.AddAnimation ("dying3", 100, 0, 100, 100, 2);
+			anim.AddAnimation ("dead", 300, 0, 100, 100, 1);
 
 			anim.AddStateChange ("alive", "fire", "dying1", true);
-			anim.AddStateChange ("dying1","anim_end","dying2",true);
-			anim.AddStateChange ("dying2","anim_end","dying3",true);
-			anim.AddStateChange ("dying3","anim_end","dead",true);
-
-
+			anim.AddStateChange ("dying1", "anim_end", "dying2", true);
+			anim.AddStateChange ("dying2", "anim_end", "dying3", true);
+			anim.AddStateChange ("dying3", "anim_end", "dead", true);
 		}
 
-
 		public override void Update (KeyboardState state, GameTime time) {
-
-			ai.update (this);
 			momentum *= .8f;
 			if (momentum.LengthSquared () > 1) {
 				momentum.Normalize ();
 				momentum *= 1;
 			}
-
 		}
 
 		public override void AnimationTick ()
@@ -82,12 +77,14 @@ namespace EC_Proto
 			if ( e is FireballEntity) {
 				animState = anim.Update (animState, "fire");
 				spriteChoice.rect = anim.GetRectangle (animState);
+				PlayerStats.curExp += 15;
 			}
 
 			if (e is PlayerEntity) {
 				Point TrapCenter = this.getHitBox ().Center;
 				Point PlayerCenter = e.getHitBox ().Center;
 				//Point diff = e.getHitBox ().Center - getHitBox().Center;
+
 				Vector2 dirvec = new Vector2 (PlayerCenter.X - TrapCenter.X, PlayerCenter.Y - TrapCenter.Y);
 				dirvec = Entity.align (dirvec); 
 

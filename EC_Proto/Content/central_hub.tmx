@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="40" height="20" tilewidth="100" tileheight="100">
  <tileset firstgid="1" name="Sprite sheet" tilewidth="100" tileheight="100">
-  <image source="spritesheet_1.png" trans="ffffff" width="400" height="200"/>
+  <image source="spritesheet_1.png" trans="ffffff" width="400" height="400"/>
   <tile id="0">
    <properties>
     <property name="spawn" value="water"/>
@@ -9,6 +9,7 @@
   </tile>
   <tile id="2">
    <properties>
+    <property name="solid" value=""/>
     <property name="spawn" value="torch"/>
    </properties>
   </tile>
@@ -23,6 +24,17 @@
     <property name="spawn" value="boulder"/>
    </properties>
   </tile>
+  <tile id="6">
+   <properties>
+    <property name="solid" value=""/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="solid" value=""/>
+    <property name="spawn" value="flytrap"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Background" width="40" height="20">
   <data encoding="base64" compression="zlib">
@@ -34,7 +46,7 @@
    <property name="spawn" value="water"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzt0TEKADAIxdDv/S9d3Erp4GaGPHA2aDJT1xBVuI1vG62R3te22yZ7N+9G/JkkSdLPAT8vAB4=
+   eJzt0zEKADAIBEH9/6fTigS8yrPYgdS3JCRCk+VsUzYzfI3TXm/bbpz2rvX99t3vq9yP63/UbWfD5HIbAADY8wDaAwAu
   </data>
  </layer>
  <layer name="Landscape" width="40" height="20">
@@ -42,26 +54,26 @@
    <property name="solid" value=""/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzFVtEKxDAI68NB//+Pj8E9SEiiFtcThM45TY2z3WutHXTB801VuR/5/BTXN0TljvgW+HRiszzO5uJEX8T3lpzyMYmP5cfadr59ZBof0wyDE4evwonymfq3TvCx/kf/qVmAM8bhiHb2zzrcXcH50u1DrE8UjKNwV8RxW7FFu5p7yLPinfFQrZ/rxUr/4V5wrWJm/Zf1FvvG5XM2Fud0/jku1Z5O4rPzN8vB3nfOjspeqvWbmL0VLm+dbxWfzrxh/G4RQ80DlkdxmNURc7P7abf3JkTl/tc9vqNffBYF7w==
+   eJzNVlEKxSAM82Pg/W/8GGxQQppG6ZMFZM7ZNpquOscYM7QB7ydbFvvG9TTsnwDjh/2XV3w6uKCPtu5aJzwZv39hV49Ofiw+7u2K7Y1ufqxVHBQUP0eTbE7Xv7XDj+U/zu+qBVhjFI84zv5ZxXsVrw2rg659Fh/9ZLwdKG2dsTie1T3UOdOd6eDun8pFJ/9wLdjPfFb5V+UWs1Hx1Bjzs1v/lJbZmnb8s/O3isG+r5wdzlrc/euovY6Wp843Z85KvUF+7I4T/aq7lKNhxQVju/fCLG4XKh5fvt//AEvNBgE=
   </data>
  </layer>
  <layer name="Spawn" width="40" height="20">
   <data encoding="base64" compression="zlib">
-   eJzt1TsKADAIRMGF4P2vnDZYCILBLd6UWvhBUEIlmvHftupOyjMcgx7Ql3cYRW5DyKMPAHht/Dx44QakCwdmADw=
+   eJxjYBgF6IAVBxuXGnoC1gG0m1pgMLh/OITjQAB8eYOYfENrgO6GwRbHg809pILB6n7OgXYAjQHzCLV7KAFS0iC+MKUkvId7PhiMgJj4wqaG2HgmJ06HSjoAALyJAJg=
   </data>
  </layer>
  <objectgroup name="Player" width="40" height="20">
-  <object name="north_east_entrance" type="location" x="3500" y="200" width="75" height="75"/>
-  <object name="north_west_entrance" type="location" x="400" y="200" width="75" height="75"/>
-  <object name="west_entrance" type="location" x="200" y="1000" width="75" height="75"/>
-  <object name="player" type="spawn" x="250" y="1000" width="75" height="75"/>
+  <object name="north_east_entrance" type="location" x="3500" y="200" width="100" height="100"/>
+  <object name="north_west_entrance" type="location" x="400" y="200" width="100" height="100"/>
+  <object name="west_entrance" type="location" x="200" y="1000" width="100" height="100"/>
+  <object name="player" type="spawn" x="250" y="1000" width="100" height="100"/>
   <object x="4271" y="1064"/>
   <object x="4218" y="1311"/>
-  <object name="south_west_entrance" type="location" x="400" y="1700" width="75" height="75"/>
-  <object name="south_east_entrance" type="location" x="3500" y="1700" width="75" height="75"/>
+  <object name="south_west_entrance" type="location" x="400" y="1700" width="100" height="100"/>
+  <object name="south_east_entrance" type="location" x="3500" y="1700" width="100" height="100"/>
   <object name="central_tutorial" type="warp" x="0" y="1000" width="25" height="100">
    <properties>
-    <property name="location" value="exit"/>
+    <property name="location" value="east_entrance"/>
    </properties>
   </object>
   <object name="central_water" type="warp" x="400" y="0" width="100" height="25">
@@ -72,6 +84,16 @@
   <object name="central_earth" type="warp" x="3500" y="0" width="100" height="25">
    <properties>
     <property name="location" value="south_entrance"/>
+   </properties>
+  </object>
+  <object name="central_fire" type="warp" x="400" y="1975" width="100" height="25">
+   <properties>
+    <property name="location" value="north_entrance"/>
+   </properties>
+  </object>
+  <object name="central_air" type="warp" x="3500" y="1975" width="100" height="25">
+   <properties>
+    <property name="location" value="north_west_entrance"/>
    </properties>
   </object>
  </objectgroup>

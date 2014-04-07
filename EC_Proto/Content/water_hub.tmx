@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="30" height="25" tilewidth="100" tileheight="100">
+ <tileset firstgid="1" name="Sprite Sheet" tilewidth="100" tileheight="100">
+  <image source="spritesheet_1.png" trans="ffffff" width="400" height="400"/>
+ </tileset>
+ <layer name="Ground" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJztwzENAAAMBKGb3r/k2ugACaumqqq+fjQZEZU=
+  </data>
+ </layer>
+ <layer name="Water" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJztlFEKACEIBc37H3p/EkIsn5S1UAOPIMiJspiIGEipGYHUicbzlgQX4pSwGtv5LK+1Ttdb4UO9Vj3Pi9BzWhFm+tfyI07x6vPI8Gp6/Rc965HbInInK/Gcz7vPm+VG9rCDU97Hv7ih72584yf/llk+auABaw==
+  </data>
+ </layer>
+ <layer name="Walls" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJxjZ2BgYCcRM5ChB5c5xABs9pIDyNHLjkbTy15qgJFkLznpipp2DkQ4w9xAT7sGyr8DGc6j9o7aO2rv0Ld3IMssepfTAwHo4V9s7TFa24ur/UmNNjC57W0AA4wDeg==
+  </data>
+ </layer>
+ <layer name="Spawn" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20ND6AAAIB3Awu4AAE=
+  </data>
+ </layer>
+ <objectgroup name="Player" width="30" height="25">
+  <object name="player" type="spawn" x="2500" y="2200" width="100" height="100"/>
+  <object name="south_entrance" type="location" x="2500" y="2225" width="100" height="100"/>
+  <object name="west_entrance" type="location" x="200" y="2100" width="100" height="100"/>
+  <object name="north_entrance" type="location" x="1300" y="200" width="100" height="100"/>
+  <object name="east_entrance" type="location" x="2700" y="700" width="100" height="100"/>
+  <object name="central_water" type="location" x="2500" y="2475" width="100" height="25">
+   <properties>
+    <property name="location" value="north_entrance"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

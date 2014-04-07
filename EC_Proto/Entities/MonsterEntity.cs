@@ -13,7 +13,12 @@ namespace EC_Proto
 
 		public MonsterEntity ()
 		{
+			health = 10;
+			contactDamage = 0;
+			fireDefense = 0;
+			waterDefense = 0;
+			earthDefense = 0;
+			airDefense = 0;
 		}
 	}
 }
-

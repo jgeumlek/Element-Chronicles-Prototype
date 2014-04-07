@@ -16,7 +16,6 @@ namespace EC_Proto
 		private float acceleration = 2;
 		public float FrictionFactor = .9f;
 
-
 		private Vector2 resetPosition = new Vector2 (0, 0);
 		bool collidedWithTerrain = false; //For really hack-ish collision resolution! Needs to be reworked.
 		static AnimationManager anim = new AnimationManager();
@@ -141,6 +140,7 @@ namespace EC_Proto
 					momentum.X = 0;
 					momentum.Y = 0;
 				}
+
 				momentum *= FrictionFactor;
 				
 				//Set up friction factor for next frame.

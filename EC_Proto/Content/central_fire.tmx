@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="30" height="22" tilewidth="100" tileheight="100">
+ <tileset firstgid="1" name="spritesheet_1" tilewidth="100" tileheight="100">
+  <image source="spritesheet_1.png" trans="ffffff" width="400" height="400"/>
+  <tile id="4">
+   <properties>
+    <property name="spawn" value="boulder"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Background" width="30" height="22">
+  <data encoding="base64" compression="zlib">
+   eJztwzENAAAMBKGb3r/keugMCaumqqrPB/ChD3k=
+  </data>
+ </layer>
+ <layer name="Water" width="30" height="22">
+  <properties>
+   <property name="spawn" value="water"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMJIBIxIetXcUjIJRQA4AACx8AAo=
+  </data>
+ </layer>
+ <layer name="Landscape" width="30" height="22">
+  <properties>
+   <property name="solid" value=""/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzdlMEKwDAIQz0M/P8/3mWn0WiitocGZIV1vlg73cz8QJiwb0IKd1q+eHa5zxeqj4m6VfbJPiMu8tEROgeUf7LeiLvSzpqzvNFZdMTkyPpQ8cB+x/RC4aP9Sj8q7Ij7vw9ZbvSuckcm/gHWS1fM7LmJm7En5xHLjryYcV7QnVe5aM2KmWush53xArgdBls=
+  </data>
+ </layer>
+ <layer name="boulders" width="30" height="22">
+  <properties>
+   <property name="boulder" value="spawn"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFAwlYB9oBo2AU0BCwMoy8ND7S/DsKRsFAgdG8NrgAAJJoABo=
+  </data>
+ </layer>
+ <objectgroup name="Spawn_location" width="30" height="22">
+  <object name="fireelemental4_3" type="node" x="2600" y="1500" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental4_4"/>
+    <property name="nodeName" value="fireelemental4_3"/>
+   </properties>
+  </object>
+  <object name="fireelemental4_4" type="node" x="2600" y="1700" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental4_5"/>
+    <property name="nodeName" value="fireelemental4_4"/>
+   </properties>
+  </object>
+  <object name="fireelemental4_5" type="node" x="2800" y="1500" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental4_0"/>
+    <property name="nodeName" value="fireelemental4_5"/>
+   </properties>
+  </object>
+  <object name="fireelemental4_0" type="node" x="2800" y="1600" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental4_1"/>
+    <property name="nodeName" value="fireelemental4_0"/>
+   </properties>
+  </object>
+  <object name="fireelemental" type="spawn" x="2600" y="1600" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental4_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental4_1" type="node" x="2500" y="1600" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental4_2"/>
+    <property name="nodeName" value="fireelemental4_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental4_2" type="node" x="2700" y="1600" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental4_3"/>
+    <property name="nodeName" value="fireelemental4_2"/>
+   </properties>
+  </object>
+  <object name="torch" type="spawn" x="500" y="300" width="100" height="100"/>
+  <object name="torch" type="spawn" x="200" y="900" width="100" height="100"/>
+  <object name="torch" type="spawn" x="1100" y="1400" width="100" height="100"/>
+  <object name="torch" type="spawn" x="2200" y="2000" width="100" height="100"/>
+  <object name="torch" type="spawn" x="2500" y="1500" width="100" height="100"/>
+  <object name="wolf1_1" type="node" x="800" y="600" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf1_2"/>
+    <property name="nodeName" value="wolf1_1"/>
+   </properties>
+  </object>
+  <object name="wolf1_0" type="node" x="800" y="200" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf1_1"/>
+    <property name="nodeName" value="wolf1_0"/>
+   </properties>
+  </object>
+  <object name="wolf1_2" type="node" x="800" y="100" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf1_3"/>
+    <property name="nodeName" value="wolf1_2"/>
+   </properties>
+  </object>
+  <object name="wolf1_3" type="node" x="800" y="700" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf1_4"/>
+    <property name="nodeName" value="wolf1_3"/>
+   </properties>
+  </object>
+  <object name="wolf1_4" type="node" x="1100" y="200" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf1_5"/>
+    <property name="nodeName" value="wolf1_4"/>
+   </properties>
+  </object>
+  <object name="wolf1_5" type="node" x="1000" y="700" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf1_6"/>
+    <property name="nodeName" value="wolf1_5"/>
+   </properties>
+  </object>
+  <object name="wolf1_6" type="node" x="1300" y="400" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf1_0"/>
+    <property name="nodeName" value="wolf1_6"/>
+   </properties>
+  </object>
+  <object name="wolf" type="spawn" x="800" y="400" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf1_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental1_0" type="node" x="1700" y="800" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental1_1"/>
+    <property name="nodeName" value="fireelemental1_0"/>
+   </properties>
+  </object>
+  <object name="fireelemental1_1" type="node" x="1700" y="1000" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental1_2"/>
+    <property name="nodeName" value="fireelemental1_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental1_2" type="node" x="1900" y="1000" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental1_3"/>
+    <property name="nodeName" value="fireelemental1_2"/>
+   </properties>
+  </object>
+  <object name="fireelemental1_3" type="node" x="1900" y="1100" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental1_4"/>
+    <property name="nodeName" value="fireelemental1_3"/>
+   </properties>
+  </object>
+  <object name="fireelemental1_4" type="node" x="1900" y="900" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental1_0"/>
+    <property name="nodeName" value="fireelemental1_4"/>
+   </properties>
+  </object>
+  <object name="fireelemental" type="spawn" x="1700" y="900" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental1_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental2_0" type="node" x="200" y="1100" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental2_1"/>
+    <property name="nodeName" value="fireelemental2_0"/>
+   </properties>
+  </object>
+  <object name="fireelemental2_1" type="node" x="500" y="1100" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental2_2"/>
+    <property name="nodeName" value="fireelemental2_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental2_2" type="node" x="400" y="900" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental2_3"/>
+    <property name="nodeName" value="fireelemental2_2"/>
+   </properties>
+  </object>
+  <object name="fireelemental2_3" type="node" x="300" y="1200" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental2_0"/>
+    <property name="nodeName" value="fireelemental2_3"/>
+   </properties>
+  </object>
+  <object name="fireelemental" type="spawn" x="300" y="1100" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental2_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental3_0" type="node" x="1500" y="1600" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental3_1"/>
+    <property name="nodeName" value="fireelemental3_0"/>
+   </properties>
+  </object>
+  <object name="fireelemental3_1" type="node" x="1800" y="1600" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental3_2"/>
+    <property name="nodeName" value="fireelemental3_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental3_2" type="node" x="1600" y="1500" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental3_3"/>
+    <property name="nodeName" value="fireelemental3_2"/>
+   </properties>
+  </object>
+  <object name="fireelemental3_3" type="node" x="1700" y="1700" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental3_0"/>
+    <property name="nodeName" value="fireelemental3_3"/>
+   </properties>
+  </object>
+  <object name="fireelemental" type="spawn" x="1600" y="1600" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental3_1"/>
+   </properties>
+  </object>
+  <object name="wolf2_0" type="node" x="1500" y="800" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf2_1"/>
+    <property name="nodeName" value="wolf2_0"/>
+   </properties>
+  </object>
+  <object name="wolf2_1" type="node" x="1200" y="800" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf2_2"/>
+    <property name="nodeName" value="wolf2_1"/>
+   </properties>
+  </object>
+  <object name="wolf2_2" type="node" x="1500" y="500" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf2_3"/>
+    <property name="nodeName" value="wolf2_2"/>
+   </properties>
+  </object>
+  <object name="wolf2_3" type="node" x="2100" y="700" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf2_4"/>
+    <property name="nodeName" value="wolf2_3"/>
+   </properties>
+  </object>
+  <object name="wolf2_4" type="node" x="2100" y="500" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf2_5"/>
+    <property name="nodeName" value="wolf2_4"/>
+   </properties>
+  </object>
+  <object name="wolf2_5" type="node" x="1700" y="600" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf2_0"/>
+    <property name="nodeName" value="wolf2_5"/>
+   </properties>
+  </object>
+  <object name="wolf" type="spawn" x="1400" y="800" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf2_1"/>
+   </properties>
+  </object>
+  <object name="wolf3_4" type="node" x="2600" y="800" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf3_5"/>
+    <property name="nodeName" value="wolf3_4"/>
+   </properties>
+  </object>
+  <object name="wolf3_5" type="node" x="2500" y="500" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf3_6"/>
+    <property name="nodeName" value="wolf3_5"/>
+   </properties>
+  </object>
+  <object name="wolf3_6" type="node" x="2700" y="500" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf3_7"/>
+    <property name="nodeName" value="wolf3_6"/>
+   </properties>
+  </object>
+  <object name="wolf3_7" type="node" x="2700" y="900" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf3_0"/>
+    <property name="nodeName" value="wolf3_7"/>
+   </properties>
+  </object>
+  <object name="wolf3_0" type="node" x="2400" y="1200" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf3_1"/>
+    <property name="nodeName" value="wolf3_0"/>
+   </properties>
+  </object>
+  <object name="wolf3_1" type="node" x="2100" y="1200" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf3_2"/>
+    <property name="nodeName" value="wolf3_1"/>
+   </properties>
+  </object>
+  <object name="wolf3_2" type="node" x="2200" y="900" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf3_3"/>
+    <property name="nodeName" value="wolf3_2"/>
+   </properties>
+  </object>
+  <object name="wolf3_3" type="node" x="2600" y="1095" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf3_4"/>
+    <property name="nodeName" value="wolf3_3"/>
+   </properties>
+  </object>
+  <object name="wolf" type="spawn" x="2300" y="1200" width="100" height="100">
+   <properties>
+    <property name="next" value="wolf3_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental5_3" type="node" x="700" y="1700" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental5_0"/>
+    <property name="nodeName" value="fireelemental5_3"/>
+   </properties>
+  </object>
+  <object name="fireelemental5_0" type="node" x="900" y="1700" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental5_1"/>
+    <property name="nodeName" value="fireelemental5_0"/>
+   </properties>
+  </object>
+  <object name="fireelemental5_1" type="node" x="500" y="1700" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental5_2"/>
+    <property name="nodeName" value="fireelemental5_1"/>
+   </properties>
+  </object>
+  <object name="fireelemental5_2" type="node" x="700" y="1500" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental5_3"/>
+    <property name="nodeName" value="fireelemental5_2"/>
+   </properties>
+  </object>
+  <object name="fireelemental" type="spawn" x="600" y="1700" width="100" height="100">
+   <properties>
+    <property name="next" value="fireelemental5_1"/>
+   </properties>
+  </object>
+  <object name="flytrap" type="spawn" x="2000" y="2000" width="100" height="100"/>
+  <object name="flytrap" type="spawn" x="900" y="900" width="100" height="100"/>
+ </objectgroup>
+ <objectgroup name="Player_location" width="30" height="22">
+  <object name="player" type="spawn" x="2600" y="200" width="100" height="100"/>
+  <object name="north_entrance" type="location" x="2600" y="175" width="100" height="100"/>
+  <object name="south_entrance" type="location" x="400" y="1900" width="100" height="100"/>
+  <object name="central_hub" type="warp" x="2600" y="0" width="100" height="25">
+   <properties>
+    <property name="location" value="south_west_entrance"/>
+   </properties>
+  </object>
+  <object name="fire_hub" type="warp" x="400" y="2175" width="100" height="25">
+   <properties>
+    <property name="location" value="north_entrance"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
