@@ -12,8 +12,6 @@ namespace EC_Proto
 {
 	public delegate Entity Spawn(Rectangle position);
 	public class GameState {
-		private PlayerStats stats;
-		private Gui gui;
 
 		private bool drawHitBoxes = false; //For debugging.
 
@@ -30,6 +28,8 @@ namespace EC_Proto
 		TimeSpan timer = new TimeSpan (0, 0, 0, 0, 500);
 		public Dictionary<String, Spawn> EntitySpawners = new Dictionary<String, Spawn>();
 		Dictionary<String, String> LevelNames = new Dictionary<String, String> ();
+
+		public bool tutorialComplete = false;
 
 		SoundEffectInstance bgmInstance;
 		SoundEffectInstance titleInstance;
@@ -63,45 +63,38 @@ namespace EC_Proto
 			LevelNames.Add ("central_water", "central_water.tmx");
 			LevelNames.Add ("central_fire", "central_fire.tmx");
 			LevelNames.Add ("central_air", "central_air.tmx");
-
-			gui = new Gui ();
-
-			stats = new PlayerStats ();
 		}
 		public void Update (GameTime gameTime,KeyboardState state, KeyboardState prevState) {
 			//TODO: Better event based system? Let entities register as Keyboard listeners, etc.
 
 			scene.Update (gameTime, state, prevState);
 
-			stats.Update (gameTime);
-			gui.Update (gameTime);
-
-			if (state.IsKeyDown (Keys.D1) && prevState.IsKeyUp (Keys.D1)) {
-				GameScene.player.Hit (5);
+			PlayerStats.Update (gameTime);
+			if (PlayerStats.curHp <= 0) {
+				if (!tutorialComplete) {
+					LoadMap ("central_tutorial", "default");
+				} else {
+					LoadMap ("central_hub", "respawn");
+				}
+				PlayerStats.Respawn ();
 			}
 
-			if (state.IsKeyDown (Keys.D2) && prevState.IsKeyUp (Keys.D2)) {
-				GameScene.player.ConsumeMana (5);
-			}
-
-			if (state.IsKeyDown (Keys.D3) && prevState.IsKeyUp (Keys.D3)) {
-				GameScene.player.PlusExp (5);
-			}
+			Gui.Update (gameTime);
 
 			//Fire spawning. Should later be handled my some spell managing class.
-			if (!projectileLaunched && PlayerStats.curMana >= 2 && state.IsKeyDown (Keys.H) && prevState.IsKeyUp(Keys.H)) { //Use prev state to simulate onKeyDown
+			if (!projectileLaunched && GameScene.player.HasEnoughMana(2) && state.IsKeyDown (Keys.H) && prevState.IsKeyUp(Keys.H)) { //Use prev state to simulate onKeyDown
 				FireballEntity fireball = new FireballEntity (GameScene.player.Center(), GameScene.player.direction, GameScene.player.getCurrentSpeed());
 				scene.AddSpellEntity (fireball);
 				projectileLaunched = true;
-				PlayerStats.curMana -= 2;
+				GameScene.player.ConsumeMana (2);
 			}
 
 			//Frost spawning.
-			if (!projectileLaunched && PlayerStats.curMana >= 1 && state.IsKeyDown (Keys.J) && prevState.IsKeyUp (Keys.J)) {
+			if (!projectileLaunched && GameScene.player.HasEnoughMana(1) && state.IsKeyDown (Keys.J) && prevState.IsKeyUp (Keys.J)) {
 				FrostEntity frost = new FrostEntity (GameScene.player.Center() + new Vector2(7,10), GameScene.player.direction, GameScene.player.getCurrentSpeed());
 				scene.AddSpellEntity (frost);
 				projectileLaunched = true;
-				PlayerStats.curMana -= 1;
+				GameScene.player.ConsumeMana (1);
 			}
 
 			if (projectileLaunched) {
@@ -113,10 +106,13 @@ namespace EC_Proto
 				}
 			}
 
-			if (state.IsKeyDown (Keys.K) && prevState.IsKeyUp (Keys.K)) {
+			if (GameScene.player.HasEnoughMana(5) && state.IsKeyDown (Keys.K) && prevState.IsKeyUp (Keys.K)) {
 				GameScene.player.EarthenShield ();
 			}
 
+			if (GameScene.player.HasEnoughMana(3) && state.IsKeyDown (Keys.L) && prevState.IsKeyUp (Keys.L)) {
+				GameScene.player.TornadoJump ();
+			}
 
 			//Debug code!
 			if (state.IsKeyDown (Keys.F3) && prevState.IsKeyUp(Keys.F3))
@@ -164,6 +160,10 @@ namespace EC_Proto
 			scene = new TmxScene (this);
 			((TmxScene)scene).LoadMap (mapfile,locationTarget,Content);
 
+			if (!tutorialComplete && mapfile != "central_tutorial.tmx") {
+				tutorialComplete = true;
+			}
+
 			screenMatrix = Matrix.Identity;
 		}
 
@@ -196,7 +196,7 @@ namespace EC_Proto
 		public void Draw( SpriteBatch spriteBatch, GraphicsDeviceManager graphics) {
 			scene.Draw (screenMatrix, spriteBatch, graphics, drawHitBoxes);
 			if(Gui.sceneName == "game")
-				gui.Draw (screenMatrix, spriteBatch, graphics);
+				Gui.Draw (screenMatrix, spriteBatch, graphics);
 		}
 
 		public static GameScene Scene() {

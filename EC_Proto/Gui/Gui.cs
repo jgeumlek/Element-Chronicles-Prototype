@@ -7,23 +7,18 @@ namespace EC_Proto
 {
 	public class Gui
 	{
-		static public String sceneName;
+		public static String sceneName;
 
-		static public Texture2D hpBarBackground; // Black bar behind the health bar, which does not change in length
-		static public Texture2D hpBar;
-		static public Texture2D manaBarBackground;
-		static public Texture2D manaBar;
-		static public Texture2D expBarBackground;
-		static public Texture2D expBar;
+		public static Texture2D hpBarBackground; // Black bar behind the health bar, which does not change in length
+		public static Texture2D hpBar;
+		public static Texture2D manaBarBackground;
+		public static Texture2D manaBar;
+		public static Texture2D expBarBackground;
+		public static Texture2D expBar;
 
-		private int barLength = 200;
+		private static int barLength = 200;
 
-		public Gui ()
-		{
-
-		}
-
-		public void Update(GameTime gameTime) {
+		public static void Update(GameTime gameTime) {
 			if (PlayerStats.curExp >= PlayerStats.maxExp) {
 				PlayerStats.level++;
 				PlayerStats.maxExp += PlayerStats.maxExp / 10;
@@ -31,7 +26,7 @@ namespace EC_Proto
 			}
 		}
 
-		public void Draw(Matrix screenMatrix, SpriteBatch spriteBatch, GraphicsDeviceManager graphics) {
+		public static void Draw(Matrix screenMatrix, SpriteBatch spriteBatch, GraphicsDeviceManager graphics) {
 			spriteBatch.Begin ();
 
 			spriteBatch.Draw (hpBarBackground, new Rectangle (10, 10, barLength, 10), Color.White);

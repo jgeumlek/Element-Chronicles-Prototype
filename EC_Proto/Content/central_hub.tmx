@@ -54,7 +54,7 @@
    <property name="solid" value=""/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzNVlEKxSAM82Pg/W/8GGxQQppG6ZMFZM7ZNpquOscYM7QB7ydbFvvG9TTsnwDjh/2XV3w6uKCPtu5aJzwZv39hV49Ofiw+7u2K7Y1ufqxVHBQUP0eTbE7Xv7XDj+U/zu+qBVhjFI84zv5ZxXsVrw2rg659Fh/9ZLwdKG2dsTie1T3UOdOd6eDun8pFJ/9wLdjPfFb5V+UWs1Hx1Bjzs1v/lJbZmnb8s/O3isG+r5wdzlrc/euovY6Wp843Z85KvUF+7I4T/aq7lKNhxQVju/fCLG4XKh5fvt//AEvNBgE=
+   eJzNVlEKxSAM82Pg/W/8GGxQQppG6ZMFROesjaZW5xhjhjLg+2TJfN+4noLtE2D8sP3yirWDC9po6651Qs34/Qu7enTyY/5xb1dsb3TzY6XioKD4OZpkY7rO1g4/Fv84visXYI5RPGI/O7OK9ypeG5YHXXvXf8bbgdLW6Yv9Wd5DnTPdmQ7u/qlYdOIP14LtbM4q/qrYYjbKn+pj8+zmP6Vltqad+dn9W/lg/1fuDmct7v515F5Hy1P3mzNmJd8gP/bGifOqt5SjYcUFfbvvwsxvFyoeX37f/wAd3QX6
   </data>
  </layer>
  <layer name="Spawn" width="40" height="20">
@@ -96,5 +96,6 @@
     <property name="location" value="north_west_entrance"/>
    </properties>
   </object>
+  <object name="respawn" type="location" x="2000" y="900" width="97" height="103"/>
  </objectgroup>
 </map>

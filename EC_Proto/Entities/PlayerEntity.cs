@@ -9,6 +9,8 @@ namespace EC_Proto
 	{
 		private const int KNOCKBACK_DISTANCE = -50;
 		private const int FLINCH_TIME = 500; // how long the player flinches for in milliseconds
+		private const int JUMP_TIME = 200; // how long the player stays in tornado jump for
+		private const int JUMP_DISTANCE = 200; // how far the player moves in tornado jump
 		private const float DEFAULT_FRICTION = .9f;
 		//private float playerspeed = 5;
 		//private Vector2 currentSpeed = new Vector2(0,0); //Used for adding momentum to projectiles.
@@ -22,6 +24,7 @@ namespace EC_Proto
 		public static Texture2D texture; 
 		public bool strength = false; // Able to push boulders?
 		public TimeSpan flinchTime;
+		public TimeSpan jumpTime;
 
 		static public void InitAnimation() {
 			anim.AddAnimation ("south", 230, 0, 80, 150,1); //TODO: Fix spritesheet alignment! The others seem to be multiples of 80.
@@ -65,9 +68,6 @@ namespace EC_Proto
 		}
 
 		public override void Update (KeyboardState keyboard, GameTime gameTime) {
-
-
-
 			if (!collidedWithTerrain) { //Really lazy collsion resolution. Needs work.
 				//SetResetPosition (position);
 			} else {
@@ -128,6 +128,13 @@ namespace EC_Proto
 				flinchTime -= gameTime.ElapsedGameTime;
 			}
 
+			if (jumpTime <= TimeSpan.Zero) {
+				momentum += moveDirection * acceleration;
+			} else if (jumpTime > TimeSpan.Zero) {
+				jumpTime -= gameTime.ElapsedGameTime;
+				position += dirVector (direction) * JUMP_DISTANCE / JUMP_TIME * gameTime.ElapsedGameTime.Milliseconds;
+			}
+
 
 				//moveOffset (momentum);
 				spriteChoice.rect = anim.GetRectangle (animState);
@@ -173,7 +180,14 @@ namespace EC_Proto
 		
         public void EarthenShield () {
 			strength = true;
+			ConsumeMana (5);
         }
+
+		public void TornadoJump () {
+			ConsumeMana (1);
+			jumpTime = new TimeSpan (0, 0, 0, 0, JUMP_TIME);
+		}
+
 		//Move to the center of a rectangle, and update the reset positions as well.
 		public void MoveToRect(Rectangle location) {
 			Point center = location.Center;
@@ -182,7 +196,7 @@ namespace EC_Proto
 		}
 
 		public void KnockBack () {
-			//position += KNOCKBACK_DISTANCE * Entity.dirVector (direction);
+			position += KNOCKBACK_DISTANCE * Entity.dirVector (direction);
 			flinchTime = new TimeSpan (0, 0, 0, 0, FLINCH_TIME);
 		}
 
@@ -196,6 +210,13 @@ namespace EC_Proto
 
 		public void PlusExp (int exp) {
 			PlayerStats.curExp += exp;
+		}
+
+		public bool HasEnoughMana (float requiredMana) {
+			if (PlayerStats.curMana >= requiredMana)
+				return true;
+			else
+				return false;
 		}
 	}
 }

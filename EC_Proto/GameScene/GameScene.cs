@@ -31,7 +31,6 @@ namespace EC_Proto
 			this.game = state;
 			this.EntitySpawners = state.EntitySpawners;
 			player = new PlayerEntity(new Vector2(0,0));
- 
 		}
 
 		virtual public void SpawnEntity(String entityType, Rectangle position, Properties properties) {

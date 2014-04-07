@@ -13,21 +13,15 @@ namespace EC_Proto
 		public static float curExp = 0;
 		public static float maxExp = 100;
 
-		public int hpRegenTime = 1000; // in milliseconds
-		public int manaRegenTime = 2000;
+		public static int hpRegenTime = 1000; // in milliseconds
+		public static int manaRegenTime = 2000;
 
-		TimeSpan hpTimer;
-		TimeSpan manaTimer;
+		private static TimeSpan hpTimer = new TimeSpan (0, 0, 0, 0, hpRegenTime);
+		private static TimeSpan manaTimer = new TimeSpan (0, 0, 0, 0, manaRegenTime);
 
-		public PlayerStats () {
-			hpTimer = new TimeSpan (0, 0, 0, 0, hpRegenTime);
-			manaTimer = new TimeSpan (0, 0, 0, 0, manaRegenTime);
-		}
-
-		public void Update (GameTime gameTime) {
+		public static void Update (GameTime gameTime) {
 			if (curHp < 0) {
 				curHp = 0;
-				Death ();
 			}
 			if (curMana < 0) {
 				curMana = 0;
@@ -49,8 +43,9 @@ namespace EC_Proto
 			}
 		}
 
-		private void Death () {
-
+		public static void Respawn () {
+			curHp = maxHp;
+			curMana = maxMana;
 		}
 	}
 }

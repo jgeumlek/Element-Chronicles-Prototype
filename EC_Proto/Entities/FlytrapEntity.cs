@@ -93,7 +93,7 @@ namespace EC_Proto
 				momentum *= -1;
 				this.Impulse (-dirvec * 5);
 				((PlayerEntity)e).Impulse (dirvec * 5);
-				//((PlayerEntity)e).KnockBack ();
+				((PlayerEntity)e).KnockBack ();
 
 			}
 		}
