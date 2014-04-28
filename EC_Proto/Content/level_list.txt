@@ -1,0 +1,22 @@
+#List of level names, with their file path relative to the Content Folder
+
+central_hub==>central_hub.tmx
+
+central_earth==>central_earth.tmx
+central_tutorial==>central_tutorial.tmx
+central_water==>central_water.tmx
+central_fire==>central_fire.tmx
+central_air==>central_air.tmx
+
+#Special level names which must be defined.
+#Note that they must point to level names, not file paths.
+#
+#These must come after the name they point to!
+#
+#TUTORIAL is the tutorial level, and is special
+#	in that once it is left, the player
+#	will not respawn there again.
+#START is the level name to start intially.
+
+TUTORIAL==>central_tutorial
+START==>TUTORIAL

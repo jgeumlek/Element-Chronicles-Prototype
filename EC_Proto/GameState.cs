@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -31,6 +32,9 @@ namespace EC_Proto
 
 		public bool tutorialComplete = false;
 
+		String respawnLevel = "START";
+		String respawnLocation = "default";
+
 		SoundEffectInstance bgmInstance;
 		SoundEffectInstance titleInstance;
 		SoundEffectInstance airZoneInstance;
@@ -41,6 +45,7 @@ namespace EC_Proto
 
 		public GameState(Game1 gameSystem) {
 			//Add in spawning code. Not yet used.
+			Content = gameSystem.Content;
 			EntitySpawners.Add("flytrap",delegate(Rectangle position) {return new FlytrapEntity(position);});
 			//EntitySpawners.Add ("wolf", delegate(Rectangle position) {return new WolfEntity (position);});
 			EntitySpawners.Add ("fireElemental", delegate(Rectangle position) {return null;});
@@ -52,17 +57,50 @@ namespace EC_Proto
 
 			scene = new GameScene (this);
 			this.gamesystem = gameSystem;
-			//Add in level names. Should be read from a file in the future.
-			LevelNames.Add ("level1", "Level1/level1.tmx");
-			LevelNames.Add ("level2", "Level2/level2.tmx");
-			LevelNames.Add ("Third_level", "Level3/Third_level.tmx");
-			LevelNames.Add ("central_hub", "central_hub.tmx");
-			LevelNames.Add ("lazylogo", "lazylogo.tmx");
-			LevelNames.Add ("central_earth", "central_earth.tmx");
-			LevelNames.Add ("central_tutorial", "central_tutorial.tmx");
-			LevelNames.Add ("central_water", "central_water.tmx");
-			LevelNames.Add ("central_fire", "central_fire.tmx");
-			LevelNames.Add ("central_air", "central_air.tmx");
+
+			//Add in level names from a file
+			String line;
+
+			//Note that this file name is hard coded!
+			System.IO.StreamReader file = 
+				new System.IO.StreamReader(Path.Combine(Content.RootDirectory,"level_list.txt"));
+			while((line = file.ReadLine()) != null)
+			{
+				line = line.Trim ();
+				if (line.StartsWith ("#") || line.Equals("")) {
+					//Skip comments and blank lines.
+					continue;
+				}
+
+				//Cheesy arrow separator probably won't be in names.
+				//There is no current way to escape it; so avoid putting "==>" in names!
+				String[] separator = { "==>" };
+				String[] fields = line.Split(separator,StringSplitOptions.RemoveEmptyEntries);
+
+				if (fields.Length != 2) {
+					Console.Out.WriteLine ("Couldn't parse level list: \"" + line + "\"");
+				} else {
+					//HACK: These two names are special, and must point to a previously set name.
+					if (fields [0].Equals ("TUTORIAL") || fields [0].Equals ("START")) {
+						if (LevelNames.ContainsKey (fields [1])) {
+							LevelNames.Add (fields [0], LevelNames [fields [1]]);
+						} else {
+							Console.Error.WriteLine ("Could not set " + fields [0] + ", " + fields [1] + " was not set.");
+						}
+					} else {
+						LevelNames.Add (fields [0], fields [1]);
+					}
+				}
+			}
+
+			file.Close();
+
+			//TODO: Verify "TUTORIAL" and "START" are set, fail appropriately if they are not.
+
+
+
+
+
 		}
 		public void Update (GameTime gameTime,KeyboardState state, KeyboardState prevState) {
 			//TODO: Better event based system? Let entities register as Keyboard listeners, etc.
@@ -71,11 +109,9 @@ namespace EC_Proto
 
 			PlayerStats.Update (gameTime);
 			if (PlayerStats.curHp <= 0) {
-				if (!tutorialComplete) {
-					LoadMap ("central_tutorial", "default");
-				} else {
-					LoadMap ("central_hub", "respawn");
-				}
+
+				LoadMap (respawnLevel, respawnLocation);
+
 				PlayerStats.Respawn ();
 			}
 
@@ -160,8 +196,12 @@ namespace EC_Proto
 			scene = new TmxScene (this);
 			((TmxScene)scene).LoadMap (mapfile,locationTarget,Content);
 
-			if (!tutorialComplete && mapfile != "central_tutorial.tmx") {
+			if (!tutorialComplete && mapfile != LevelNames["TUTORIAL"]) {
 				tutorialComplete = true;
+				//Set the respawn to whatever level follows the tutorial.
+				//This should happen only once.
+				respawnLevel = mapName;
+				respawnLocation = locationTarget;
 			}
 
 			screenMatrix = Matrix.Identity;
@@ -183,7 +223,7 @@ namespace EC_Proto
 			}
 			if (sceneName == "game") {
 				scene = new TmxScene(this);
-				((TmxScene)scene).LoadMap (LevelNames["central_tutorial"],"default",Content);
+				((TmxScene)scene).LoadMap (LevelNames["START"],"default",Content);
 
 				titleInstance.Stop ();
 				bgm = Content.Load<SoundEffect>("bgm.wav");
