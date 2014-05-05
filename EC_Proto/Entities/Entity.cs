@@ -15,10 +15,10 @@ namespace EC_Proto
 		public bool Visible { get; set; }
 		public bool Active { get; set; } //Should we bother updating?
 		public bool Collidable { get; set; } //Should we bother checking collisions?
+		protected AnimationState animState = new AnimationState();
+		public SpriteChoice spriteChoice { get; set; }
 		public Rectangle hitbox { get; set;}//Collision detection.
 		public Rectangle hurtbox { get; set; }
-		public SpriteChoice spriteChoice { get; set; }
-		protected AnimationState animState = new AnimationState();
 
 		public Entity ()
 		{
@@ -95,7 +95,11 @@ namespace EC_Proto
 		public bool Alive() {
 			return alive;
 		}
-		
+
+		public void Destroy () {
+			alive = false;
+		}
+
 		public Rectangle getHitBox() {
 			//This could probably be optimized.
 			return new Rectangle(hitbox.X + (int)position.X, hitbox.Y + (int)position.Y, hitbox.Width, hitbox.Height);
@@ -104,12 +108,12 @@ namespace EC_Proto
 		//Handle collision how you want.
 		virtual public void CollidedWith(Entity e) {
 		}
+
 		//A frame's worth of time has passed. Do nothing by defualt, override if you have an animation.
 		virtual public void AnimationTick() {
 		}
+
 		abstract public void Update (KeyboardState state, GameTime gametime);
-
-
 
 	}
 }

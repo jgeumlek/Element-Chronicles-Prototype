@@ -9,8 +9,6 @@ namespace EC_Proto
 	{
 		private const int KNOCKBACK_DISTANCE = -50;
 		private const int FLINCH_TIME = 500; // how long the player flinches for in milliseconds
-		private const int JUMP_TIME = 200; // how long the player stays in tornado jump for
-		private const int JUMP_DISTANCE = 200; // how far the player moves in tornado jump
 		private const float DEFAULT_FRICTION = .9f;
 		//private float playerspeed = 5;
 		//private Vector2 currentSpeed = new Vector2(0,0); //Used for adding momentum to projectiles.
@@ -24,7 +22,12 @@ namespace EC_Proto
 		public static Texture2D texture; 
 		public bool strength = false; // Able to push boulders?
 		public TimeSpan flinchTime;
-		public TimeSpan jumpTime;
+
+		public bool projectileLaunched;
+		private TimeSpan timer;
+
+		public Entity overlay; // A spell that displays an animation in front of the player creates an overlay
+		public bool overlayActive;
 
 		static public void InitAnimation() {
 			anim.AddAnimation ("south", 230, 0, 80, 150,1); //TODO: Fix spritesheet alignment! The others seem to be multiples of 80.
@@ -47,7 +50,8 @@ namespace EC_Proto
 
 			inverseMass = 1;
 
-
+			projectileLaunched = false;
+			timer = new TimeSpan (0, 0, 0, 0, 500);
 		}
 
 		//Need to clean up constructors, and use base class better
@@ -64,7 +68,7 @@ namespace EC_Proto
 		}
 
 		public Vector2 Center() {
-		return position + new Vector2 (40, 75);
+			return position + new Vector2 (40, 75);
 		}
 
 		public override void Update (KeyboardState keyboard, GameTime gameTime) {
@@ -122,42 +126,52 @@ namespace EC_Proto
 				direction = newDirection; //We aren't still heading the same way, and we are moving. We should change direction.
 				animState = anim.Update (animState, Entity.dirName (newDirection));
 			}
+
+			if (projectileLaunched) {
+				if (timer > TimeSpan.Zero) {
+					timer -= gameTime.ElapsedGameTime;
+				} else {
+					projectileLaunched = false;
+					timer = new TimeSpan (0, 0, 0, 0, 500);
+				}
+			}
+
+			// Knockback flinch
 			if (flinchTime <= TimeSpan.Zero) {
 				momentum += moveDirection * acceleration;
 			} else if (flinchTime > TimeSpan.Zero) {
 				flinchTime -= gameTime.ElapsedGameTime;
 			}
 
-			if (jumpTime <= TimeSpan.Zero) {
-				momentum += moveDirection * acceleration;
-			} else if (jumpTime > TimeSpan.Zero) {
-				jumpTime -= gameTime.ElapsedGameTime;
-				position += dirVector (direction) * JUMP_DISTANCE / JUMP_TIME * gameTime.ElapsedGameTime.Milliseconds;
+			//moveOffset (momentum);
+			spriteChoice.rect = anim.GetRectangle (animState);
+			momentum *= FrictionFactor;
+			if (momentum.LengthSquared() > maxSpeed*maxSpeed) {
+				momentum.Normalize ();
+				momentum *= maxSpeed;
+			}
+			if (momentum.LengthSquared() < .5) {
+				momentum.X = 0;
+				momentum.Y = 0;
 			}
 
-
-				//moveOffset (momentum);
-				spriteChoice.rect = anim.GetRectangle (animState);
-				momentum *= FrictionFactor;
-				if (momentum.LengthSquared() > maxSpeed*maxSpeed) {
-					momentum.Normalize ();
-					momentum *= maxSpeed;
-				}
-				if (momentum.LengthSquared() < .5) {
-					momentum.X = 0;
-					momentum.Y = 0;
-				}
-
-				momentum *= FrictionFactor;
-				
-				//Set up friction factor for next frame.
-				FrictionFactor = DEFAULT_FRICTION;
+			momentum *= FrictionFactor;
+			
+			//Set up friction factor for next frame.
+			FrictionFactor = DEFAULT_FRICTION;
 		}
 
 		//Collision rules.
 		override public void CollidedWith(Entity e) {
-			if (e is WaterEntity && e.Collidable) {
-
+			if (e is ScrollEntity) {
+				string spellName = (string)((ScrollEntity)e).properties ["spell"];
+				SpellManager.spells [spellName] = true;
+				e.Destroy ();
+			} else if (e is WarpTrigger) {
+				if (overlayActive) {
+					DestroyOverlay ();
+					SpellManager.activeSpell = "";
+				}
 			}
 		}
 
@@ -177,15 +191,41 @@ namespace EC_Proto
 			position.X = resetPosition.X;
 			position.Y = resetPosition.Y;
 		}
-		
+
+		public void Fireball () {
+			FireballEntity fireball = new FireballEntity (GameScene.player.Center(), GameScene.player.direction, GameScene.player.getCurrentSpeed());
+			GameScene.AddSpellEntity (fireball);
+			projectileLaunched = true;
+			GameScene.player.ConsumeMana (2);
+		}
+
+		public void FrostBreath () {
+			FrostEntity frost = new FrostEntity (GameScene.player.Center() + new Vector2(7,10), GameScene.player.direction, GameScene.player.getCurrentSpeed());
+			GameScene.AddSpellEntity (frost);
+			projectileLaunched = true;
+			GameScene.player.ConsumeMana (1);
+		}
+
         public void EarthenShield () {
+			overlay = new PlayerRocksEntity (GameScene.player.position);
+			GameScene.AddSpellEntity (overlay);
+			overlayActive = true;
 			strength = true;
-			ConsumeMana (5);
+			ConsumeMana (1);
+			SpellManager.activeSpell = "earthen shield";
         }
 
-		public void TornadoJump () {
+		public void WindWalk () {
+			overlay = new PlayerWindEntity (GameScene.player.position);
+			GameScene.AddSpellEntity (overlay);
+			overlayActive = true;
 			ConsumeMana (1);
-			jumpTime = new TimeSpan (0, 0, 0, 0, JUMP_TIME);
+			SpellManager.activeSpell = "windwalk";
+		}
+
+		public void DestroyOverlay () {
+			overlayActive = false;
+			overlay.Destroy ();
 		}
 
 		//Move to the center of a rectangle, and update the reset positions as well.

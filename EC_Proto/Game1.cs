@@ -70,6 +70,8 @@ namespace EC_Proto
 			PlayerEntity.texture = Content.Load<Texture2D>("spritesheetcharacter1 copy");
 			FireballEntity.texture = Content.Load<Texture2D> ("fire");
 			FrostEntity.texture = Content.Load<Texture2D> ("frost");
+			PlayerRocksEntity.spritesheet = Content.Load<Texture2D> ("FallingRocks");
+			PlayerWindEntity.spritesheet = Content.Load<Texture2D> ("windwalk");
 
 			Gui.hpBarBackground = Content.Load<Texture2D> ("barBackground");
 			Gui.hpBar = Content.Load<Texture2D> ("hpBar");
@@ -84,6 +86,8 @@ namespace EC_Proto
 			PlayerEntity.InitAnimation ();
 			FireballEntity.InitAnimation ();
 			FrostEntity.InitAnimation ();
+			PlayerRocksEntity.InitAnimation ();
+			PlayerWindEntity.InitAnimation ();
 			FlytrapEntity.InitAnimation ();
 			WolfEntity.InitAnimation ();
 			FireElementalEntity.InitAnimation ();
@@ -96,6 +100,8 @@ namespace EC_Proto
 			WaterEntity.waterTex = Content.Load<Texture2D> ("water");
 			WaterEntity.iceTex = Content.Load<Texture2D> ("ice");
 			BoulderEntity.texture = Content.Load<Texture2D> ("boulder");
+			PitEntity.texture = Content.Load<Texture2D> ("pit");
+			ScrollEntity.texture = Content.Load<Texture2D> ("magicscroll");
 
 			blankTex = new Texture2D(GraphicsDevice, 1, 1);
 			blankTex.SetData(new Color[] { Color.White });
@@ -104,14 +110,8 @@ namespace EC_Proto
 
 			MediaPlayer.Volume = 0.5f;
 
-
-
-
-
 			game.LoadScene ("logo");
 
-
-            
         }
 
         /// <summary>

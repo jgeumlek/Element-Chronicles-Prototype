@@ -25,8 +25,6 @@ namespace EC_Proto
 		private float zoomLevel = 0.5f;
 		SoundEffect bgm;
 		SoundEffect title;
-		private bool projectileLaunched = false;
-		TimeSpan timer = new TimeSpan (0, 0, 0, 0, 500);
 		public Dictionary<String, Spawn> EntitySpawners = new Dictionary<String, Spawn>();
 		Dictionary<String, String> LevelNames = new Dictionary<String, String> ();
 
@@ -47,12 +45,14 @@ namespace EC_Proto
 			//Add in spawning code. Not yet used.
 			Content = gameSystem.Content;
 			EntitySpawners.Add("flytrap",delegate(Rectangle position) {return new FlytrapEntity(position);});
-			//EntitySpawners.Add ("wolf", delegate(Rectangle position) {return new WolfEntity (position);});
+			EntitySpawners.Add ("wolf", delegate(Rectangle position) {return null;});
 			EntitySpawners.Add ("fireElemental", delegate(Rectangle position) {return null;});
 			EntitySpawners.Add("torch",delegate(Rectangle position) {return new TorchEntity(position);});
 			EntitySpawners.Add("Terrain",delegate(Rectangle position) {return new TerrainEntity(position);});
 			EntitySpawners.Add("boulder",delegate(Rectangle position) {return new BoulderEntity(position);});
+			EntitySpawners.Add("pit",delegate(Rectangle position) {return new PitEntity(position);});
 			EntitySpawners.Add("water",delegate(Rectangle position) {return new WaterEntity(position);});
+			EntitySpawners.Add ("scroll", delegate(Rectangle position) {return null;});
 			EntitySpawners.Add ("nothing", delegate(Rectangle position) {return null;});
 
 			scene = new GameScene (this);
@@ -117,38 +117,7 @@ namespace EC_Proto
 
 			Gui.Update (gameTime);
 
-			//Fire spawning. Should later be handled my some spell managing class.
-			if (!projectileLaunched && GameScene.player.HasEnoughMana(2) && state.IsKeyDown (Keys.H) && prevState.IsKeyUp(Keys.H)) { //Use prev state to simulate onKeyDown
-				FireballEntity fireball = new FireballEntity (GameScene.player.Center(), GameScene.player.direction, GameScene.player.getCurrentSpeed());
-				scene.AddSpellEntity (fireball);
-				projectileLaunched = true;
-				GameScene.player.ConsumeMana (2);
-			}
-
-			//Frost spawning.
-			if (!projectileLaunched && GameScene.player.HasEnoughMana(1) && state.IsKeyDown (Keys.J) && prevState.IsKeyUp (Keys.J)) {
-				FrostEntity frost = new FrostEntity (GameScene.player.Center() + new Vector2(7,10), GameScene.player.direction, GameScene.player.getCurrentSpeed());
-				scene.AddSpellEntity (frost);
-				projectileLaunched = true;
-				GameScene.player.ConsumeMana (1);
-			}
-
-			if (projectileLaunched) {
-				if (timer > TimeSpan.Zero) {
-					timer -= gameTime.ElapsedGameTime;
-				} else {
-					projectileLaunched = false;
-					timer = new TimeSpan (0, 0, 0, 0, 500);
-				}
-			}
-
-			if (GameScene.player.HasEnoughMana(5) && state.IsKeyDown (Keys.K) && prevState.IsKeyUp (Keys.K)) {
-				GameScene.player.EarthenShield ();
-			}
-
-			if (GameScene.player.HasEnoughMana(3) && state.IsKeyDown (Keys.L) && prevState.IsKeyUp (Keys.L)) {
-				GameScene.player.TornadoJump ();
-			}
+			SpellManager.Update (gameTime, state, prevState);
 
 			//Debug code!
 			if (state.IsKeyDown (Keys.F3) && prevState.IsKeyUp(Keys.F3))
@@ -235,7 +204,7 @@ namespace EC_Proto
 
 		public void Draw( SpriteBatch spriteBatch, GraphicsDeviceManager graphics) {
 			scene.Draw (screenMatrix, spriteBatch, graphics, drawHitBoxes);
-			if(Gui.sceneName == "game")
+			if (Gui.sceneName == "game")
 				Gui.Draw (screenMatrix, spriteBatch, graphics);
 		}
 

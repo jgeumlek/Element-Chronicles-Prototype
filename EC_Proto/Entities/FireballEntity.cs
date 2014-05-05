@@ -23,6 +23,16 @@ namespace EC_Proto
 			spriteChoice.rect = new Rectangle (0, 0, 32, 32);
 		}
 
+		public FireballEntity (Vector2 position, Direction direction, Vector2 momentum) : this()
+		{
+			this.position = position - new Vector2(50,50) + 20*Entity.dirVector(direction); //subtract to fix left corner offset. TODO: What if each animation has it's own notion of center?
+			this.direction = direction;
+			movement = momentum + speed * Entity.dirVector (direction);
+			animState.AnimationName = Entity.dirName (direction);
+			spriteChoice.rect = anim.GetRectangle (animState);
+			hitbox = animHitBox.GetRectangle (animState);
+		}
+
 		static public void InitAnimation() {
 			anim.AddAnimation ("south", 100, 0, 100, 100,1); 
 			anim.AddAnimation ("west", 100, 100, 100, 100,1);
@@ -33,16 +43,6 @@ namespace EC_Proto
 			animHitBox.AddAnimation ("west", 10, 40, 20, 25,1);
 			animHitBox.AddAnimation ("east", 70, 40, 20, 25,1);
 			animHitBox.AddAnimation ("north", 30, 10, 25, 20,1);
-		}
-
-		public FireballEntity (Vector2 position, Direction direction, Vector2 momentum) : this()
-		{
-			this.position = position - new Vector2(50,50) + 20*Entity.dirVector(direction); //subtract to fix left corner offset. TODO: What if each animation has it's own notion of center?
-			this.direction = direction;
-			movement = momentum + speed * Entity.dirVector (direction);
-			animState.AnimationName = Entity.dirName (direction);
-			spriteChoice.rect = anim.GetRectangle (animState);
-			hitbox = animHitBox.GetRectangle (animState);
 		}
 
 		public override void Update (KeyboardState keyboard, GameTime gameTime) {

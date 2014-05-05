@@ -17,10 +17,20 @@ namespace EC_Proto
 		public FrostEntity () {
 			speed = FROST_SPEED;
 			lifespan = FROST_LIFESPAN;
-			//fireDamage = FROST_DAMAGE;
+			waterDamage = FROST_DAMAGE;
 			hitbox = new Rectangle (20, 20, 60, 60);
 			spriteChoice.texture = texture;
 			spriteChoice.rect = new Rectangle (0, 0, 32, 32);
+		}
+
+		public FrostEntity (Vector2 position, Direction direction, Vector2 momentum) : this()
+		{
+			this.position = position - new Vector2(50,50); //Subtract to fix top left corner. TODO: Clean up entity interface to handle this.
+			this.direction = direction;
+			movement = momentum + speed * Entity.dirVector (direction);
+			animState.AnimationName = Entity.dirName (direction);
+			spriteChoice.rect = anim.GetRectangle (animState);
+			hitbox = animHitBox.GetRectangle (animState);
 		}
 
 		static public void InitAnimation() {
@@ -35,15 +45,6 @@ namespace EC_Proto
 			animHitBox.AddAnimation ("north", 30, 10, 25, 20,1);
 		}
 
-		public FrostEntity (Vector2 position, Direction direction, Vector2 momentum) : this()
-		{
-			this.position = position - new Vector2(50,50); //Subtract to fix top left corner. TODO: Clean up entity interface to handle this.
-			this.direction = direction;
-			movement = momentum + speed * Entity.dirVector (direction);
-			animState.AnimationName = Entity.dirName (direction);
-			spriteChoice.rect = anim.GetRectangle (animState);
-			hitbox = animHitBox.GetRectangle (animState);
-		}
 
 		public override void Update (KeyboardState keyboard, GameTime gameTime) {
 			moveOffset(movement);

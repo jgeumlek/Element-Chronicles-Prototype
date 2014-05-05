@@ -16,8 +16,8 @@ namespace EC_Proto
 
 			inverseMass = 0;
 
-			health = 60;
-			contactDamage = 40;
+			health = 10;
+			contactDamage = 10;
 			fireDefense = 0;
 			waterDefense = 10;
 			earthDefense = 10;
@@ -31,7 +31,9 @@ namespace EC_Proto
 			animState.AnimationName = "alive";
 			hitbox = new Rectangle (0, 0, rect.Width, rect.Height);
 			spriteChoice.rect = anim.GetRectangle (animState);
+
 			Visible = true;
+
 			inverseMass = 0;
 
 			health = 10;

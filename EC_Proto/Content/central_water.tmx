@@ -56,7 +56,7 @@
  </layer>
  <layer name="Spawn" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJxjYBhegGugHTAKRsEIB/TMgxx0tItYMFTLoKHq7lEwCogFg7G8oBQMRz/REoyGF3bAQyVziKlHRuNgcAIAgI4AZw==
+   eJxjYBhegGugHTAKRsEIB/TMgxx0tItYMFTLoKHq7lEwCogFg7G8oBQMRz/REoyGF20BMfXIaBwMTgAAaF4AWw==
   </data>
  </layer>
  <objectgroup name="Spawn_location" width="30" height="30">

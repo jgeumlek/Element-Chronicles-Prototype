@@ -7,7 +7,7 @@ namespace EC_Proto
 {
 	public class BoulderEntity : TerrainEntity
 	{
-		static public Texture2D texture;
+		public static Texture2D texture;
 		private Vector2 resetPosition = new Vector2 (0, 0);
 		bool collidedWithTerrain = false;
 

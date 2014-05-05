@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="24" height="24" tilewidth="100" tileheight="100">
  <tileset firstgid="1" name="spritesheet_1" tilewidth="100" tileheight="100">
-  <image source="spritesheet_1.png" trans="ffffff" width="400" height="400"/>
+  <image source="spritesheet_1.png" trans="ffffff" width="400" height="900"/>
   <tile id="4">
    <properties>
     <property name="spawn" value="boulder"/>
@@ -23,7 +23,7 @@
    <property name="solid" value=""/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztkzsKADEIRKcI5P433nYxfidaLOyARUCfg5oNYH8gLHXyuzx5YnqsRLCzwKve0s8/Z90xf0ZTd83yu31Ec7nJlTXaDjVZeZWbie7HuyfZDzj9enwtr8qXtdo74keyemb50/6z+7V2UN3vJL9D7P9m/i/Lj+IBbgoJUg==
+   eJzFVV0PwiAM7INmz0o2o8Ql+v9/pDSBeGta6MCPJvcAo0d7tN1CRMsg7gk3A6PcjAvZ1hOTRMxcU8Ip4QzoialmszPnR0LIPgcHKMf+dPJjDsXfsvKdYy+6rl/iZ58j+XTq4Wdd+V1bOnGeEfyl1trelXy6/Lp+ZE1LhDd9kx/7ivWZct5lb1XOYn9ZZ726oH9snNVyQX7tDTWTb478qMdK25qs9aqnn2faxotrGW+NXzun8bO2WPPSJN9e/pZZd3r5uc5xZmpcI/FL/fe8sbb+J/8nrMzTINa1WWPNHYsfe9Y7+3AG1u7nf8ALJRoaaQ==
   </data>
  </layer>
  <layer name="Boulders" width="24" height="24">
@@ -144,6 +144,11 @@
     <property name="next" value="wolf3_1"/>
    </properties>
   </object>
+  <object name="scroll" type="spawn" x="100" y="1900" width="98" height="100">
+   <properties>
+    <property name="spell" value="earthen shield"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="Player_location" width="24" height="24">
   <object name="south_entrance" type="location" x="200" y="2100" width="100" height="100"/>
@@ -154,6 +159,10 @@
   </object>
   <object name="north_entrance" type="location" x="2100" y="100" width="100" height="100"/>
   <object name="player" type="spawn" x="200" y="2125" width="100" height="100"/>
-  <object name="earth_hub" type="warp" x="2375" y="100" width="25" height="100"/>
+  <object name="earth_hub" type="warp" x="2375" y="100" width="25" height="100">
+   <properties>
+    <property name="location" value="west_entrance"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

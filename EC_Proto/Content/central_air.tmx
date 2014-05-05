@@ -35,6 +35,11 @@
     <property name="" value=""/>
    </properties>
   </tile>
+  <tile id="11">
+   <properties>
+    <property name="" value=""/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Pits (hidden)" width="20" height="20">
   <data encoding="base64" compression="zlib">
@@ -53,7 +58,7 @@
  </layer>
  <layer name="Spawn" width="20" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYBh5gGegHTAKRsEoGAXDAAAARdAADQ==
+   eJxjYBgFo2AUjIJRMApIBwAGQAAB
   </data>
  </layer>
  <objectgroup name="Spawn_locations" width="20" height="20">
@@ -238,7 +243,7 @@
   <object name="torch" type="spawn" x="600" y="1000" width="100" height="100"/>
   <object name="scroll" type="spawn" x="100" y="300" width="100" height="100">
    <properties>
-    <property name="spell" value="highjump"/>
+    <property name="spell" value="windwalk"/>
    </properties>
   </object>
   <object name="flytrap" type="spawn" x="600" y="100" width="100" height="100"/>

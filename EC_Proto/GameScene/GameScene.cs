@@ -12,16 +12,18 @@ namespace EC_Proto
 {
 	public class GameScene
 	{
-		static public PlayerEntity player = new PlayerEntity( new Vector2(0,0));
+		public static PlayerEntity player = new PlayerEntity( new Vector2(0,0));
 		protected Dictionary<String, Spawn> EntitySpawners;
 		protected GameState game;
-		public List<FrostEntity> frostEntities = new List<FrostEntity> ();
-		public List<Entity> projectileEntities = new List<Entity> ();
+
+		// Entity lists: Contain all on-screen game objects besides player
+		public static List<Entity> spellEntities = new List<Entity> ();
 		public List<TerrainEntity> terrainEntities = new List<TerrainEntity> ();
-		//public List<Entity> enemyEntities = new List<Entity>();
 		public List<Entity> movableEntities = new List<Entity>();
 		public List<NodeEntity> nodeEntities = new List<NodeEntity> ();
 		public List<MonsterEntity> monsterEntities = new List<MonsterEntity> ();
+		public List<ScrollEntity> scrollEntities = new List<ScrollEntity> ();
+
 
 		public int SceneWidth;
 		public int SceneHeight;
@@ -48,6 +50,9 @@ namespace EC_Proto
             		case "boulder":
             			movableEntities.Add (new BoulderEntity (position));
             			break;
+					case "pit":
+						terrainEntities.Add (new PitEntity (position));
+						break;
 			case "node":
 				nodeEntities.Add (new NodeEntity (position, properties));
 				break;
@@ -59,6 +64,9 @@ namespace EC_Proto
 				break;
 			case "fireelemental":
 				monsterEntities.Add (new FireElementalEntity (position, properties, this));
+				break;
+			case "scroll":
+				scrollEntities.Add (new ScrollEntity (position, properties, this));
 				break;
 			}
 
@@ -72,10 +80,9 @@ namespace EC_Proto
 			terrainEntities.Add (new WarpTrigger (mapName, locationTarget, position, game));
 		}
 
-		public void AddSpellEntity(Entity spell) {
-			projectileEntities.Add (spell);
+		public static void AddSpellEntity(Entity spell) {
+			spellEntities.Add (spell);
 		}
-
 
 		virtual public void Update (GameTime gameTime,KeyboardState state, KeyboardState prevState) {
 
@@ -92,12 +99,8 @@ namespace EC_Proto
 			player.moveOffset(player.Momentum * (float)player.inverseMass);
 
 
-			foreach (Entity e in projectileEntities) {
+			foreach (Entity e in spellEntities) {
 				if (e.Active) e.Update (state, gameTime); 
-			}
-
-			foreach (FrostEntity e in frostEntities) {
-				if (e.Active) e.Update (state, gameTime);
 			}
 
 			foreach (PhysicsEntity e in monsterEntities) {
@@ -109,45 +112,52 @@ namespace EC_Proto
 				e.Update (state, gameTime);
 			}
 
+			foreach (ScrollEntity e in scrollEntities) {
+				e.Update (state, gameTime);
+			}
+
+			foreach (TerrainEntity e in terrainEntities) {
+				e.Update (state, gameTime);
+			}
+
 			terrainEntities = terrainEntities.Where( x => x.Alive()).ToList();
-			projectileEntities = projectileEntities.Where( x => x.Alive()).ToList();
-			frostEntities = frostEntities.Where (x => x.Alive ()).ToList();
+			spellEntities = spellEntities.Where( x => x.Alive()).ToList();
             movableEntities = movableEntities.Where (x => x.Alive ()).ToList();
 			monsterEntities = monsterEntities.Where (x => x.Alive ()).ToList();
+			scrollEntities = scrollEntities.Where (x => x.Alive ()).ToList ();
 
 			DetectCollisions ();
 		}
 
 		virtual public void AnimationTick() {
 			player.AnimationTick ();
-			foreach (Entity e in projectileEntities) {
+			foreach (Entity e in spellEntities) {
 				e.AnimationTick ();
 			}
 			foreach (Entity e in monsterEntities) {
+				e.AnimationTick ();
+			}
+			foreach (ScrollEntity e in scrollEntities) {
 				e.AnimationTick ();
 			}
 		}
 
 		public void DetectCollisions() {
 			//Care should be taken to not check the same pair of objects twice.
-			//Let's check each projectile with the terrain and the enemies.
-			DetectCollisionsBetween (projectileEntities, terrainEntities);
-			DetectCollisionsBetween (projectileEntities, movableEntities);
-			DetectCollisionsBetween (projectileEntities, monsterEntities);
-			DetectCollisionsBetween (frostEntities, terrainEntities);
-			DetectCollisionsBetween (frostEntities, movableEntities);
-			DetectCollisionsBetween (frostEntities, monsterEntities);
-            DetectCollisionsBetween (player, movableEntities);
-			DetectCollisionsBetween (player, monsterEntities);
+			//Let's check each spell with the terrain and the enemies.
 			DetectCollisionsBetween (player, terrainEntities);
-            DetectCollisionsBetween (movableEntities, terrainEntities);
-			DetectCollisionsBetween (monsterEntities, terrainEntities);
-			DetectCollisionsBetween (monsterEntities, movableEntities);
+			DetectCollisionsBetween (player, movableEntities);
+			DetectCollisionsBetween (player, monsterEntities);
+			DetectCollisionsBetween (player, scrollEntities);
+			DetectCollisionsBetween (spellEntities, terrainEntities);
+			DetectCollisionsBetween (spellEntities, movableEntities);
+			DetectCollisionsBetween (spellEntities, monsterEntities);
+			DetectCollisionsBetween (terrainEntities, movableEntities);
+			DetectCollisionsBetween (terrainEntities, monsterEntities);
+			DetectCollisionsBetween (movableEntities, monsterEntities);
 
             DetectCollisionsAmong (movableEntities);
 			DetectCollisionsAmong (monsterEntities);
-
-
 		}
 
 		private void DetectCollisionsBetween<A,B>(List<A> list1, List<B> list2) where A:Entity where B:Entity {
@@ -277,15 +287,17 @@ namespace EC_Proto
 			spriteBatch.Begin(SpriteSortMode.Deferred,null, null, null, null, null,screenMatrix);
 
 			DrawList (spriteBatch, terrainEntities, drawHitBoxes);
-            DrawList (spriteBatch, movableEntities, drawHitBoxes);
-			DrawList (spriteBatch, projectileEntities, drawHitBoxes);
-			DrawList (spriteBatch, frostEntities, drawHitBoxes);
+			DrawList (spriteBatch, movableEntities, drawHitBoxes);
 			DrawList (spriteBatch, monsterEntities, drawHitBoxes);
-
-
+			DrawList (spriteBatch, scrollEntities, drawHitBoxes);
 			if (player.getTexture () != null) {
 				spriteBatch.Draw (player.getTexture (), player.position, player.spriteChoice.rect, Color.White);
 			}
+			DrawList (spriteBatch, spellEntities, drawHitBoxes);
+
+
+
+
 			if (drawHitBoxes)
 				spriteBatch.Draw (Game1.blankTex, player.getHitBox (), Color.Aquamarine); //Debugging!
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="40" height="20" tilewidth="100" tileheight="100">
  <tileset firstgid="1" name="Sprite sheet" tilewidth="100" tileheight="100">
-  <image source="spritesheet_1.png" trans="ffffff" width="400" height="400"/>
+  <image source="spritesheet_1.png" trans="ffffff" width="400" height="900"/>
   <tile id="0">
    <properties>
     <property name="spawn" value="water"/>
@@ -54,12 +54,12 @@
    <property name="solid" value=""/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzNVlEKxSAM82Pg/W/8GGxQQppG6ZMFROesjaZW5xhjhjLg+2TJfN+4noLtE2D8sP3yirWDC9po6651Qs34/Qu7enTyY/5xb1dsb3TzY6XioKD4OZpkY7rO1g4/Fv84visXYI5RPGI/O7OK9ypeG5YHXXvXf8bbgdLW6Yv9Wd5DnTPdmQ7u/qlYdOIP14LtbM4q/qrYYjbKn+pj8+zmP6Vltqad+dn9W/lg/1fuDmct7v515F5Hy1P3mzNmJd8gP/bGifOqt5SjYcUFfbvvwsxvFyoeX37f/wAd3QX6
+   eJzNVlEKxSAM82Pg/W/8GGxQQppG6ZMFRNfZNtpanWOMGdqA75Mt833jehqOT4Dxw/HLK/YOLhijrrvWCT3j9y/sxqOTH/OPe7uie6ObH2sVBwXFz4lJNqfrbO3wY/mP87tqAdYYxSPK2ZlVvFfx6rA66Opn/tFOxtuBiq0ji/Ks7mGcVdxR5u6fykUn/0YxzmxW+VflFtNR/pSM2dmtfyqW2Zp27LP7t/LB/q/cHc5a3P3rqL1OLE/db86clXqD/NgbJ9pVbyknhhUX9O2+CzO/Xah4fPl9/wM07QX9
   </data>
  </layer>
  <layer name="Spawn" width="40" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYBgF6IAVBxuXGnoC1gG0m1pgMLh/OITjQAB8eYOYfENrgO6GwRbHg809pILB6n7OgXYAjQHzCLV7KAFS0iC+MKUkvId7PhiMgJj4wqaG2HgmJ06HSjoAALyJAJg=
+   eJxjYBgF6IAVBxuXGnoC1gG0m1pgMLh/OITjQAB8eYOYfENrgO6GwRbHg809pIKh7v6hCphHqN3DFeAL09HwHlqAmPjCpmY0nhkYAEZpAGs=
   </data>
  </layer>
  <objectgroup name="Player" width="40" height="20">
@@ -96,6 +96,13 @@
     <property name="location" value="north_west_entrance"/>
    </properties>
   </object>
-  <object name="respawn" type="location" x="2000" y="900" width="97" height="103"/>
  </objectgroup>
+ <layer name="pits" width="40" height="20">
+  <properties>
+   <property name="spawn" value="pit"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMAqGLuAcaAeMghEPBkMaHAxuGAXUBeTE6VBJBwCCoAAu
+  </data>
+ </layer>
 </map>
