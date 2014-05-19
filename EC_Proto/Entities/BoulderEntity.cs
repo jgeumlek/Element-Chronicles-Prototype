@@ -35,7 +35,11 @@ namespace EC_Proto
 		}
 
 		override public void CollidedWith (Entity e) {
-			if (e is TerrainEntity) {
+			if (e is TerrainEntity && e.Collidable) {
+				collidedWithTerrain = true;
+				ResetWarp ();
+			}
+			if (e is GateEntity) {
 				collidedWithTerrain = true;
 				ResetWarp ();
 			}

@@ -65,12 +65,12 @@ namespace EC_Proto
 				BoulderEntity boulder = new BoulderEntity (position);
 				movableEntities.Add (boulder);
 				e = boulder;
-            	                break;
-                        case "pit":
-                               PitEntity pit = new PitEntity (position);
-                               terrainEntities.Add (pit);
-                               e = pit;
-                               break;
+               break;
+            case "pit":
+                   PitEntity pit = new PitEntity (position);
+                   terrainEntities.Add (pit);
+                   e = pit;
+                   break;
 			case "node":
 				nodeEntities.Add (new NodeEntity (position, properties));
 				break;
@@ -95,7 +95,9 @@ namespace EC_Proto
 				e = pressureplate;
 				break;
 			case "scroll":
-				scrollEntities.Add (new ScrollEntity (position, properties, this));
+				ScrollEntity scroll = new ScrollEntity (position, properties, this);
+				scrollEntities.Add (scroll);
+				e = scroll;
 				break;
 			}
 

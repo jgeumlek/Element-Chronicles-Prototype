@@ -56,14 +56,14 @@ namespace EC_Proto
 
 		override public void CollidedWith(Entity e) {
 			base.CollidedWith (e);
-			if (e is TerrainEntity && e.Collidable) {
+			if (e is TerrainEntity && e.Collidable && ! (e is WaterEntity)) {
 				alive = false;
 			}
 		}
 
 		public override float Baseline ()
 		{
-			return position.Y + hitbox.Bottom;
+			return position.Y + spriteChoice.rect.Bottom;
 		}
 	}
 }

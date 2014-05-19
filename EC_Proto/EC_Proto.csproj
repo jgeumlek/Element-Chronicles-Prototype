@@ -36,7 +36,7 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="MonoGame.Framework, Version=3.0.1.0, Culture=neutral, PublicKeyToken=b1c3306074c7ec98">
+    <Reference Include="MonoGame.Framework, Version=3.1.2.0, Culture=neutral">
       <Private>False</Private>
       <Package>monogame</Package>
     </Reference>

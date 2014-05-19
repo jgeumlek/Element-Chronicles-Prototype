@@ -1,47 +1,160 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="20" height="20" tilewidth="100" tileheight="100">
- <tileset firstgid="1" source="generic.tsx"/>
- <layer name="Tile Layer 1" width="20" height="20">
+ <tileset firstgid="1" name="spritesheet_1" tilewidth="100" tileheight="100">
+  <image source="spritesheet_1.png" trans="ffffff" width="400" height="900"/>
+  <terraintypes>
+   <terrain name="trees" tile="-1"/>
+  </terraintypes>
+  <tile id="0">
+   <properties>
+    <property name="spawn" value="water"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="spawn" value="torch"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="solid" value=""/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="spawn" value="boulder"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="solid" value=""/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="spawn" value="flytrap"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="spawn" value="fireelemental"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="spawn" value="wolf"/>
+   </properties>
+  </tile>
+  <tile id="16" terrain=",,,0"/>
+  <tile id="17" terrain=",,0,0"/>
+  <tile id="18" terrain=",,0,"/>
+  <tile id="20" terrain=",0,,0"/>
+  <tile id="21" terrain="0,0,0,0"/>
+  <tile id="22" terrain="0,,0,"/>
+  <tile id="24" terrain=",0,,"/>
+  <tile id="25" terrain="0,0,,"/>
+  <tile id="26" terrain="0,,,"/>
+  <tile id="28" terrain="0,0,0,"/>
+  <tile id="29" terrain="0,0,,0"/>
+  <tile id="32" terrain="0,,0,0"/>
+  <tile id="33" terrain=",0,0,0"/>
+ </tileset>
+ <layer name="Grass" width="20" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjY2BgYBvFo3gAMfsgcMNQx9QOw6EQJ+xo9CimPwYAcg8JZg==
+   eJxjY2BgYBvFo3gUj+JRPIpJxABmswlh
   </data>
  </layer>
- <objectgroup name="Object Layer 1" width="20" height="20">
-  <object gid="11" x="838" y="906">
+ <layer name="Stuff" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjZ2BgYKcyphSwQOlR80bNQwesVDYPGxg1b3ibBwMj1TxqYgBnAQJS
+  </data>
+ </layer>
+ <objectgroup name="objects" width="20" height="20">
+  <object name="trap1" gid="8" x="706" y="914"/>
+  <object name="trap4" gid="8" x="810" y="782"/>
+  <object name="trap2" gid="8" x="586" y="794"/>
+  <object name="trap3" gid="8" x="698" y="650"/>
+  <object name="surround1" type="node" x="1100" y="496" width="116" height="116">
    <properties>
-    <property name="next" value="node1"/>
+    <property name="next" value="surround2"/>
    </properties>
   </object>
-  <object name="torch_1" gid="3" x="1070" y="514"/>
-  <object gid="3" x="1574" y="574"/>
-  <object gid="3" x="1546" y="686"/>
-  <object gid="3" x="1506" y="834"/>
-  <object gid="3" x="1602" y="1098"/>
-  <object gid="3" x="1630" y="1214"/>
-  <object gid="3" x="1450" y="1282"/>
-  <object gid="3" x="1450" y="1322"/>
-  <object gid="3" x="1286" y="1562"/>
-  <object gid="3" x="1030" y="1430"/>
-  <object gid="3" x="1034" y="1426"/>
-  <object name="node1" type="node" x="684" y="268" width="208" height="84">
+  <object name="surround2" type="node" x="1000" y="1008" width="116" height="116">
    <properties>
-    <property name="next" value="node2"/>
+    <property name="next" value="surround3"/>
    </properties>
   </object>
-  <object x="424" y="420"/>
-  <object name="node2" type="node" x="436" y="452" width="180" height="236">
+  <object name="surround3" type="node" x="632" y="1085" width="116" height="116">
    <properties>
-    <property name="next" value="node1"/>
+    <property name="next" value="surround4"/>
    </properties>
   </object>
-  <object name="player" type="spawn" x="876" y="528" width="228" height="156"/>
-  <object x="888" y="876"/>
-  <object x="1128" y="460"/>
-  <object name="gate" type="spawn" x="1508" y="172" width="124" height="116">
+  <object name="surround5" type="node" x="400" y="576" width="116" height="116">
    <properties>
-    <property name="require" value="torch_1"/>
+    <property name="next" value="surround6"/>
    </properties>
   </object>
-  <object x="1964" y="624"/>
+  <object name="surround6" type="node" x="668" y="343" width="116" height="116">
+   <properties>
+    <property name="next" value="surround1"/>
+   </properties>
+  </object>
+  <object name="gate" type="spawn" x="288" y="156" width="100" height="100">
+   <properties>
+    <property name="require" value="frosty"/>
+   </properties>
+  </object>
+  <object name="gate" type="spawn" x="288" y="276" width="100" height="100">
+   <properties>
+    <property name="require" value="frosty"/>
+   </properties>
+  </object>
+  <object name="gate" type="spawn" x="145" y="331" width="100" height="100">
+   <properties>
+    <property name="require" value="frosty"/>
+   </properties>
+  </object>
+  <object name="surround4" type="node" x="336" y="836" width="116" height="116">
+   <properties>
+    <property name="next" value="surround5"/>
+   </properties>
+  </object>
+  <object name="player" type="spawn" x="684" y="1356" width="136" height="136"/>
+  <object gid="11" x="159" y="270">
+   <properties>
+    <property name="next" value="surround5"/>
+   </properties>
+  </object>
+  <object gid="11" x="155" y="261">
+   <properties>
+    <property name="next" value="surround2"/>
+   </properties>
+  </object>
+  <object gid="11" x="154" y="257">
+   <properties>
+    <property name="next" value="surround3"/>
+   </properties>
+  </object>
+  <object gid="11" x="150" y="259">
+   <properties>
+    <property name="next" value="surround4"/>
+   </properties>
+  </object>
+  <object gid="11" x="159" y="270">
+   <properties>
+    <property name="next" value="surround6"/>
+   </properties>
+  </object>
+  <object name="frosty" type="spawn:scroll" gid="12" x="702" y="783">
+   <properties>
+    <property name="identifier" value="frosty"/>
+    <property name="spell" value="frostbreath"/>
+   </properties>
+  </object>
+  <object name="gate" type="spawn" x="1804" y="1384" width="100" height="100">
+   <properties>
+    <property name="any" value="trap1,trap2,trap3,trap4"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

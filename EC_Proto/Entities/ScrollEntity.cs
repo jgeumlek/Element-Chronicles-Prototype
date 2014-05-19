@@ -31,6 +31,11 @@ namespace EC_Proto
 		public override void Update (KeyboardState keyboard, GameTime gameTime) {
 
 		}
+
+		public override bool Activated ()
+		{
+			return !alive;
+		}
 	}
 }
 

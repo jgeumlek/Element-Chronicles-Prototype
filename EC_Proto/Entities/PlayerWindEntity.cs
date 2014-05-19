@@ -24,6 +24,7 @@ namespace EC_Proto
 			animState.AnimationName = "alive";
 			spriteChoice.texture = spritesheet;
 			spriteChoice.rect = anim.GetRectangle (animState);
+			baseline = 150;
 		}
 
 		static public void InitAnimation() {
