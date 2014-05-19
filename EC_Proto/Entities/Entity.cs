@@ -20,6 +20,14 @@ namespace EC_Proto
 		public Rectangle hitbox { get; set;}//Collision detection.
 		public Rectangle hurtbox { get; set; }
 
+		//The distance from the top of the sprite that is considered lying on the ground.
+		//Ex: for a water entity, the baseline is zero since the entire sprite is on the ground,
+		//	  for the player, the baseline is at the feet, everything above the feet is consider
+		//		to be standing up, not lying flat on the ground.
+		//This is used to determine which sprite should be drawn on top.
+		protected float baseline = 0;
+
+
 		public Entity ()
 		{
 			Visible = true;
@@ -105,6 +113,18 @@ namespace EC_Proto
 			return new Rectangle(hitbox.X + (int)position.X, hitbox.Y + (int)position.Y, hitbox.Width, hitbox.Height);
 		}
 
+		/*
+		 * Returns a quick boolean on whether the player has dealt with this object.
+		 * Default to false.
+		 * Examples:
+		 * 	A torch is activated when lit.
+		 * 	An enemy is activated when dead.
+		 * 	Water is activated when frozen?
+		 */
+		public virtual bool Activated() {
+			return false;
+		}
+
 		//Handle collision how you want.
 		virtual public void CollidedWith(Entity e) {
 		}
@@ -112,6 +132,11 @@ namespace EC_Proto
 		//A frame's worth of time has passed. Do nothing by defualt, override if you have an animation.
 		virtual public void AnimationTick() {
 		}
+
+		virtual public float Baseline() {
+			return position.Y + baseline;
+		}
+
 
 		abstract public void Update (KeyboardState state, GameTime gametime);
 

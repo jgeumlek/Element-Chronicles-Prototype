@@ -50,8 +50,11 @@ namespace EC_Proto
 
 			inverseMass = 1;
 
+
 			projectileLaunched = false;
 			timer = new TimeSpan (0, 0, 0, 0, 500);
+			baseline = hitbox.Bottom;
+
 		}
 
 		//Need to clean up constructors, and use base class better

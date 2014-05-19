@@ -25,6 +25,8 @@ namespace EC_Proto
 		public List<ScrollEntity> scrollEntities = new List<ScrollEntity> ();
 
 
+		public Dictionary<String,Entity> NamedEntities = new Dictionary<String,Entity>();
+
 		public int SceneWidth;
 		public int SceneHeight;
 
@@ -37,37 +39,68 @@ namespace EC_Proto
 
 		virtual public void SpawnEntity(String entityType, Rectangle position, Properties properties) {
 			//Ideally use EntitySpawners dictionary, and add entity to appropriate list based on type!
+			Entity e = null;
 			switch (entityType) {
 			case "torch":
-				terrainEntities.Add (new TorchEntity (position));
+				TorchEntity torch = new TorchEntity (position);
+				terrainEntities.Add (torch);
+				e = torch;
 				break;
 			case "Terrain":
-				terrainEntities.Add (new TerrainEntity (position));
+				TerrainEntity terrain = new TerrainEntity (position);
+				terrainEntities.Add (terrain);
+				e = terrain;
 				break;
-            		case "water":
-            			terrainEntities.Add (new WaterEntity (position));
-            			break;
-            		case "boulder":
-            			movableEntities.Add (new BoulderEntity (position));
-            			break;
-					case "pit":
-						terrainEntities.Add (new PitEntity (position));
-						break;
+			case "water":
+				WaterEntity water = new WaterEntity (position);
+				terrainEntities.Add (water);
+				e = water;
+            	                break;
+			case "gate":
+				GateEntity gate = new GateEntity (position,properties,this);
+				terrainEntities.Add (gate);
+				e = gate;
+				break;
+			case "boulder":
+				BoulderEntity boulder = new BoulderEntity (position);
+				movableEntities.Add (boulder);
+				e = boulder;
+            	                break;
+                        case "pit":
+                               PitEntity pit = new PitEntity (position);
+                               terrainEntities.Add (pit);
+                               e = pit;
+                               break;
 			case "node":
 				nodeEntities.Add (new NodeEntity (position, properties));
 				break;
 			case "flytrap":
-				monsterEntities.Add (new FlytrapEntity (position));
+				FlytrapEntity flytrap = new FlytrapEntity (position);
+				monsterEntities.Add (flytrap);
+				e = flytrap;
 				break;
 			case "wolf":
-				monsterEntities.Add (new WolfEntity (position, properties, this));
+				WolfEntity wolf = new WolfEntity (position, properties, this);
+				monsterEntities.Add (wolf);
+				e = wolf;
 				break;
 			case "fireelemental":
-				monsterEntities.Add (new FireElementalEntity (position, properties, this));
+				FireElementalEntity fireelemental = new FireElementalEntity (position, properties, this);
+				monsterEntities.Add (fireelemental);
+				e = fireelemental;
+				break;
+			case "pressureplate":
+				PressurePlateEntity pressureplate = new PressurePlateEntity (position);
+				movableEntities.Add (pressureplate);
+				e = pressureplate;
 				break;
 			case "scroll":
 				scrollEntities.Add (new ScrollEntity (position, properties, this));
 				break;
+			}
+
+			if (properties.ContainsKey ("identifier") && (String)properties["identifier"] != "" ) {
+				NamedEntities.Add ((String)properties ["identifier"], e);
 			}
 
 		}
@@ -138,6 +171,12 @@ namespace EC_Proto
 				e.AnimationTick ();
 			}
 			foreach (ScrollEntity e in scrollEntities) {
+                                e.AnimationTick ();
+                        }
+			foreach (Entity e in terrainEntities) {
+				e.AnimationTick ();
+			}
+			foreach (Entity e in movableEntities) {
 				e.AnimationTick ();
 			}
 		}
@@ -284,17 +323,17 @@ namespace EC_Proto
 		}
 
 		virtual public void Draw(Matrix screenMatrix, SpriteBatch spriteBatch, GraphicsDeviceManager graphics, bool drawHitBoxes) {
-			spriteBatch.Begin(SpriteSortMode.Deferred,null, null, null, null, null,screenMatrix);
+			spriteBatch.Begin(SpriteSortMode.BackToFront,null, null, null, null, null,screenMatrix);
 
 			DrawList (spriteBatch, terrainEntities, drawHitBoxes);
 			DrawList (spriteBatch, movableEntities, drawHitBoxes);
 			DrawList (spriteBatch, monsterEntities, drawHitBoxes);
 			DrawList (spriteBatch, scrollEntities, drawHitBoxes);
 			if (player.getTexture () != null) {
-				spriteBatch.Draw (player.getTexture (), player.position, player.spriteChoice.rect, Color.White);
+				//spriteBatch.Draw (player.getTexture (), player.position, player.spriteChoice.rect, Color.White);
+				spriteBatch.Draw (player.getTexture(), player.position, player.spriteChoice.rect, Color.White, 0f, new Vector2 (), 1f, SpriteEffects.None, -player.Baseline () / SceneHeight);
 			}
 			DrawList (spriteBatch, spellEntities, drawHitBoxes);
-
 
 
 
@@ -307,7 +346,9 @@ namespace EC_Proto
 		protected void DrawList<E>(SpriteBatch spriteBatch, List<E> entities, bool drawHitBoxes) where E:Entity {
 			foreach (Entity e in entities) {
 				if (e.Visible)
-					spriteBatch.Draw (e.getTexture (), e.position, e.spriteChoice.rect, Color.White);
+					//spriteBatch.Draw (e.getTexture (), e.position, e.spriteChoice.rect, Color.White);
+					//spriteBatch.Draw (e.getTexture (), e.position, null, null, null, 0f, null, Color.White, SpriteEffects.None, e.Baseline() / SceneHeight);
+					spriteBatch.Draw (e.getTexture(), e.position, e.spriteChoice.rect, Color.White, 0f, new Vector2 (), 1f, SpriteEffects.None, -e.Baseline () / SceneHeight);
 				if (drawHitBoxes) //Debugging
 					spriteBatch.Draw (Game1.blankTex, e.getHitBox (), Color.White);
 			}

@@ -49,10 +49,13 @@ namespace EC_Proto
 
 			this.properties = properties;
 			this.gs = gs;
+
+			baseline = hitbox.Bottom;
 		}
 
 		static public void InitAnimation() {
 			anim.AddAnimation ("alive", 0, 0, 100, 100, 1);
+			anim.AddAnimation ("dead", 0, 0, 100, 100, 1);
 		}
 
 		public override void Update (KeyboardState state, GameTime time) {
@@ -66,6 +69,12 @@ namespace EC_Proto
 			if (momentum.LengthSquared () > 1) {
 				momentum.Normalize ();
 				momentum *= 1;
+			}
+
+			if (health <= 0 && !dying) {
+				animState.AnimationName = "dead";
+				spriteChoice.rect = anim.GetRectangle (animState);
+				dying = true;
 			}
 		}
 

@@ -33,7 +33,7 @@ namespace EC_Proto
 		public void Load(ContentManager content, GameScene game) {
 			//This process can be sped up by editing the TiledMax files to parse directly into our data structures.
 			FileInfo fi = new FileInfo(mapFile);
-			TiledMax.Map map = TiledMax.Map.Open (File.OpenRead(Path.Combine(content.RootDirectory,mapFile)), fi.DirectoryName);
+			TiledMax.Map map = TiledMax.Map.Open (File.OpenRead(Path.Combine(content.RootDirectory,mapFile)), content.RootDirectory);
 			Layers = map.Layers;
 
 			int tileID = 1;
@@ -106,9 +106,34 @@ namespace EC_Proto
 			//Look for special objects, like player spawn points.
 			foreach (TiledMax.ObjectGroup og in map.ObjectGroups) {
 				foreach (TiledMax.MapObject obj in og) {
-					Rectangle destination = new Rectangle (obj.X, obj.Y, obj.Width, obj.Height);
 
+
+					if (obj.Gid != -1) {
+						GameTile tile = Tiles [obj.Gid];
+						obj.Y -= tile.display.rect.Height;
+						if (obj.Type == "") {
+							String spawnType = tile.SpawnType;
+							if (spawnType != "") {
+								obj.Type = "spawn:" + spawnType;
+								if (!obj.Properties.ContainsKey("identifier"))
+									obj.Properties.Add ("identifier", obj.Name);
+							}
+						}
+
+						if (obj.Width == 0 && obj.Height == 0) {
+							obj.Width = tile.display.rect.Width;
+							obj.Height = tile.display.rect.Height;
+						}
+							
+					}
+					Rectangle destination = new Rectangle (obj.X, obj.Y, obj.Width, obj.Height);
 					Properties properties = obj.Properties;
+
+					if (obj.Type.StartsWith ("spawn:")) {
+						//6 = length of "spawn:"
+						game.SpawnEntity (obj.Type.Substring (6), destination, obj.Properties);
+						continue;
+					}
 
 					switch (obj.Type) {
 					case "spawn":

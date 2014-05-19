@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="20" height="20" tilewidth="100" tileheight="100">
+ <tileset firstgid="1" source="generic.tsx"/>
+ <layer name="Tile Layer 1" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjY2BgYBvFo3gAMfsgcMNQx9QOw6EQJ+xo9CimPwYAcg8JZg==
+  </data>
+ </layer>
+ <objectgroup name="Object Layer 1" width="20" height="20">
+  <object gid="11" x="838" y="906">
+   <properties>
+    <property name="next" value="node1"/>
+   </properties>
+  </object>
+  <object name="torch_1" gid="3" x="1070" y="514"/>
+  <object gid="3" x="1574" y="574"/>
+  <object gid="3" x="1546" y="686"/>
+  <object gid="3" x="1506" y="834"/>
+  <object gid="3" x="1602" y="1098"/>
+  <object gid="3" x="1630" y="1214"/>
+  <object gid="3" x="1450" y="1282"/>
+  <object gid="3" x="1450" y="1322"/>
+  <object gid="3" x="1286" y="1562"/>
+  <object gid="3" x="1030" y="1430"/>
+  <object gid="3" x="1034" y="1426"/>
+  <object name="node1" type="node" x="684" y="268" width="208" height="84">
+   <properties>
+    <property name="next" value="node2"/>
+   </properties>
+  </object>
+  <object x="424" y="420"/>
+  <object name="node2" type="node" x="436" y="452" width="180" height="236">
+   <properties>
+    <property name="next" value="node1"/>
+   </properties>
+  </object>
+  <object name="player" type="spawn" x="876" y="528" width="228" height="156"/>
+  <object x="888" y="876"/>
+  <object x="1128" y="460"/>
+  <object name="gate" type="spawn" x="1508" y="172" width="124" height="116">
+   <properties>
+    <property name="require" value="torch_1"/>
+   </properties>
+  </object>
+  <object x="1964" y="624"/>
+ </objectgroup>
+</map>

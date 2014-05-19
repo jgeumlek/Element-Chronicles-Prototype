@@ -23,6 +23,7 @@ namespace EC_Proto
 			spriteChoice.rect = texture.Bounds;
 			hitbox = texture.Bounds;
 			Visible = true;
+			baseline = hitbox.Bottom;
 		}
 
 		public override void Update (KeyboardState state, GameTime time) {

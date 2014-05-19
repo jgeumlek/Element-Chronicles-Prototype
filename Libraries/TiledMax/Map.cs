@@ -111,6 +111,43 @@ namespace TiledMax
             r.TileHeight = node.ReadInt("tileheight");
             r.Spacing    = node.ReadInt("spacing");
             r.Margin     = node.ReadInt("margin");
+
+			Console.Out.WriteLine (r.Source);
+
+			if (r.Source != "") {
+
+				String filename = Path.Combine (base_path, r.Source);
+
+				Console.Out.WriteLine (r.Source);
+
+				try {
+
+				XmlDocument extTileset = new XmlDocument ();
+				extTileset.Load (File.OpenRead (filename));
+				foreach (XmlNode extNode in extTileset.ChildNodes) {
+					
+					if (extNode.Name == "tileset")
+						node = extNode;
+				}
+
+				
+
+				r.Name       = node.ReadTag("name");
+				r.TileWidth  = node.ReadInt("tilewidth");
+				r.TileHeight = node.ReadInt("tileheight");
+				r.Spacing    = node.ReadInt("spacing");
+				r.Margin     = node.ReadInt("margin");
+
+				FileInfo fi = new FileInfo (filename);
+				base_path = fi.DirectoryName;
+
+				
+				} catch (Exception e) {
+					Console.Out.WriteLine (e.Message);
+					return;
+				}
+			}
+
             if (node.HasChildNodes)
             {
                 foreach (XmlNode child in node.ChildNodes)

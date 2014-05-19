@@ -8,6 +8,8 @@ central_water==>central_water.tmx
 central_fire==>central_fire.tmx
 central_air==>central_air.tmx
 
+debug==>debug.tmx
+
 #Special level names which must be defined.
 #Note that they must point to level names, not file paths.
 #

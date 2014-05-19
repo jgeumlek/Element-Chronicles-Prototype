@@ -79,7 +79,6 @@ namespace EC_Proto
 			//spriteBatch.Draw(tiles.display.texture, new Vector2(0,0));
 			spriteBatch.Draw (mapTex, new Vector2 (0, 0), Color.White);
 			spriteBatch.End ();
-
 			base.Draw (screenMatrix, spriteBatch, graphics, drawHitBoxes);
 		}
 	}

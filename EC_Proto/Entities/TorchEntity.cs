@@ -22,16 +22,26 @@ namespace EC_Proto
 			spriteChoice.rect = torchOff.Bounds;
 			hitbox = torchOff.Bounds;
 			Visible = true;
+
+			baseline = hitbox.Bottom;
 		}
 
 		public override void Update (KeyboardState state, GameTime time) {
 			
 		}
 
+		public override bool Activated() {
+			return lit;
+		}
+
 		override public void CollidedWith (Entity e) {
 			if (!lit && e is FireballEntity) {
 				lit = true;
 				spriteChoice.texture = torchOn;
+			}
+			if (lit && e is FrostEntity) {
+				lit = false;
+				spriteChoice.texture = torchOff;
 			}
 		}
 	}

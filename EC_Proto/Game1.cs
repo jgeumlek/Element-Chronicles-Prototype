@@ -91,6 +91,8 @@ namespace EC_Proto
 			FlytrapEntity.InitAnimation ();
 			WolfEntity.InitAnimation ();
 			FireElementalEntity.InitAnimation ();
+			GateEntity.InitAnimation ();
+			PressurePlateEntity.InitAnimation ();
 
 			FlytrapEntity.spritesheet = Content.Load<Texture2D> ("flytrap");
 			WolfEntity.spritesheet = Content.Load<Texture2D> ("wolf");
@@ -102,6 +104,8 @@ namespace EC_Proto
 			BoulderEntity.texture = Content.Load<Texture2D> ("boulder");
 			PitEntity.texture = Content.Load<Texture2D> ("pit");
 			ScrollEntity.texture = Content.Load<Texture2D> ("magicscroll");
+			GateEntity.gateTex = Content.Load<Texture2D>("gate");
+			PressurePlateEntity.plateTex = Content.Load<Texture2D>("pressurePlate");
 
 			blankTex = new Texture2D(GraphicsDevice, 1, 1);
 			blankTex.SetData(new Color[] { Color.White });

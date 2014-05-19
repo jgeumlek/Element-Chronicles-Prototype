@@ -42,6 +42,8 @@ namespace EC_Proto
 			waterDefense = 10;
 			earthDefense = 10;
 			airDefense = 10;
+
+			baseline = hitbox.Bottom;
 		}
 
 		static public void InitAnimation() {
@@ -63,6 +65,12 @@ namespace EC_Proto
 				momentum.Normalize ();
 				momentum *= 1;
 			}
+
+			if (health <= 0 && !dying) {
+				animState.AnimationName = "dying1";
+				spriteChoice.rect = anim.GetRectangle (animState);
+				dying = true;
+			}
 		}
 
 		public override void AnimationTick ()
@@ -76,11 +84,7 @@ namespace EC_Proto
 		}
 
 		override public void CollidedWith (Entity e) {
-			if ( e is FireballEntity) {
-				animState = anim.Update (animState, "fire");
-				spriteChoice.rect = anim.GetRectangle (animState);
-				PlayerStats.curExp += 15;
-			}
+
 
 			if (e is PlayerEntity) {
 				Point TrapCenter = this.getHitBox ().Center;

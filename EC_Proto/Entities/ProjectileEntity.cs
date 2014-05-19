@@ -18,6 +18,12 @@ namespace EC_Proto
 		}
 		public ProjectileEntity () {
 		}
+
+		public override void CollidedWith (Entity e)
+		{
+			if (e is MonsterEntity)
+				((MonsterEntity)e).Hit (this);
+		}
 	}
 }
 

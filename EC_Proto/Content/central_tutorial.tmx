@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="20" height="21" tilewidth="100" tileheight="100">
  <tileset firstgid="1" name="spritesheet_1" tilewidth="100" tileheight="100">
-  <image source="spritesheet_1.png" trans="ffffff" width="400" height="400"/>
+  <image source="spritesheet_1.png" trans="ffffff" width="400" height="900"/>
   <tile id="2">
    <properties>
     <property name="spawn" value="torch"/>
@@ -28,7 +28,7 @@
    <property name="solid" value=""/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzF1MEKACEIBFAPC+3/f/GegmVIHWskwVP1ErSGmQ1xquKW90DueuhkbuRltazWPS+zvH0rj7VmvGAp+qucv855nv7peXV9kVfprWeitzN7f5PZy6wz7w3PRXcx/WD+gYpXiS5PmR9MjgMc
+   eJyTZWBgkKISlgNicQbqAdEBMo8FDZNrHro5hMzFZx4ht2CTx2UeIbNwqcNmHrFmwQAHlBYEYiUc7iMVwMwSo4J57EAsyYBI09RMfwxUMA/kPpB/haCYGu4D+ReUd7GFHylxi81MctMLNdMzJfkNXR8+u4gpX4gpB0gxjxRAC/MUGRBpkVIMysMArqMIhA==
   </data>
  </layer>
  <layer name="boulder" width="20" height="21">
@@ -57,25 +57,25 @@
  </layer>
  <objectgroup name="spawn" width="20" height="21"/>
  <objectgroup name="locations" width="20" height="21">
-  <object name="wolf1_5" type="node" x="1800" y="600" width="104" height="100">
+  <object name="wolf1_5" type="node" x="1696" y="502" width="104" height="100">
    <properties>
     <property name="next" value="wolf1_6"/>
     <property name="nodeName" value="wolf1_5"/>
    </properties>
   </object>
-  <object name="wolf1_6" type="node" x="1800" y="100" width="100" height="100">
+  <object name="wolf1_6" type="node" x="1804" y="600" width="100" height="100">
    <properties>
-    <property name="next" value="wolf1_0"/>
+    <property name="next" value="wolf1_7"/>
     <property name="nodeName" value="wolf1_6"/>
    </properties>
   </object>
-  <object name="wolf1_4" type="node" x="1600" y="500" width="104" height="96">
+  <object name="wolf1_4" type="node" x="1348" y="200" width="104" height="96">
    <properties>
     <property name="next" value="wolf1_5"/>
     <property name="nodeName" value="wolf1_4"/>
    </properties>
   </object>
-  <object name="wolf1_3" type="node" x="1100" y="197" width="100" height="100">
+  <object name="wolf1_3" type="node" x="802" y="199" width="100" height="100">
    <properties>
     <property name="next" value="wolf1_4"/>
     <property name="nodeName" value="wolf1_3"/>
@@ -149,6 +149,12 @@
   <object name="fireelemental" type="spawn" x="998" y="1800" width="100" height="100">
    <properties>
     <property name="next" value="fireelemental1_1"/>
+   </properties>
+  </object>
+  <object name="wolf1_7" type="node" x="1803" y="98" width="98" height="100">
+   <properties>
+    <property name="next" value="wolf1_0"/>
+    <property name="nodeName" value="wolf1_7"/>
    </properties>
   </object>
  </objectgroup>

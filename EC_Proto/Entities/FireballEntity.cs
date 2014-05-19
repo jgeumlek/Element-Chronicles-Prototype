@@ -55,9 +55,15 @@ namespace EC_Proto
 		}
 
 		override public void CollidedWith(Entity e) {
+			base.CollidedWith (e);
 			if (e is TerrainEntity && e.Collidable) {
 				alive = false;
 			}
+		}
+
+		public override float Baseline ()
+		{
+			return position.Y + hitbox.Bottom;
 		}
 	}
 }
