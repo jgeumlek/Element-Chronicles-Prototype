@@ -21,14 +21,6 @@ namespace EC_Proto
 		int tickcount = 0; //For dividing the framerate. This implementation will change.
 		private KeyboardState prevState;
 
-		//Move all of these to a Gui class
-		public Texture2D hpBarBackground; // Black bar behind the health bar, which does not change in length
-		public Texture2D hpBar;
-		public Texture2D manaBarBackground;
-		public Texture2D manaBar;
-		public Texture2D expBarBackground;
-		public Texture2D expBar;
-
 		GameState game;
 
         public Game1()
@@ -67,18 +59,24 @@ namespace EC_Proto
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+			// Spell graphics
 			PlayerEntity.texture = Content.Load<Texture2D>("spritesheetcharacter1 copy");
 			FireballEntity.texture = Content.Load<Texture2D> ("fire");
 			FrostEntity.texture = Content.Load<Texture2D> ("frost");
 			PlayerRocksEntity.spritesheet = Content.Load<Texture2D> ("FallingRocks");
 			PlayerWindEntity.spritesheet = Content.Load<Texture2D> ("windwalk");
 
+			// HUD elements
 			Gui.hpBarBackground = Content.Load<Texture2D> ("barBackground");
 			Gui.hpBar = Content.Load<Texture2D> ("hpBar");
 			Gui.manaBarBackground = Content.Load<Texture2D> ("barBackground");
 			Gui.manaBar = Content.Load<Texture2D> ("manaBar");
 			Gui.expBarBackground = Content.Load<Texture2D> ("barBackground");
 			Gui.expBar = Content.Load<Texture2D> ("expBar");
+
+			// Dialog elements
+			Gui.textBox = Content.Load<Texture2D> ("textboxbg");
+			GuiText.dialogFont = Content.Load<SpriteFont> ("SpriteFont1");
 
 
 			//TODO: This probably isn't the cleanest spot for initializing the player

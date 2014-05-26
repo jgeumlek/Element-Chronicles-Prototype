@@ -15,8 +15,15 @@ namespace EC_Proto
 		AI ai;
 		List<Vector2> nodeList = new List<Vector2>();
 
+		public bool seePlayer;
+		List<Vector2> positionList = new List<Vector2>();
+		private TimeSpan positionPushTimer;
+		private Vector2 playerDetectedNode;
+
 		Properties properties;
 		GameScene gs;
+
+		private bool backtracking;
 
 		public WolfEntity () {
 			Visible = true;
@@ -27,6 +34,9 @@ namespace EC_Proto
 			waterDefense = 0;
 			earthDefense = 1;
 			airDefense = 0;
+
+			seePlayer = false;
+			backtracking = false;
 		}
 
 		public WolfEntity (Rectangle rect, Properties properties, GameScene gs) {
@@ -51,6 +61,11 @@ namespace EC_Proto
 			this.gs = gs;
 
 			baseline = hitbox.Bottom;
+			seePlayer = false;
+			positionPushTimer = new TimeSpan(0,0,0,0,1000);
+
+			backtracking = false;
+
 		}
 
 		static public void InitAnimation() {
@@ -59,16 +74,80 @@ namespace EC_Proto
 		}
 
 		public override void Update (KeyboardState state, GameTime time) {
+		//---HANDLE AI SWITCHING---
+			// If the monster has no AI, assign it a PatrolPathAI with nodeList
 			if (ai == null) {
 				CreateNodeList (gs, properties);
 				ai = new PatrolPathAI (nodeList);
 			}
 
+			// If wolf sees player, set seePlayer to true
+			if (!backtracking && !seePlayer && GameState.Scene ().LineOfSight (getHitBox ().Center, GameScene.player.getHitBox ().Center)) {
+				seePlayer = true;
+			}
+			// If wolf does not see player, set seePlayer to false
+			else if (seePlayer && !(GameState.Scene ().LineOfSight (getHitBox ().Center, GameScene.player.getHitBox ().Center))) {
+				seePlayer = false;
+			}
+
+			if (seePlayer) {
+				if (ai is PatrolPathAI) {
+					ai = new SeePlayerAI ();
+				}
+			} else {
+				if (ai is SeePlayerAI) {
+					ai = new PatrolPathAI (nodeList);
+				}
+			}
+
+//			if (seePlayer) {
+//
+//				if (ai is PatrolPathAI) {
+//					ai = new SeePlayerAI ();
+//					playerDetectedNode = position;
+//					positionList.Add (playerDetectedNode);
+//				}
+//
+//				if (ai is SeePlayerAI) {
+//					positionPushTimer -= time.ElapsedGameTime;
+//					if (positionPushTimer <= TimeSpan.Zero) {
+//						if (Math.Abs (position.X - positionList [positionList.Count - 1].X) > 10 || Math.Abs (position.Y - positionList [positionList.Count - 1].Y) > 10) {
+//							positionList.Add (position);
+//						}
+//						positionPushTimer = new TimeSpan (0, 0, 0, 0, 1000);
+//					}
+//
+//					if (Math.Abs (position.X - playerDetectedNode.X) > 500 || Math.Abs (position.Y - playerDetectedNode.Y) > 500) {
+//						seePlayer = false;
+//						ai = new PatrolPathAI (positionList);
+//						backtracking = true;
+//					}
+//				}
+//			}
+//
+//			if (!seePlayer) {
+//				if (ai is SeePlayerAI) { // If wolf loses sight of player and is still a SeePlayerAI
+//					positionList.Reverse (); // Reverse the list so that we backtrack node-by-node
+//					ai = new PatrolPathAI (positionList);
+//					backtracking = true;
+//				} else if (ai is PatrolPathAI) {
+//					if (backtracking) {
+//						if ((position - playerDetectedNode).LengthSquared () < 2) { // If on top of position where player was detected
+//							ai = new PatrolPathAI (nodeList);
+//							positionList.Clear ();
+//							backtracking = false;
+//						}
+//					}
+//				}
+//			}
+
 			ai.update (this, time);
+		//---END HANDLE AI SWITCHING---
+
 			momentum *= .8f;
-			if (momentum.LengthSquared () > 1) {
+			if (momentum.LengthSquared () > .5f) {
 				momentum.Normalize ();
-				momentum *= 1;
+				momentum *= (float)Math.Sqrt(.5f);
 			}
 
 			if (health <= 0 && !dying) {

@@ -21,7 +21,7 @@ namespace EC_Proto
 			{"fireball",true},
 			{"frostbreath",false},
 			{"earthen shield",false},
-			{"windwalk",true}
+			{"windwalk",false}
 		};
 
 		public static void Update (GameTime gameTime, KeyboardState state, KeyboardState prevState) {
@@ -39,6 +39,7 @@ namespace EC_Proto
 						GameScene.player.EarthenShield ();
 					} else {
 						GameScene.player.DestroyOverlay ();
+						PlayerEntity.strength = false;
 						if (activeSpell != "earthen shield") {
 							if (GameScene.player.HasEnoughMana (1)) {
 								GameScene.player.EarthenShield ();

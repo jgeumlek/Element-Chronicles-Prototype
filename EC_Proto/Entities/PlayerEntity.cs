@@ -20,7 +20,7 @@ namespace EC_Proto
 		bool collidedWithTerrain = false; //For really hack-ish collision resolution! Needs to be reworked.
 		static AnimationManager anim = new AnimationManager();
 		public static Texture2D texture; 
-		public bool strength = false; // Able to push boulders?
+		public static bool strength = false; // Able to push boulders?
 		public TimeSpan flinchTime;
 
 		public bool projectileLaunched;

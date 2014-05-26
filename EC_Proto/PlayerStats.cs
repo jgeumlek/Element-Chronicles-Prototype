@@ -46,6 +46,10 @@ namespace EC_Proto
 		public static void Respawn () {
 			curHp = maxHp;
 			curMana = maxMana;
+			if (GameScene.player.overlayActive) {
+				GameScene.player.DestroyOverlay ();
+				SpellManager.activeSpell = "";
+			}
 		}
 	}
 }

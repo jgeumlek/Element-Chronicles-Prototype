@@ -35,7 +35,6 @@ namespace EC_Proto
 
 		SoundEffectInstance bgmInstance;
 		SoundEffectInstance titleInstance;
-		SoundEffectInstance airZoneInstance;
 
 		bool airPlaying = false;
 
@@ -110,12 +109,12 @@ namespace EC_Proto
 			PlayerStats.Update (gameTime);
 			if (PlayerStats.curHp <= 0) {
 
-				LoadMap (respawnLevel, respawnLocation);
-
 				PlayerStats.Respawn ();
+
+				LoadMap (respawnLevel, respawnLocation);
 			}
 
-			Gui.Update (gameTime);
+			Gui.Update (gameTime, state, prevState);
 
 			SpellManager.Update (gameTime, state, prevState);
 

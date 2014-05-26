@@ -133,12 +133,7 @@ namespace EC_Proto
 			player.Update (state, gameTime);
 			player.moveOffset(player.Momentum * (float)player.inverseMass);
 
-
-			foreach (Entity e in spellEntities) {
-				if (e.Active) e.Update (state, gameTime); 
-			}
-
-			foreach (PhysicsEntity e in monsterEntities) {
+			foreach (MonsterEntity e in monsterEntities) {
 				e.Update (state, gameTime);
 				e.position += e.Momentum * (float)e.inverseMass;
 			}
@@ -151,34 +146,39 @@ namespace EC_Proto
 				e.Update (state, gameTime);
 			}
 
+			foreach (Entity e in spellEntities) {
+				if (e.Active) e.Update (state, gameTime); 
+			}
+
 			foreach (TerrainEntity e in terrainEntities) {
 				e.Update (state, gameTime);
 			}
 
-			terrainEntities = terrainEntities.Where( x => x.Alive()).ToList();
-			spellEntities = spellEntities.Where( x => x.Alive()).ToList();
-            movableEntities = movableEntities.Where (x => x.Alive ()).ToList();
 			monsterEntities = monsterEntities.Where (x => x.Alive ()).ToList();
+			movableEntities = movableEntities.Where (x => x.Alive ()).ToList();
 			scrollEntities = scrollEntities.Where (x => x.Alive ()).ToList ();
+			spellEntities = spellEntities.Where( x => x.Alive()).ToList();
+			terrainEntities = terrainEntities.Where( x => x.Alive()).ToList();
 
 			DetectCollisions ();
 		}
 
 		virtual public void AnimationTick() {
 			player.AnimationTick ();
-			foreach (Entity e in spellEntities) {
-				e.AnimationTick ();
-			}
+
 			foreach (Entity e in monsterEntities) {
 				e.AnimationTick ();
 			}
-			foreach (ScrollEntity e in scrollEntities) {
-                                e.AnimationTick ();
-                        }
-			foreach (Entity e in terrainEntities) {
+			foreach (Entity e in movableEntities) {
 				e.AnimationTick ();
 			}
-			foreach (Entity e in movableEntities) {
+			foreach (ScrollEntity e in scrollEntities) {
+				e.AnimationTick ();
+			}
+			foreach (Entity e in spellEntities) {
+				e.AnimationTick ();
+			}
+			foreach (Entity e in terrainEntities) {
 				e.AnimationTick ();
 			}
 		}

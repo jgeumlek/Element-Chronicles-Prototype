@@ -44,7 +44,9 @@ namespace EC_Proto
 				ResetWarp ();
 			}
 			if (e is PlayerEntity) {
-				position += 2 * Entity.dirVector (((PlayerEntity)e).direction); // ((PlayerEntity)e).getCurrentSpeed ()
+				if (PlayerEntity.strength) {
+					position += 2 * Entity.dirVector (((PlayerEntity)e).direction);
+				}
 			}
 		}
 

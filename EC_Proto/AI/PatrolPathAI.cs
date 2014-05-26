@@ -13,6 +13,9 @@ namespace EC_Proto
 
 		PhysicsEntity actor;
 
+		static int nextNodeWaitTime = 5000;
+		TimeSpan nextNodeTimer = new TimeSpan (0, 0, 0, 0, nextNodeWaitTime); // If AI hasn't reached next node after this time, switch nodes
+
 		bool reachedNode = false;
 
 		static int millisecondsToWait = 500;
@@ -37,9 +40,16 @@ namespace EC_Proto
 			}
 
 			if (reachedNode) {
+				nextNodeTimer = new TimeSpan (0, 0, 0, 0, nextNodeWaitTime);
 				timer -= time.ElapsedGameTime;
 				if (timer <= TimeSpan.Zero) {
 					UpdateNodes ();
+				}
+			} else {
+				nextNodeTimer -= time.ElapsedGameTime;
+				if (nextNodeTimer <= TimeSpan.Zero) {
+					UpdateNodes ();
+					nextNodeTimer = new TimeSpan (0, 0, 0, 0, nextNodeWaitTime);
 				}
 			}
 		}
@@ -49,7 +59,7 @@ namespace EC_Proto
 		}
 
 		private void SetMoveDirection() {
-			if (nodePositions[0] != null)
+			if (nodePositions.Count > 0)
 				moveDirection = nodePositions [nextNode] - actor.position;
 			moveDirection.Normalize ();
 		}
