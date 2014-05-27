@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using System.Linq;
 
@@ -95,9 +94,12 @@ namespace EC_Proto
 				e = pressureplate;
 				break;
 			case "scroll":
-				ScrollEntity scroll = new ScrollEntity (position, properties, this);
-				scrollEntities.Add (scroll);
-				e = scroll;
+				string spellName = (string)properties ["spell"];
+				if (!SpellManager.spells [spellName]) {
+					ScrollEntity scroll = new ScrollEntity (position, properties, this);
+					scrollEntities.Add (scroll);
+					e = scroll;
+				}
 				break;
 			}
 
@@ -129,38 +131,40 @@ namespace EC_Proto
 
 
 			//TODO: Better event based system? Let entities register as Keyboard listeners, etc.
+			if (!Gui.inDialog) {
+				player.Update (state, gameTime);
+				player.moveOffset (player.Momentum * (float)player.inverseMass);
 
-			player.Update (state, gameTime);
-			player.moveOffset(player.Momentum * (float)player.inverseMass);
+				foreach (MonsterEntity e in monsterEntities) {
+					e.Update (state, gameTime);
+					e.position += e.Momentum * (float)e.inverseMass;
+				}
 
-			foreach (MonsterEntity e in monsterEntities) {
-				e.Update (state, gameTime);
-				e.position += e.Momentum * (float)e.inverseMass;
+				foreach (Entity e in movableEntities) {
+					e.Update (state, gameTime);
+				}
+
+				foreach (ScrollEntity e in scrollEntities) {
+					e.Update (state, gameTime);
+				}
+
+				foreach (Entity e in spellEntities) {
+					if (e.Active)
+						e.Update (state, gameTime); 
+				}
+
+				foreach (TerrainEntity e in terrainEntities) {
+					e.Update (state, gameTime);
+				}
+
+				monsterEntities = monsterEntities.Where (x => x.Alive ()).ToList ();
+				movableEntities = movableEntities.Where (x => x.Alive ()).ToList ();
+				scrollEntities = scrollEntities.Where (x => x.Alive ()).ToList ();
+				spellEntities = spellEntities.Where (x => x.Alive ()).ToList ();
+				terrainEntities = terrainEntities.Where (x => x.Alive ()).ToList ();
+
+				DetectCollisions ();
 			}
-
-            foreach (Entity e in movableEntities) {
-				e.Update (state, gameTime);
-			}
-
-			foreach (ScrollEntity e in scrollEntities) {
-				e.Update (state, gameTime);
-			}
-
-			foreach (Entity e in spellEntities) {
-				if (e.Active) e.Update (state, gameTime); 
-			}
-
-			foreach (TerrainEntity e in terrainEntities) {
-				e.Update (state, gameTime);
-			}
-
-			monsterEntities = monsterEntities.Where (x => x.Alive ()).ToList();
-			movableEntities = movableEntities.Where (x => x.Alive ()).ToList();
-			scrollEntities = scrollEntities.Where (x => x.Alive ()).ToList ();
-			spellEntities = spellEntities.Where( x => x.Alive()).ToList();
-			terrainEntities = terrainEntities.Where( x => x.Alive()).ToList();
-
-			DetectCollisions ();
 		}
 
 		virtual public void AnimationTick() {

@@ -44,7 +44,7 @@ namespace EC_Proto
 				ResetWarp ();
 			}
 			if (e is PlayerEntity) {
-				if (PlayerEntity.strength) {
+				if (SpellManager.activeSpell == "earthen shield") {
 					position += 2 * Entity.dirVector (((PlayerEntity)e).direction);
 				}
 			}

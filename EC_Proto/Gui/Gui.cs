@@ -1,6 +1,5 @@
 using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -22,10 +21,10 @@ namespace EC_Proto
 
 		// Dialog elements
 		public static Texture2D textBox;
-		public static GuiText dialogText = new GuiText ("You have obtained the spell: Fireball\nPress H to use.", new Vector2 (160, 150));
-		public static GuiText dialogQuitText = new GuiText ("Press E to cancel dialog.", new Vector2 (365, 310), Color.Gray);
+		public static GuiText dialogText = new GuiText ("Welcome to Element Chronicles!\nYou learned the spell Fireball.\nPress H to use.", new Vector2 (160, 150));
+		public static GuiText dialogQuitText = new GuiText ("Press E to exit dialog.", new Vector2 (375, 310), Color.Gray);
 
-		public static bool inDialog = false;
+		public static bool inDialog = true;
 		private static Rectangle textBoxPosition = new Rectangle (150, 140, 500, 200);
 
 		public static void Update(GameTime gameTime, KeyboardState state, KeyboardState prevState) {

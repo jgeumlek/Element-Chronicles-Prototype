@@ -7,27 +7,29 @@ namespace EC_Proto
 {
 	public class PlayerEntity : PhysicsEntity
 	{
-		private const int KNOCKBACK_DISTANCE = -50;
-		private const int FLINCH_TIME = 500; // how long the player flinches for in milliseconds
+		// Physics
 		private const float DEFAULT_FRICTION = .9f;
-		//private float playerspeed = 5;
-		//private Vector2 currentSpeed = new Vector2(0,0); //Used for adding momentum to projectiles.
 		private float maxSpeed = 5.5f;
 		private float acceleration = 2;
 		public float FrictionFactor = .9f;
-
 		private Vector2 resetPosition = new Vector2 (0, 0);
 		bool collidedWithTerrain = false; //For really hack-ish collision resolution! Needs to be reworked.
-		static AnimationManager anim = new AnimationManager();
-		public static Texture2D texture; 
-		public static bool strength = false; // Able to push boulders?
+
+		// Knockback
+		private const int KNOCKBACK_DISTANCE = -50;
+		private const int FLINCH_TIME = 500; // how long the player flinches for in milliseconds
 		public TimeSpan flinchTime;
 
+		// Spells
 		public bool projectileLaunched;
 		private TimeSpan timer;
-
 		public Entity overlay; // A spell that displays an animation in front of the player creates an overlay
 		public bool overlayActive;
+
+		// Animation
+		public static Texture2D spritesheet;
+		static AnimationManager anim = new AnimationManager();
+		public static Texture2D texture; 
 
 		static public void InitAnimation() {
 			anim.AddAnimation ("south", 230, 0, 80, 150,1); //TODO: Fix spritesheet alignment! The others seem to be multiples of 80.
@@ -169,6 +171,17 @@ namespace EC_Proto
 			if (e is ScrollEntity) {
 				string spellName = (string)((ScrollEntity)e).properties ["spell"];
 				SpellManager.spells [spellName] = true;
+
+				if (spellName == "fireball") {
+					Gui.UpdateDialog ("You learned the spell Fireball.\nPress H to use.");
+				} else if (spellName == "frostbreath") {
+					Gui.UpdateDialog ("You learned the spell Frost Breath.\nPress J to use.");
+				} else if (spellName == "earthen shield") {
+					Gui.UpdateDialog ("You learned the spell Earthen Strength.\nPress K to toggle.");
+				} else if (spellName == "windwalk") {
+					Gui.UpdateDialog ("You learned the spell Wind Walk.\nPress L to toggle.");
+				}
+
 				e.Destroy ();
 			} else if (e is WarpTrigger) {
 				if (overlayActive) {
@@ -209,11 +222,10 @@ namespace EC_Proto
 			GameScene.player.ConsumeMana (1);
 		}
 
-        public void EarthenShield () {
+        public void EarthenStrength () {
 			overlay = new PlayerRocksEntity (GameScene.player.position);
 			GameScene.AddSpellEntity (overlay);
 			overlayActive = true;
-			strength = true;
 			ConsumeMana (1);
 			SpellManager.activeSpell = "earthen shield";
         }

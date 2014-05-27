@@ -23,8 +23,6 @@ namespace EC_Proto
 		public int ViewWidth { get; set; }
 		public int ViewHeight { get; set; }
 		private float zoomLevel = 0.5f;
-		SoundEffect bgm;
-		SoundEffect title;
 		public Dictionary<String, Spawn> EntitySpawners = new Dictionary<String, Spawn>();
 		Dictionary<String, String> LevelNames = new Dictionary<String, String> ();
 
@@ -32,11 +30,6 @@ namespace EC_Proto
 
 		String respawnLevel = "START";
 		String respawnLocation = "default";
-
-		SoundEffectInstance bgmInstance;
-		SoundEffectInstance titleInstance;
-
-		bool airPlaying = false;
 
 		public ContentManager Content;
 
@@ -139,25 +132,8 @@ namespace EC_Proto
 				return; //No such map! Do nothing.
 
 			Console.Out.WriteLine ("Map Name: " + mapName);
-			if (mapName == "central_air") {
-				airPlaying = true;
 
-				bgmInstance.Stop ();
-				bgmInstance.Dispose ();
-				bgm = Content.Load<SoundEffect> ("AirZone.wav");
-				bgmInstance = bgm.CreateInstance ();
-				bgmInstance.IsLooped = true;
-				bgmInstance.Play ();
-			} else if (airPlaying) {
-				airPlaying = false;
-
-				bgmInstance.Stop ();
-				bgmInstance.Dispose ();
-				bgm = Content.Load<SoundEffect> ("bgm.wav");
-				bgmInstance = bgm.CreateInstance ();
-				bgmInstance.IsLooped = true;
-				bgmInstance.Play ();
-			}
+			AudioHandler.SetMap (mapName);
 
 			String mapfile = LevelNames [mapName];
 
@@ -181,10 +157,6 @@ namespace EC_Proto
 			//TODO: specify these!
 			if (sceneName == "logo") {
 				scene = new ImageScene (this, Content.Load<Texture2D> ("TitlePage"), "instruction");
-				title = Content.Load<SoundEffect>("TitleSong.wav");
-				titleInstance = title.CreateInstance();
-				titleInstance.IsLooped = true;
-				titleInstance.Play ();
 			}
 			if (sceneName == "instruction") {
 				scene = new ImageScene (this, Content.Load<Texture2D> ("tempintro"), "game");
@@ -192,13 +164,8 @@ namespace EC_Proto
 			if (sceneName == "game") {
 				scene = new TmxScene(this);
 				((TmxScene)scene).LoadMap (LevelNames["START"],"default",Content);
-
-				titleInstance.Stop ();
-				bgm = Content.Load<SoundEffect>("bgm.wav");
-				bgmInstance = bgm.CreateInstance();
-				bgmInstance.IsLooped = true;
-				bgmInstance.Play();
 			}
+			AudioHandler.SetScene (sceneName);
 		}
 
 		public void Draw( SpriteBatch spriteBatch, GraphicsDeviceManager graphics) {

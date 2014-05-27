@@ -56,6 +56,7 @@ namespace EC_Proto
         protected override void LoadContent()
         {
 			game.Content = Content;
+			AudioHandler.content = Content;
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -77,7 +78,6 @@ namespace EC_Proto
 			// Dialog elements
 			Gui.textBox = Content.Load<Texture2D> ("textboxbg");
 			GuiText.dialogFont = Content.Load<SpriteFont> ("SpriteFont1");
-
 
 			//TODO: This probably isn't the cleanest spot for initializing the player
 

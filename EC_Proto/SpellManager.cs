@@ -36,13 +36,12 @@ namespace EC_Proto
 			if (spells ["earthen shield"]) {
 				if (state.IsKeyDown (Keys.K) && prevState.IsKeyUp (Keys.K)) {
 					if (activeSpell == "") {
-						GameScene.player.EarthenShield ();
+						GameScene.player.EarthenStrength ();
 					} else {
 						GameScene.player.DestroyOverlay ();
-						PlayerEntity.strength = false;
 						if (activeSpell != "earthen shield") {
 							if (GameScene.player.HasEnoughMana (1)) {
-								GameScene.player.EarthenShield ();
+								GameScene.player.EarthenStrength ();
 							}
 						} else {
 							activeSpell = "";
