@@ -61,7 +61,7 @@ namespace EC_Proto
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			// Spell graphics
-			PlayerEntity.texture = Content.Load<Texture2D>("spritesheetcharacter1 copy");
+			PlayerEntity.texture = Content.Load<Texture2D>("charsheet");
 			FireballEntity.texture = Content.Load<Texture2D> ("fire");
 			FrostEntity.texture = Content.Load<Texture2D> ("frost");
 			PlayerRocksEntity.spritesheet = Content.Load<Texture2D> ("FallingRocks");

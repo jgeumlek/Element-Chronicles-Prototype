@@ -77,8 +77,10 @@ namespace EC_Proto
 				return "east";
 			} else if (direction == Direction.South) {
 				return "south";
-			} else { //West
+			} else if (direction == Direction.West) {
 				return "west";
+			} else {
+				return "undefined";
 			}
 		}
 

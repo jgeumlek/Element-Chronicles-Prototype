@@ -15,6 +15,8 @@ namespace EC_Proto
 		private Vector2 resetPosition = new Vector2 (0, 0);
 		bool collidedWithTerrain = false; //For really hack-ish collision resolution! Needs to be reworked.
 
+		KeyboardState prevKeyboardState;
+
 		// Knockback
 		private const int KNOCKBACK_DISTANCE = -50;
 		private const int FLINCH_TIME = 500; // how long the player flinches for in milliseconds
@@ -32,15 +34,31 @@ namespace EC_Proto
 		public static Texture2D texture; 
 
 		static public void InitAnimation() {
-			anim.AddAnimation ("south", 230, 0, 80, 150,1); //TODO: Fix spritesheet alignment! The others seem to be multiples of 80.
-			anim.AddAnimation ("west", 320, 0, 80, 150,1);
-			anim.AddAnimation ("east", 400, 0, 80, 150,1);
-			anim.AddAnimation ("north", 80, 0, 80, 150,1);
+			anim.AddAnimation ("eastidle", 0, 0, 80, 150,1);
+			anim.AddAnimation ("westidle", 0, 150, 80, 150,1);
+			anim.AddAnimation ("southidle", 0, 300, 80, 150,1);
+			anim.AddAnimation ("northidle", 0, 450, 80, 150,1);
 
-			anim.AddStateChange ("", "west", "west", false);
-			anim.AddStateChange ("", "south", "south", false);
-			anim.AddStateChange ("", "east", "east", false);
-			anim.AddStateChange ("", "north", "north", false);
+			anim.AddAnimation ("east", 0, 0, 80, 150, 7);
+			anim.AddAnimation ("west", 0, 150, 80, 150, 7);
+			anim.AddAnimation ("south", 0, 300, 80, 150, 7);
+			anim.AddAnimation ("north", 0, 450, 80, 150, 7);
+
+
+			anim.AddStateChange ("", "west", "west", true);
+			anim.AddStateChange ("", "south", "south", true);
+			anim.AddStateChange ("", "east", "east", true);
+			anim.AddStateChange ("", "north", "north", true);
+
+			anim.AddStateChange ("west", "undefined", "westidle", false);
+			anim.AddStateChange ("south", "undefined", "southidle", false);
+			anim.AddStateChange ("east", "undefined", "eastidle", false);
+			anim.AddStateChange ("north", "undefined", "northidle", false);
+
+			anim.AddStateChange ("westidle", "west", "west", false);
+			anim.AddStateChange ("southidle", "south", "south", false);
+			anim.AddStateChange ("eastidle", "east", "east", false);
+			anim.AddStateChange ("northidle", "north", "north", false);
 		}
 
 		public PlayerEntity () {
@@ -48,7 +66,7 @@ namespace EC_Proto
 			hitbox = new Rectangle (10, 110, 60, 27);
 			hurtbox = new Rectangle (10, 5, 60, 140);
 			direction = Direction.South;
-			animState.AnimationName = "south";
+			animState.AnimationName = "southidle";
 
 			inverseMass = 1;
 
@@ -84,6 +102,8 @@ namespace EC_Proto
 			}
 
 			bool changedirection = true; //Should we let the player character change directions?
+			bool startwalking = false;
+
 			Vector2 moveDirection = new Vector2 (0, 0);
 			Direction newDirection = Direction.Undefined;
 
@@ -91,9 +111,11 @@ namespace EC_Proto
 				changedirection = false;
 			}
 
-
-
 			if (keyboard.IsKeyDown (Keys.A)) {
+				if (prevKeyboardState.IsKeyUp (Keys.A)) {
+					startwalking = true;
+				}
+
 				newDirection = Direction.West;
 				if (direction == newDirection) {
 					changedirection = false;
@@ -101,6 +123,9 @@ namespace EC_Proto
 				moveDirection += Entity.dirVector (newDirection);
 			}
 			if (keyboard.IsKeyDown (Keys.D)) {
+				if (prevKeyboardState.IsKeyUp (Keys.D)) {
+					startwalking = true;
+				}
 
 				newDirection = Direction.East;
 				if (direction == newDirection) {
@@ -109,28 +134,42 @@ namespace EC_Proto
 				moveDirection += Entity.dirVector (newDirection);
 			}
 			if (keyboard.IsKeyDown (Keys.W)) {
+				if (prevKeyboardState.IsKeyUp (Keys.W)) {
+					startwalking = true;
+				}
 
 				newDirection = Direction.North;				
 				if (direction == newDirection) {
 					changedirection = false;
 				}
-
 				moveDirection += Entity.dirVector (newDirection);
 			}
 			if (keyboard.IsKeyDown (Keys.S)) {
+				if (prevKeyboardState.IsKeyUp (Keys.S)) {
+					startwalking = true;
+				}
 
 				newDirection = Direction.South;
 				if (direction == newDirection) {
 					changedirection = false;
 				}
-
 				moveDirection += Entity.dirVector (newDirection);
 			}
 
-			if (changedirection && newDirection != Direction.Undefined) {
-				direction = newDirection; //We aren't still heading the same way, and we are moving. We should change direction.
-				animState = anim.Update (animState, Entity.dirName (newDirection));
+
+			if (startwalking) {
+				direction = newDirection;
+				animState = anim.Update (animState, Entity.dirName(newDirection));
 			}
+//			if (changedirection && newDirection != Direction.Undefined) {
+//				direction = newDirection; //We aren't still heading the same way, and we are moving. We should change direction.
+//				animState = anim.Update (animState, Entity.dirName (newDirection));
+//			}
+			else if (keyboard.IsKeyUp (Keys.W) && keyboard.IsKeyUp (Keys.A) && keyboard.IsKeyUp (Keys.S) && keyboard.IsKeyUp (Keys.D)) {
+				animState = anim.Update (animState, "undefined");
+			}
+
+
 
 			if (projectileLaunched) {
 				if (timer > TimeSpan.Zero) {
@@ -164,6 +203,8 @@ namespace EC_Proto
 			
 			//Set up friction factor for next frame.
 			FrictionFactor = DEFAULT_FRICTION;
+
+			prevKeyboardState = keyboard;
 		}
 
 		//Collision rules.
