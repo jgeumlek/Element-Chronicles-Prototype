@@ -57,7 +57,7 @@ namespace EC_Proto
 
 		override public void CollidedWith(Entity e) {
 			base.CollidedWith (e);
-			if (e is TerrainEntity && e.Collidable) {
+			if (e is TerrainEntity && e.Collidable && !(e is PitEntity)) {
 				alive = false;
 			}
 		}

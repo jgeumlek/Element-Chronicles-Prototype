@@ -1,0 +1,6 @@
+"This project is an open source project under the same license as Tiled. You may use this in any of your project without concent."
+
+Tiled, the editor, is under the GPL.
+libtiled the various libraries for reading in tmx files is under the simplified BSD license.
+
+Under the GPL, the rest of this project (Element Chronicles) would need to be GPL as well. If TiledMax is under the BSD license, then only the modified TiledMax code here would need to be under the BSD license.

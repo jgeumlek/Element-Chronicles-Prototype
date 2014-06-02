@@ -9,6 +9,10 @@ using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 using System.Linq;
 
+
+/*
+ * Handles the game state.
+ */
 namespace EC_Proto
 {
 	public delegate Entity Spawn(Rectangle position);

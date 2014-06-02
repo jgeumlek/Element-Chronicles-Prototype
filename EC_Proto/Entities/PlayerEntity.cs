@@ -157,7 +157,7 @@ namespace EC_Proto
 			}
 
 
-			if (startwalking) {
+			if (changedirection && newDirection != Direction.Undefined || startwalking) {
 				direction = newDirection;
 				animState = anim.Update (animState, Entity.dirName(newDirection));
 			}

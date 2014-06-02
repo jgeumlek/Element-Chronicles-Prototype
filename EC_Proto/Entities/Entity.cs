@@ -25,6 +25,9 @@ namespace EC_Proto
 		//	  for the player, the baseline is at the feet, everything above the feet is consider
 		//		to be standing up, not lying flat on the ground.
 		//This is used to determine which sprite should be drawn on top.
+		//Sprites are sorted by (y position) + baseline
+		//If issues arise of something being incorrectly drawn below something,
+		//it probably is a case of the baseline not being set correctly.
 		protected float baseline = 0;
 
 
@@ -131,7 +134,7 @@ namespace EC_Proto
 		virtual public void CollidedWith(Entity e) {
 		}
 
-		//A frame's worth of time has passed. Do nothing by defualt, override if you have an animation.
+		//A frame's worth of time has passed. Do nothing by default, override if you have an animation.
 		virtual public void AnimationTick() {
 		}
 

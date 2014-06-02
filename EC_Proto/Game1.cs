@@ -28,7 +28,7 @@ namespace EC_Proto
             graphics = new GraphicsDeviceManager(this);
 			graphics.IsFullScreen = false;
 			//graphics.PreferredBackBufferHeight = 720;
-			//graphics.PreferredBackBufferWidth = 640;
+			//graphics.PreferredBackBufferWidth = 1280;
             Content.RootDirectory = "Content";
 			game = new GameState (this);
         }
@@ -55,6 +55,10 @@ namespace EC_Proto
         /// </summary>
         protected override void LoadContent()
         {
+
+			//We initialize all content that will ever be used for convenience.
+			//Perhaps in the future we can load/unload as needed.
+
 			game.Content = Content;
 			AudioHandler.content = Content;
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -79,7 +83,7 @@ namespace EC_Proto
 			Gui.textBox = Content.Load<Texture2D> ("textboxbg");
 			GuiText.dialogFont = Content.Load<SpriteFont> ("SpriteFont1");
 
-			//TODO: This probably isn't the cleanest spot for initializing the player
+			//TODO: Read in animation frames from a file.
 
 			PlayerEntity.InitAnimation ();
 			FireballEntity.InitAnimation ();
